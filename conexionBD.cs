@@ -7,35 +7,27 @@ using MySql.Data.MySqlClient;
 
 namespace practiquesIEI
 {
-    internal class conexionBD
+    public class conexionBD
     {
-        static async System.Threading.Tasks.Task Conectar()
+        private MySqlConnection conn;
+        async void Conectar()
         {
-            string connectionString = "Server=collectify-server-mysql.mysql.database.azure.com;Port=3306;Database=IEI-Server;User Id=Administrador;Password=root;";
-            MySqlConnection conn = null;
-
+            Console.WriteLine("Conectando");
+            if (conn != null)
+            {
+                return;
+            }
             try
             {
-                // Crea una nueva conexión utilizando la cadena de conexión proporcionada
+                string connectionString = "server=172.23.186.115;port=3306;user=Administrador;password=root;database=centrosbd;";
                 conn = new MySqlConnection(connectionString);
-
-                // Abre la conexión
                 await conn.OpenAsync();
-
                 Console.WriteLine("Conectado");
             }
             catch (Exception e)
             {
-                // Manejo de excepciones en caso de error al abrir la conexión
-                Console.WriteLine($"{e.Message}\nError");
+                Console.WriteLine(e.ToString() + "Error");
             }
-            finally
-            {
-                // Asegúrate de cerrar la conexión, incluso si hay un error
-                if (conn != null && conn.State == System.Data.ConnectionState.Open)
-                {
-                    conn.Close();
-                    Console.WriteLine("Conexión cerrada");
-                }
-            }
+        }
+    }
 }
