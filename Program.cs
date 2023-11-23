@@ -14,6 +14,7 @@ namespace practiquesIEI
         [STAThread]
         static void Main()
         {
+            conexionBD.Conectar();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
