@@ -9,8 +9,8 @@ namespace practiquesIEI
 {
     public class conexionBD
     {
-        private MySqlConnection conn;
-        async void Conectar()
+        private static MySqlConnection conn;
+        public static async void Conectar()
         {
             Console.WriteLine("Conectando");
             if (conn != null)
