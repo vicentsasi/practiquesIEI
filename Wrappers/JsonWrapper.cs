@@ -6,8 +6,16 @@ public class JsonWrapper
 {
     public static string ConvertToJson(string jsonFilePath)
     {
-        string jsonData = File.ReadAllText(jsonFilePath);
-        return jsonData;
+        try
+        {
+            string jsonData = File.ReadAllText(jsonFilePath);
+            return jsonData;
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}");
+            return null;
+        }
+        
     }
 
 }

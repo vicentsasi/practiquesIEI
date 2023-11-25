@@ -12,33 +12,40 @@ namespace practiquesIEI.Extractors
     {
         public static void LoadJsonDataIntoDatabase(string jsonData)
         {
-            // Deserializar JSON a una lista de objetos dinámicos
-            dynamic jsontext = JsonConvert.DeserializeObject<dynamic>(jsonData);
+            try {
+                // Deserializar JSON a una lista de objetos dinámicos
+                dynamic jsontext = JsonConvert.DeserializeObject<dynamic>(jsonData);
 
-            foreach (var row in jsontext.response.row)
-            {
-                centro_educativo centro = new centro_educativo();
+                foreach (var row in jsontext.response.row)
+                {
+                    centro_educativo centro = new centro_educativo();
 
-                centro.nombre = row.denominaci_completa;
+                    centro.nombre = row.denominaci_completa;
 
-                switch (row.nom_naturalesa) {
-                    case "Public": centro.tipo = tipo_centro.Público; break;
-                    case "Privat": centro.tipo = tipo_centro.Privado; break;
+                    switch (row.nom_naturalesa)
+                    {
+                        case "Public": centro.tipo = tipo_centro.Público; break;
+                        case "Privat": centro.tipo = tipo_centro.Privado; break;
+                    }
+
+                    centro.direccion = row.adre_a;
+                    centro.cod_postal = row.codi_postal;
+                    centro.longitud = row.coordenades_geo_x;
+                    centro.latitud = row.coordenades_geo_y;
+                    centro.descripcion = row.estudis;
+
+                    localidad local = new localidad();
+
+                    local.nombre = row.nom_municipi;
+                    local.codigo = row.codi_municipi_5_digits;
+
+                    provincia prov = new provincia();
+
                 }
-
-                centro.direccion = row.adre_a;
-                centro.cod_postal = row.codi_postal;
-                centro.longitud = row.coordenades_geo_x;
-                centro.latitud = row.coordenades_geo_y;
-                centro.descripcion = row.estudis;
-
-                localidad local = new localidad();
-
-                local.nombre = row.nom_municipi;
-                local.codigo = row.codi_municipi_5_digits;
-
-                provincia prov = new provincia();
-
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}");
             }
         }
 

@@ -20,7 +20,7 @@ namespace practiquesIEI
         static async Task Main()
         {   
             await ConexionBD.Conectar();
-            string file = "C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\murcia.json";
+            string file = "practiquesIEI\\Fuentes de datos\\murcia.json";
             string arxivo = JsonWrapper.ConvertToJson(file);
             MURextractor.LoadJsonDataIntoDatabase(arxivo);
             Application.EnableVisualStyles();
