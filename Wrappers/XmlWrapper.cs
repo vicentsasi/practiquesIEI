@@ -3,16 +3,19 @@ using System.Web;
 using System.Xml;
 using Newtonsoft.Json;
 
-public class XmlWrapper
+namespace practiquesIEI.Wrappers
 {
-
-    public static string ConvertToJson(string xmlFilePath)
+    public class XmlWrapper
     {
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load(xmlFilePath);
 
-        string json = JsonConvert.SerializeXmlNode(xmlDoc);
-        return json;
+        public static string ConvertToJson(string xmlFilePath)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(xmlFilePath);
+
+            string json = JsonConvert.SerializeXmlNode(xmlDoc);
+            return json;
+        }
     }
 }
 

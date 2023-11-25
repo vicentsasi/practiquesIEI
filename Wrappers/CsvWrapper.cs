@@ -6,30 +6,33 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Newtonsoft.Json;
 
-public class CsvWrapper
+namespace practiquesIEI.Wrappers
 {
-    public static string ConvertToJson(string csvFilePath)
+    public class CsvWrapper
     {
-        var records = new List<Dictionary<string, object>>();
-
-        using (var reader = new StreamReader(csvFilePath))
-        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+        public static string ConvertToJson(string csvFilePath)
         {
-            var recordsFromCsv = csv.GetRecords<dynamic>();
+            var records = new List<Dictionary<string, object>>();
 
-            foreach (var record in recordsFromCsv)
+            using (var reader = new StreamReader(csvFilePath))
+            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
             {
-                var dictionary = new Dictionary<string, object>();
-                foreach (var property in record.GetType().GetProperties())
-                {
-                    dictionary[property.Name] = property.GetValue(record);
-                }
-                records.Add(dictionary);
-            }
-        }
+                var recordsFromCsv = csv.GetRecords<dynamic>();
 
-        string json = JsonConvert.SerializeObject(records);
-        return json;
+                foreach (var record in recordsFromCsv)
+                {
+                    var dictionary = new Dictionary<string, object>();
+                    foreach (var property in record.GetType().GetProperties())
+                    {
+                        dictionary[property.Name] = property.GetValue(record);
+                    }
+                    records.Add(dictionary);
+                }
+            }
+
+            string json = JsonConvert.SerializeObject(records);
+            return json;
+        }
     }
 }
 
