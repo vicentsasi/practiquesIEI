@@ -48,7 +48,6 @@ namespace practiquesIEI.Extractors
             
             centro.nombre = dynamicData.dencen;
             centro.direccion = dynamicData.domcen;
-            centro.tipo = dynamicData.titularidad;
             centro.telefono = dynamicData.telcen;
             centro.descripcion = dynamicData.presentacionCorta;
             centro.cod_postal = dynamicData.cpcen;

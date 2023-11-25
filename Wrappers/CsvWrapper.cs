@@ -2,38 +2,45 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using Aspose.Cells;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace practiquesIEI.Wrappers
 {
     public class CsvWrapper
     {
-        public static string ConvertToJson(string csvFilePath)
+        public static string ConvertCsvToJson(string csvFilePath)
         {
-            var records = new List<Dictionary<string, object>>();
+            string csvContent = File.ReadAllText(csvFilePath);
+            string[] csvLines = csvContent.Split('\n');
 
-            using (var reader = new StreamReader(csvFilePath))
-            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+            List<Dictionary<string, string>> jsonList = new List<Dictionary<string, string>>();
+
+            // Suponiendo que la primera línea del archivo CSV contiene los encabezados
+            string[] headers = csvLines[0].Split(';');
+
+            for (int i = 1; i < csvLines.Length; i++)
             {
-                var recordsFromCsv = csv.GetRecords<dynamic>();
+                string[] values = csvLines[i].Split(';');
+                Dictionary<string, string> jsonEntry = new Dictionary<string, string>();
 
-                foreach (var record in recordsFromCsv)
+                for (int j = 0; j < headers.Length && j < values.Length; j++)
                 {
-                    var dictionary = new Dictionary<string, object>();
-                    foreach (var property in record.GetType().GetProperties())
-                    {
-                        dictionary[property.Name] = property.GetValue(record);
-                    }
-                    records.Add(dictionary);
+                    jsonEntry[headers[j]] = values[j];
                 }
+
+                jsonList.Add(jsonEntry);
             }
 
-            string json = JsonConvert.SerializeObject(records);
-            return json;
+            return JsonConvert.SerializeObject(jsonList, Formatting.Indented);
         }
     }
+    
 }
+    
+
 
 

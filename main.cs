@@ -7,9 +7,7 @@ using practiquesIEI.Entities;
 using practiquesIEI.Extractors;
 using practiquesIEI;
 using System.Diagnostics;
-
-
-
+using practiquesIEI.Wrappers;
 
 namespace practiquesIEI
 {
