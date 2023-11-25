@@ -17,28 +17,18 @@ namespace practiquesIEI.Extractors
             foreach (var dynamicData in dynamicDataList)
             {
                 // Extraer propiedades específicas y construir las columnas que deseas
-                string tipoVia = dynamicData.Tipo_via;
-                string direccion = dynamicData.Direccion;
-                string numero = dynamicData.Numero;
+                string nombre = dynamicData.dencen;
+                string direccion = dynamicData.domcen;
+                string tipo = dynamicData.titularidad;
+                //se te que mirar el mapping per a extraure els datos
 
-                // Concatenar los valores en una sola cadena para la columna "Direccion"
-                string direccionCompleta = $"{tipoVia} {direccion} {numero}";
-
-                // Extraer el código postal para la columna "CodigoPostal"
-                string codigoPostal = dynamicData.Codigo_postal;
-
-                // Luego, puedes usar estas columnas para insertar en la base de datos
-                InsertIntoDatabase(direccionCompleta, codigoPostal);
+                /*
+                 * Insertar centro en la base de datos
+                 * centro_educativo centroPr = new centro_educativo(datos que traus del JSON);
+                 * ConexionBD.insertCentro(centroPr);
+                */
+                
             }
-        }
-
-        private static void InsertIntoDatabase(string direccionCompleta, string codigoPostal)
-        {
-            // Aquí implementa la lógica para insertar las columnas en la base de datos
-            // Puedes utilizar Entity Framework u otro método según tu elección
-            // y la estructura de tu base de datos
-            // Ejemplo: using (var context = new ApplicationDbContext()) { ... }
-            Console.WriteLine($"Insertando en la base de datos: Direccion={direccionCompleta}, CodigoPostal={codigoPostal}");
         }
     }
 }
