@@ -14,7 +14,6 @@ namespace practiquesIEI.Extractors
 
                 // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonFilePath);
-
                 foreach (var dynamicData in dynamicDataList)
                 {
                     //Crear el centro
@@ -42,38 +41,27 @@ namespace practiquesIEI.Extractors
         }
 
         public static centro_educativo JsonACentro(dynamic dynamicData) {
-            try {
-                centro_educativo centro = new centro_educativo
-                {
-                    nombre = dynamicData.denCorta + dynamicData.dencen,
-                    direccion = dynamicData.domcen,
-                    telefono = dynamicData.telcen,
-                    descripcion = dynamicData.presentacionCorta,
-                    cod_postal = dynamicData.cpcen,
-                    longitud = dynamicData.lon,
-                    latitud = dynamicData.lat,
-                };
-                switch (dynamicData.titularidad)
-                {
-                    case "P":
-                        centro.tipo = tipo_centro.Público;
-                        break;
-                    case "N":
-                        centro.tipo = tipo_centro.Privado;
-                        break;
-                    case "C":
-                        centro.tipo = tipo_centro.Concertado;
-                        break;
-                }
-
-                return centro;
-            }
-            catch (Exception e)
+            centro_educativo centro = new centro_educativo
             {
-                Console.WriteLine($"Error: {e.Message}");
-                return null;
+                nombre = dynamicData.denCorta + dynamicData.dencen,
+                direccion = dynamicData.domcen,
+                telefono = dynamicData.telcen,
+                descripcion = dynamicData.presentacionCorta,
+                cod_postal = dynamicData.cpcen,
+            };
+            switch (dynamicData.titularidad)
+            {
+                case "P":
+                    centro.tipo = tipo_centro.Público;
+                    break;
+                case "N":
+                    centro.tipo = tipo_centro.Privado;
+                    break;
+                case "C":
+                    centro.tipo = tipo_centro.Concertado;
+                    break;
             }
-            
+            return centro;
         }
     }
 }
