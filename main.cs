@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace practiquesIEI
 {
-    internal static class Program
+    public static class main
     {
         /// <summary>
         /// Punto de entrada principal para la aplicación.

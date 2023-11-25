@@ -38,12 +38,5 @@ public class CATextractor
         // Ejemplo: using (var context = new ApplicationDbContext()) { ... }
         Console.WriteLine($"Insertando en la base de datos: Direccion={direccionCompleta}, CodigoPostal={codigoPostal}");
     }
-
-    // Ejemplo de uso
-    static void Main()
-    {
-        string jsonFilePath = "archivo.json";
-        LoadJsonDataIntoDatabase(jsonFilePath);
-    }
 }
 

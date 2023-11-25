@@ -31,14 +31,6 @@ public class CsvWrapper
         string json = JsonConvert.SerializeObject(records);
         return json;
     }
-
-    // Ejemplo de uso
-    static void Main()
-    {
-        string csvFilePath = "archivo.csv";
-        string jsonData = ConvertToJson(csvFilePath);
-        Console.WriteLine(jsonData);
-    }
 }
 
 

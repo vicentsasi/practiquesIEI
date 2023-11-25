@@ -14,13 +14,5 @@ public class XmlWrapper
         string json = JsonConvert.SerializeXmlNode(xmlDoc);
         return json;
     }
-
-    // Ejemplo de uso
-    static void Main()
-    {
-        string xmlFilePath = "archivo.xml";
-        string jsonData = ConvertToJson(xmlFilePath);
-        Console.WriteLine(jsonData);
-    }
 }
 
