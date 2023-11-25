@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
-public class DatabaseLoader
+public class CVextractor
 {
     public static void LoadJsonDataIntoDatabase(string jsonFilePath)
     {
