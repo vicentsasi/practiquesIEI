@@ -19,18 +19,20 @@ namespace practiquesIEI.Extractors
 
             foreach (var dynamicData in dynamicDataList)
             {
-                centro_educativo centro = new centro_educativo();
+                
                 localidad local = new localidad();
-                provincia provincia = new provincia();  
+                provincia provincia = new provincia();
 
-                // Extraer propiedades específicas y construir las columnas que deseas
-                centro.nombre = dynamicData.dencen;
-                centro.direccion = dynamicData.domcen;
-                centro.tipo = dynamicData.titularidad;
-                centro.telefono = dynamicData.telcen;
-                centro.descripcion = dynamicData.presentacionCorta;
-                centro.cod_postal = dynamicData.cpcen;
-                //se te que mirar el mapping per a extraure els datos
+                //Creamos y inicializamos el centro
+                centro_educativo centro = JsonACentro(dynamicData);
+
+                //Creamos la provincia 
+                provincia.codigo = 30;
+                provincia.nombre = "Múrcia";
+
+
+                local.nombre = dynamicData.muncen;
+                local.codigo = 1234;
 
                 /*
                  * Insertar centro en la base de datos
@@ -41,7 +43,29 @@ namespace practiquesIEI.Extractors
             }
         }
 
-        public static centro_educativo JsonACentro() { }
+        public static centro_educativo JsonACentro(dynamic dynamicData) {
+            centro_educativo centro = new centro_educativo();
+            
+            centro.nombre = dynamicData.dencen;
+            centro.direccion = dynamicData.domcen;
+            centro.tipo = dynamicData.titularidad;
+            centro.telefono = dynamicData.telcen;
+            centro.descripcion = dynamicData.presentacionCorta;
+            centro.cod_postal = dynamicData.cpcen;
+
+            switch (dynamicData.titularidad) {
+                case "P": centro.tipo = tipo_centro.Público;
+                    break;
+                case "N": centro.tipo = tipo_centro.Privado;
+                    break;
+                case "C": centro.tipo = tipo_centro.Concertado;
+                    break;
+            }
+
+            return centro;
+        }
+
+        
 
     }
 }
