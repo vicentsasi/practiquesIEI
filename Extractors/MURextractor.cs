@@ -43,7 +43,7 @@ namespace practiquesIEI.Extractors
         public static centro_educativo JsonACentro(dynamic dynamicData) {
             centro_educativo centro = new centro_educativo
             {
-                nombre = dynamicData.denCorta + dynamicData.dencen,
+                nombre = dynamicData.denCorta + " " + dynamicData.dencen,
                 direccion = dynamicData.domcen,
                 telefono = dynamicData.telcen,
                 descripcion = dynamicData.presentacionCorta,
