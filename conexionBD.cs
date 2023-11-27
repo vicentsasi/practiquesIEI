@@ -39,17 +39,38 @@ namespace practiquesIEI
             }
         }
         public static async void insertCentro(centro_educativo centro) {
+            if (conn == null)
+            {
+                await Conectar();
+            }
             try
             {
-                if (conn == null)
-                {
-                   await Conectar();
-                }
+            
                 using (MySqlCommand command = new MySqlCommand(
                   $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}')", conn))
                 {
                     await command.ExecuteNonQueryAsync();
                     Console.WriteLine("Datos insertados correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+            }
+        }
+        public static async Task BorrarCentros()
+        {
+            if (conn == null)
+            {
+                await Conectar();
+            }
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(
+                    $"DELETE FROM centro_educativo", conn))
+                {
+                    await command.ExecuteNonQueryAsync();
+                    Console.WriteLine("Datos borrados correctamente.");
                 }
             }
             catch (Exception e)

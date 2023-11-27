@@ -20,12 +20,13 @@ namespace practiquesIEI
         static async Task Main()
         {   
             await ConexionBD.Conectar();
-            string file = "practiquesIEI\\Fuentes de datos\\murcia.json";
+            await ConexionBD.BorrarCentros();
+            string file = "C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\murcia.json";
             string arxivo = JsonWrapper.ConvertToJson(file);
             MURextractor.LoadJsonDataIntoDatabase(arxivo);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
         }
     }
 }
