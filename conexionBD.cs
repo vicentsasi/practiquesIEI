@@ -78,5 +78,45 @@ namespace practiquesIEI
                 Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
             }
         }
+        public static async void insertLocalidad(localidad loc)
+        {
+            if (conn == null)
+            {
+                await Conectar();
+            }
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(
+                  $"INSERT INTO localidad(codigo, nombre) VALUES ('{loc.codigo}','{loc.nombre}')", conn))
+                {
+                    await command.ExecuteNonQueryAsync();
+                    Console.WriteLine("Datos insertados correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+            }
+        }
+        public static async void insertProvincia(provincia prov)
+        {
+            if (conn == null)
+            {
+                await Conectar();
+            }
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(
+                  $"INSERT INTO provincia(codigo, nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
+                {
+                    await command.ExecuteNonQueryAsync();
+                    Console.WriteLine("Datos insertados correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+            }
+        }
     }
 }
