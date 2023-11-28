@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using practiquesIEI.Entities;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Windows.Forms;
 
 namespace practiquesIEI.Extractors
 {
@@ -27,10 +30,12 @@ namespace practiquesIEI.Extractors
             {
                 Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}");
             }
-            
+
         }
-        static centro_educativo JsonACentro(dynamic dynamicData) {
-            try {
+        static centro_educativo JsonACentro(dynamic dynamicData)
+        {
+            try
+            {
                 centro_educativo centro = new centro_educativo();
                 // Extraer propiedades específicas y construir las columnas que deseas
                 string tipoVia = dynamicData.TIPO_VIA;
@@ -50,8 +55,10 @@ namespace practiquesIEI.Extractors
                     case "PRIV.CONC": centro.tipo = tipo_centro.Concertado; break;
                     case "OTROS": centro.tipo = tipo_centro.Otros; break;
                 }
+                centro.latitud = double.Parse(GetLatitud(centro.direccion));
+                centro.longitud = double.Parse(GetLatitud(centro.direccion));
                 return centro;
-            } 
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al convertir el JSON a objeto centro: {ex.Message}");
@@ -59,6 +66,53 @@ namespace practiquesIEI.Extractors
             }
         }
 
+        private static string GetLatitud(string address)
+        {
+            try
+            {
+                using (var driver = new ChromeDriver())
+                {
+                    driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com/{address}");
+                    System.Threading.Thread.Sleep(5000);
+                    driver.FindElement(By.Id("address")).SendKeys(address);
+                    driver.FindElement(By.CssSelector("button[onclick=codeAddress()]")).Click();
+                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                    IWebElement latInput = driver.FindElement(By.Id("latitude"));
+                    string latitud = latInput.GetAttribute("value");
+                    return latitud;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
+                return null;
+            }
+
+        }
+
+        private static string GetLongitud(string address)
+        {
+            try
+            {
+                using (var driver = new ChromeDriver())
+                {
+                    driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com/{address}");
+                    System.Threading.Thread.Sleep(5000);
+                    driver.FindElement(By.Id("address")).SendKeys(address);
+                    driver.FindElement(By.CssSelector("button[onclick=codeAddress()]")).Click();
+                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                    IWebElement lonInput = driver.FindElement(By.Id("longitude"));
+                    string longitud = lonInput.GetAttribute("value");
+                    return longitud;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener la longitud: {ex.Message}");
+                return null;
+            }
+
+        }
     }
 }
 
