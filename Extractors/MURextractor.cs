@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using Newtonsoft.Json;
 using practiquesIEI.Entities;
@@ -11,13 +12,12 @@ namespace practiquesIEI.Extractors
         public static void LoadJsonDataIntoDatabase(string jsonFilePath)
         {
             try {
-
                 // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonFilePath);
+                List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
-                    //Crear el centro
-                    centro_educativo centro = JsonACentro(dynamicData);
+                    ListaCentros.Add(JsonACentro(dynamicData));
                     //Crear la provincia 
                     provincia provincia = new provincia
                     {
@@ -30,7 +30,9 @@ namespace practiquesIEI.Extractors
                         nombre = dynamicData.muncen,
                         codigo = 1234
                     };
-                    //Insertar centro en la base de datos
+                }
+                foreach (var centro in ListaCentros) {
+                    Console.WriteLine($"El centro {centro.nombre} se inserta???");
                     ConexionBD.insertCentro(centro);
                 }
             } 
@@ -44,10 +46,10 @@ namespace practiquesIEI.Extractors
             centro_educativo centro = new centro_educativo
             {
                 nombre = dynamicData.denCorta + " " + dynamicData.dencen,
-                direccion = dynamicData.domcen,
+                /*direccion = dynamicData.domcen,
                 telefono = dynamicData.telcen,
                 descripcion = dynamicData.presentacionCorta,
-                cod_postal = dynamicData.cpcen,
+                cod_postal = dynamicData.cpcen,*/
             };
             switch (dynamicData.titularidad)
             {

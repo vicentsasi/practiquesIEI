@@ -39,9 +39,9 @@ namespace practiquesIEI
             }
         }
         public static async void insertCentro(centro_educativo centro) {
-            if (conn == null)
+            if (conn.State == ConnectionState.Closed)
             {
-                await Conectar();
+                await conn.OpenAsync();
             }
             try
             {
@@ -49,7 +49,7 @@ namespace practiquesIEI
                 using (MySqlCommand command = new MySqlCommand(
                   $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}')", conn))
                 {
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
                     Console.WriteLine("Datos insertados correctamente.");
                 }
             }
@@ -109,7 +109,7 @@ namespace practiquesIEI
                 using (MySqlCommand command = new MySqlCommand(
                   $"INSERT INTO provincia(codigo, nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
                 {
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
                     Console.WriteLine("Datos insertados correctamente.");
                 }
             }
