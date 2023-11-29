@@ -60,9 +60,9 @@ namespace practiquesIEI
         }
         public static async Task BorrarCentros()
         {
-            if (conn == null)
+            if (conn.State == ConnectionState.Closed)
             {
-                await Conectar();
+                await conn.OpenAsync();
             }
             try
             {
@@ -80,9 +80,9 @@ namespace practiquesIEI
         }
         public static async void insertLocalidad(localidad loc)
         {
-            if (conn == null)
+            if (conn.State == ConnectionState.Closed)
             {
-                await Conectar();
+                await conn.OpenAsync();
             }
             try
             {
@@ -100,9 +100,9 @@ namespace practiquesIEI
         }
         public static async void insertProvincia(provincia prov)
         {
-            if (conn == null)
+            if (conn.State == ConnectionState.Closed)
             {
-                await Conectar();
+                await conn.OpenAsync();
             }
             try
             {
