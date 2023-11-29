@@ -100,9 +100,9 @@ namespace practiquesIEI.Extractors
                     return null;
                 }
 
-                if (dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
+                if (dynamicData.CODIGO_POSTAL != null && (dynamicData.CODIGO_POSTAL.ToString().Length == 5 || dynamicData.CODIGO_POSTAL.ToString().Length == 4))
                 {
-                    if (dynamicData.CODIGO_POSTAL.ToString().Length == 5)
+                    if (dynamicData.CODIGO_POSTAL.ToString().Length == 4)
                     {
                         centro.cod_postal = int.Parse(dynamicData.CODIGO_POSTAL.ToString("D2"));
                     }
@@ -133,7 +133,7 @@ namespace practiquesIEI.Extractors
                     string regimen = dynamicData.REGIMEN;
                     switch (regimen)
                     {
-                        case "PUB": centro.tipo = tipo_centro.Público; break;
+                        case "PÚB": centro.tipo = tipo_centro.Público; break;
                         case "PRIV": centro.tipo = tipo_centro.Privado; break;
                         case "PRIV.CONC": centro.tipo = tipo_centro.Concertado; break;
                         case "OTROS": centro.tipo = tipo_centro.Otros; break;
