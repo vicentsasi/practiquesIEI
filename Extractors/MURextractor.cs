@@ -35,7 +35,7 @@ namespace practiquesIEI.Extractors
                     //Crear localidad
                     localidad localidad = new localidad
                     {
-                        nombre = dynamicData.muncen,
+                        nombre = dynamicData.loccen,
                         codigo = int.Parse(dynamicData.cpcen.ToString()) % 1000
                     };
                     ConexionBD.insertLocalidad(localidad);
