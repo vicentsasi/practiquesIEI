@@ -120,7 +120,8 @@ namespace practiquesIEI.Extractors
 
             //tipo de centro
             if (dynamicData.titularidad != null) {
-                switch (dynamicData.titularidad)
+                string tipo = dynamicData.titularidad;
+                switch (tipo)
                 {
                     case "P":
                         centro.tipo = tipo_centro.Público;
