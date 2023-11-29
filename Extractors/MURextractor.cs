@@ -21,18 +21,20 @@ namespace practiquesIEI.Extractors
                     //Crear la provincia 
                     provincia provincia = new provincia
                     {
-                        codigo = 30,
+                        codigo = 308,
                         nombre = "Múrcia"
                     };
                     //Crear localidad
                     localidad localidad = new localidad
                     {
-                        nombre = dynamicData.muncen,
-                        codigo = 1234
+                        nombre = (dynamicData.muncen = null) ? "Sin municipio" : dynamicData.muncen,
+                        codigo = 12
                     };
                 }
+                int i = 0; 
                 foreach (var centro in ListaCentros) {
-                    Console.WriteLine($"El centro {centro.nombre} se inserta???");
+                    i++;
+                    Console.WriteLine($"El centro {centro.nombre} + "+ i);
                     ConexionBD.insertCentro(centro);
                 }
             } 
@@ -45,11 +47,11 @@ namespace practiquesIEI.Extractors
         public static centro_educativo JsonACentro(dynamic dynamicData) {
             centro_educativo centro = new centro_educativo
             {
-                nombre = dynamicData.denCorta + " " + dynamicData.dencen,
-                /*direccion = dynamicData.domcen,
-                telefono = dynamicData.telcen,
-                descripcion = dynamicData.presentacionCorta,
-                cod_postal = dynamicData.cpcen,*/
+                nombre = (dynamicData.denCorta = null) ? "Sin direccion" : dynamicData.denCorta + " " + (dynamicData.dencen = null) ? "" : dynamicData.dencen,
+                direccion = (dynamicData.domcen = null) ? "Sin direccion" : dynamicData.domcen,
+                telefono = (dynamicData.telcen = null) ? 0 : dynamicData.telcen,
+                descripcion = (dynamicData.presentacionCorta == null) ? "Sin descripcion" : dynamicData.presentacionCorta,
+                cod_postal = (dynamicData.cpcen = null) ? 00000 : dynamicData.cpcen
             };
             switch (dynamicData.titularidad)
             {
@@ -62,6 +64,7 @@ namespace practiquesIEI.Extractors
                 case "C":
                     centro.tipo = tipo_centro.Concertado;
                     break;
+                default: centro.tipo = tipo_centro.Otros; break;
             }
             return centro;
         }
