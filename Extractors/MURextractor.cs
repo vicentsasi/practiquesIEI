@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
 using practiquesIEI.Entities;
@@ -90,19 +91,25 @@ namespace practiquesIEI.Extractors
             }
             //descripcion
             centro.descripcion = dynamicData.presentacionCorta;
-            /*
-            if (dynamicData.latitud != null) { centro.latitud = dynamicData.lat; }
+            //latitud
+            if (dynamicData["geo-referencia"]["lat"] != null) { 
+
+                centro.latitud = decimal.Parse(dynamicData["geo-referencia"]["lat"].ToString(CultureInfo.InvariantCulture));
+            }
             else
             {
                 Console.WriteLine($"La latitud del centro es null");
                 return null;
             }
-            if (dynamicData.longitud != null) { centro.longitud = dynamicData.lon; }
+            //longitud
+            if (dynamicData["geo-referencia"]["lon"] != null) {
+                centro.longitud = decimal.Parse(dynamicData["geo-referencia"]["lon"].ToString(CultureInfo.InvariantCulture));
+            }
             else
             {
                 Console.WriteLine($"La longitud del centro es null");
                 return null;
-            }*/
+            }
 
             //tipo de centro
             if (dynamicData.titularidad != null) {
@@ -117,6 +124,8 @@ namespace practiquesIEI.Extractors
                     case "C":
                         centro.tipo = tipo_centro.Concertado;
                         break;
+                    /*default:
+                        return null;*/
                 }
             }
             else { return null; }

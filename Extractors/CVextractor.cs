@@ -55,8 +55,8 @@ namespace practiquesIEI.Extractors
                     case "PRIV.CONC": centro.tipo = tipo_centro.Concertado; break;
                     case "OTROS": centro.tipo = tipo_centro.Otros; break;
                 }
-                centro.latitud = double.Parse(GetLatitud(centro.direccion));
-                centro.longitud = double.Parse(GetLatitud(centro.direccion));
+                centro.latitud = decimal.Parse(GetLatitud(centro.direccion));
+                centro.longitud = decimal.Parse(GetLatitud(centro.direccion));
                 return centro;
             }
             catch (Exception ex)
