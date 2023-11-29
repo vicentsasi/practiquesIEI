@@ -7,11 +7,15 @@ using Newtonsoft.Json;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using practiquesIEI.Entities;
+using OpenQA.Selenium.Support.UI;
+
+
+
 
 namespace practiquesIEI.Extractors
 {
     public class MURextractor
-    {        
+    {
         public static void LoadJsonDataIntoDatabase(string jsonFilePath)
         {
             try {
@@ -32,7 +36,7 @@ namespace practiquesIEI.Extractors
                     localidad localidad = new localidad
                     {
                         nombre = dynamicData.muncen,
-                        codigo = 12
+                        codigo = int.Parse(dynamicData.cpcen.ToString()) % 1000
                     };
                     ConexionBD.insertLocalidad(localidad);
                 }
@@ -42,12 +46,12 @@ namespace practiquesIEI.Extractors
                         ConexionBD.insertCentro(centro);
                     }
                 }
-            } 
+            }
             catch (Exception e) {
                 Console.WriteLine($"Error: {e.Message}");
             }
         }
-
+       
         public static centro_educativo JsonACentro(dynamic dynamicData) {
             centro_educativo centro = new centro_educativo();
             //nombre del centro
