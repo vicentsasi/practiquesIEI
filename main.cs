@@ -19,11 +19,10 @@ namespace practiquesIEI
         [STAThread]
         static async Task Main()
         {   
-            await ConexionBD.Conectar();
-            await ConexionBD.BorrarCentros();
-            string file = "C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\murcia.json";
-            string arxivo = JsonWrapper.ConvertToJson(file);
-            MURextractor.LoadJsonDataIntoDatabase(arxivo);
+            //await ConexionBD.Conectar();
+           // await ConexionBD.BorrarCentros();
+            string arxivo = XmlWrapper.ConvertXmlToJson("CAT.xml");
+            CATextractor.LoadJsonDataIntoDatabase(arxivo);
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());

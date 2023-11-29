@@ -8,7 +8,9 @@ public class JsonWrapper
     {
         try
         {
-            string jsonData = File.ReadAllText(jsonFilePath);
+            string dataFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fuentes de datos");
+            string nameFilePath = Path.Combine(dataFolderPath, jsonFilePath);
+            string jsonData = File.ReadAllText(nameFilePath);
             return jsonData;
         }
         catch (Exception ex) {

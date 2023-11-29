@@ -13,9 +13,11 @@ namespace practiquesIEI.Wrappers
 {
     public class CsvWrapper
     {
-        public static string ConvertCsvToJson(string csvFilePath)
+        public static string ConvertCsvToJson(string csvFileName)
         {
             try {
+                string dataFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fuentes de datos");
+                string csvFilePath = Path.Combine(dataFolderPath, csvFileName);
                 string csvContent = File.ReadAllText(csvFilePath);
                 string[] csvLines = csvContent.Split('\n');
 

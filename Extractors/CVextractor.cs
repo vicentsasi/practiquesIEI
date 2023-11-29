@@ -6,6 +6,8 @@ using practiquesIEI.Entities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Windows.Forms;
+using OpenQA.Selenium.DevTools.V117.Debugger;
+using System.Reflection;
 
 namespace practiquesIEI.Extractors
 {
@@ -16,14 +18,36 @@ namespace practiquesIEI.Extractors
             try
             { // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
-
+                List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
                     centro_educativo centro = JsonACentro(dynamicData);
+                    ListaCentros.Add(centro);
                     provincia provincia = new provincia();
-                    string codProvS = centro.cod_postal.ToString();
-                    provincia.codigo = int.Parse(codProvS.Substring(0, 2));
-                    provincia.nombre = dynamicData.PROVINCIA;
+
+                    if (centro != null)
+                    {
+                        provincia.codigo = int.Parse(centro.cod_postal.ToString().Substring(0, 2));
+                        if (dynamicData.PROVINCIA != null)
+                        {
+                            provincia.nombre = dynamicData.PROVINCIA;
+                        }
+                        else { provincia = null; }
+                    }
+                    else { provincia = null; }
+
+                    if (provincia != null) {
+                        ConexionBD.insertProvincia(provincia);
+                    }
+
+                }
+                foreach (var centro in ListaCentros)
+                {
+                    if (centro != null)
+                    {
+                        Console.WriteLine($"Se inserta el centro {centro.nombre}??");
+                        ConexionBD.insertCentro(centro);
+                    }
                 }
             }
             catch (Exception ex)
@@ -38,25 +62,71 @@ namespace practiquesIEI.Extractors
             {
                 centro_educativo centro = new centro_educativo();
                 // Extraer propiedades específicas y construir las columnas que deseas
-                string tipoVia = dynamicData.TIPO_VIA;
-                string direccion = dynamicData.DIRECCION;
-                string numero = dynamicData.NUMERO;
-                // Concatenar los valores en una sola cadena para la columna "Direccion"
-                centro.direccion = $"{tipoVia} {direccion} {numero}";
-                centro.nombre = dynamicData.DENOMINACION;
-                // Extraer el código postal para la columna "CodigoPostal"
-                centro.cod_postal = int.Parse(dynamicData.CODIGO_POSTAL);
-                centro.telefono = dynamicData.TELEFONO;
-                centro.descripcion = dynamicData.URL_VA;
-                switch (dynamicData.REGIMEN)
+
+                if (dynamicData.TIPO_VIA != null && dynamicData.DIRECCION != null && dynamicData.NUMERO != null)
                 {
-                    case "PUB": centro.tipo = tipo_centro.Público; break;
-                    case "PRIV": centro.tipo = tipo_centro.Privado; break;
-                    case "PRIV.CONC": centro.tipo = tipo_centro.Concertado; break;
-                    case "OTROS": centro.tipo = tipo_centro.Otros; break;
+                    string tipoVia = dynamicData.TIPO_VIA;
+                    string direccion = dynamicData.DIRECCION;
+                    string numero = dynamicData.NUMERO;
+                    // Concatenar los valores en una sola cadena para la columna "Direccion"
+                    centro.direccion = $"{tipoVia} {direccion} {numero}";
                 }
-                centro.latitud = decimal.Parse(GetLatitud(centro.direccion));
-                centro.longitud = decimal.Parse(GetLatitud(centro.direccion));
+                else {
+                    return null;
+                }
+
+                if (dynamicData.DENOMINACION != null) {
+                    centro.nombre = dynamicData.DENOMINACION;
+                }
+                else {
+                    return null;
+                }
+
+                if (dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
+                {
+                    if (dynamicData.CODIGO_POSTAL.ToString().Length == 5)
+                    {
+                        centro.cod_postal = int.Parse(dynamicData.CODIGO_POSTAL.ToString("D2"));
+                    }
+                    else { centro.cod_postal = dynamicData.CODIGO_POSTAL; }
+                }
+                else
+                {
+                    Console.WriteLine($"El codigo postal de {centro.nombre = dynamicData.denCorta + " " + dynamicData.dencen} es nulo o no tiene el numero de digitos correspondientes ");
+                    return null;
+                }
+
+                //telefono
+                if (dynamicData.TELEFONO != null && dynamicData.TELEFONO.ToString().Length == 9)
+                {
+                    centro.telefono = dynamicData.TELEFONO;
+                }
+                else
+                {
+                    Console.WriteLine($"El numero de telefono de {centro.nombre = dynamicData.denCorta + " " + dynamicData.dencen} es nulo o no tiene 9 digitos ");
+                    return null;
+                }
+
+                centro.descripcion = dynamicData.URL_VA;
+
+
+                if (dynamicData.REGIMEN != null)
+                {
+                    string regimen = dynamicData.REGIMEN;
+                    switch (regimen)
+                    {
+                        case "PUB": centro.tipo = tipo_centro.Público; break;
+                        case "PRIV": centro.tipo = tipo_centro.Privado; break;
+                        case "PRIV.CONC": centro.tipo = tipo_centro.Concertado; break;
+                        case "OTROS": centro.tipo = tipo_centro.Otros; break;
+                    }
+                }
+                else { return null; }
+
+                centro.longitud = 0;
+                centro.latitud = 0;
+                //centro.latitud = decimal.Parse(GetLatitud(centro.direccion));
+                //centro.longitud = decimal.Parse(GetLatitud(centro.direccion));
                 return centro;
             }
             catch (Exception ex)

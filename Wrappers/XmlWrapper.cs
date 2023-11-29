@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using CsvHelper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -11,10 +12,12 @@ namespace practiquesIEI.Wrappers
     public class XmlWrapper
     {
 
-        public static string ConvertXmlToJson(string xmlFilePath)
+        public static string ConvertXmlToJson(string xmlFileName)
         {
             try
             {
+                string dataFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Fuentes de datos");
+                string xmlFilePath = Path.Combine(dataFolderPath, xmlFileName);
                 // Cargar el contenido del archivo XML
                 string xmlContent = File.ReadAllText(xmlFilePath);
 
