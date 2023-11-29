@@ -6,7 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using OpenQA.Selenium.DevTools;
 using practiquesIEI.Entities;
 
 namespace practiquesIEI
@@ -45,32 +47,32 @@ namespace practiquesIEI
             }
             try
             {
-            
-                using (MySqlCommand command = new MySqlCommand(
-                  $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}')", conn))
+                string consultaExistencia = $"SELECT COUNT(*) " +
+                                            $"FROM centro_educativo " +
+                                            $"WHERE nombre = '{centro.nombre}' AND " +
+                                                  $"tipo = '{centro.tipo}' AND " +
+                                                  $"direccion = '{centro.direccion}' AND " +
+                                                  $"codigo_postal = '{centro.cod_postal}' AND " +
+                                                  $"longitud = '{centro.longitud}' AND " +
+                                                  $"latitud = '{centro.latitud}' AND " +
+                                                  $"telefono = '{centro.telefono}' AND " +
+                                                  $"descripcion = '{centro.descripcion}'";
+                using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
-                    command.ExecuteNonQuery();
-                    Console.WriteLine("Datos insertados correctamente.");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
-            }
-        }
-        public static async Task BorrarCentros()
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                await conn.OpenAsync();
-            }
-            try
-            {
-                using (MySqlCommand command = new MySqlCommand(
-                    $"DELETE FROM centro_educativo", conn))
-                {
-                    await command.ExecuteNonQueryAsync();
-                    Console.WriteLine("Datos borrados correctamente.");
+                    int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
+                    if (cantidadExistente > 0)
+                    {
+                        Console.WriteLine($"El centro {centro.nombre} ya existe en la base de datos.");
+                    }
+                    else
+                    {
+                        using (MySqlCommand command = new MySqlCommand(
+                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}')", conn))
+                        {
+                            command.ExecuteNonQuery();
+                            Console.WriteLine("Centro insertado correctamente.");
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -86,11 +88,26 @@ namespace practiquesIEI
             }
             try
             {
-                using (MySqlCommand command = new MySqlCommand(
-                  $"INSERT INTO localidad(codigo, nombre) VALUES ('{loc.codigo}','{loc.nombre}')", conn))
+                string consultaExistencia = $"SELECT COUNT(*) " +
+                                            $"FROM localidad " +
+                                            $"WHERE nombre = '{loc.nombre}' AND " +
+                                                  $"codigo = '{loc.codigo}'";
+                using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
-                    await command.ExecuteNonQueryAsync();
-                    Console.WriteLine("Datos insertados correctamente.");
+                    int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
+                    if (cantidadExistente > 0)
+                    {
+                        Console.WriteLine($"La localidad {loc.nombre} ya existe en la base de datos.");
+                    }
+                    else
+                    {
+                        using (MySqlCommand command = new MySqlCommand(
+                        $"INSERT INTO localidad(codigo, nombre) VALUES ('{loc.codigo}','{loc.nombre}')", conn))
+                        {
+                            command.ExecuteNonQuery();
+                            Console.WriteLine("Localidad insertada correctamente.");
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -106,11 +123,26 @@ namespace practiquesIEI
             }
             try
             {
-                using (MySqlCommand command = new MySqlCommand(
-                  $"INSERT INTO provincia(codigo, nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
+                string consultaExistencia = $"SELECT COUNT(*) " +
+                                            $"FROM provincia " +
+                                            $"WHERE nombre = '{prov.nombre}' AND " +
+                                                  $"codigo = '{prov.codigo}'";
+                using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
-                    command.ExecuteNonQuery();
-                    Console.WriteLine("Datos insertados correctamente.");
+                    int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
+                    if (cantidadExistente > 0)
+                    {
+                        Console.WriteLine($"La Provincia {prov.nombre} ya existe en la base de datos.");
+                    }
+                    else
+                    {
+                        using (MySqlCommand command = new MySqlCommand(
+                        $"INSERT INTO provincia(codigo, nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
+                        {
+                            command.ExecuteNonQuery();
+                            Console.WriteLine("Provincia insertada correctamente.");
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -118,5 +150,38 @@ namespace practiquesIEI
                 Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
             }
         }
+        public static async Task BorrarCentros()
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                await conn.OpenAsync();
+            }
+            try
+            {
+                using (MySqlCommand command1 = new MySqlCommand(
+                    $"DELETE FROM centro_educativo", conn))
+                {
+                    await command1.ExecuteNonQueryAsync();
+                    Console.WriteLine("Datos borrados correctamente.");
+                }
+                using (MySqlCommand command2 = new MySqlCommand(
+                    $"DELETE FROM localidad", conn))
+                {
+                    await command2.ExecuteNonQueryAsync();
+                    Console.WriteLine("Datos borrados correctamente.");
+                }
+                using (MySqlCommand command3 = new MySqlCommand(
+                    $"DELETE FROM provincia", conn))
+                {
+                    await command3.ExecuteNonQueryAsync();
+                    Console.WriteLine("Datos borrados correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+            }
+        }
+
     }
 }

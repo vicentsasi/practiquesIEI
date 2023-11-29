@@ -4,6 +4,8 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 using practiquesIEI.Entities;
 
 namespace practiquesIEI.Extractors
@@ -22,15 +24,17 @@ namespace practiquesIEI.Extractors
                     //Crear la provincia 
                     provincia provincia = new provincia
                     {
-                        codigo = 308,
+                        codigo = 30,
                         nombre = "Múrcia"
                     };
+                    ConexionBD.insertProvincia(provincia);
                     //Crear localidad
                     localidad localidad = new localidad
                     {
-                        nombre = "Murcia",
+                        nombre = dynamicData.muncen,
                         codigo = 12
                     };
+                    ConexionBD.insertLocalidad(localidad);
                 }
                 foreach (var centro in ListaCentros) {
                     if (centro != null) {
@@ -42,7 +46,6 @@ namespace practiquesIEI.Extractors
             catch (Exception e) {
                 Console.WriteLine($"Error: {e.Message}");
             }
-            
         }
 
         public static centro_educativo JsonACentro(dynamic dynamicData) {
