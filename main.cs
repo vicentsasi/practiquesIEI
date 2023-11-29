@@ -21,7 +21,7 @@ namespace practiquesIEI
         {   
             await ConexionBD.Conectar();
             await ConexionBD.BorrarCentros();
-            string file = "C:\\Users\\vsabsim.IIE-ASME16\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\murcia.json";
+            string file = "C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\murcia.json";
             string arxivo = JsonWrapper.ConvertToJson(file);
             MURextractor.LoadJsonDataIntoDatabase(arxivo);
             //Application.EnableVisualStyles();
