@@ -16,7 +16,7 @@ namespace practiquesIEI.Extractors
                 // Deserializar JSON a una lista de objetos dinámicos
                 dynamic jsontext = JsonConvert.DeserializeObject<dynamic>(jsonData);
 
-                foreach (var row in jsontext.response.row)
+                foreach (var row in jsontext.response.row.row)
                 {
                     centro_educativo centro = new centro_educativo();
 

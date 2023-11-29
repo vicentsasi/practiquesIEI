@@ -40,6 +40,24 @@ namespace practiquesIEI.Extractors
                         ConexionBD.insertProvincia(provincia);
                     }
 
+                    localidad localidad = new localidad();  
+
+                    if (centro != null)
+                    {
+                        localidad.codigo = int.Parse(centro.cod_postal.ToString().Substring(2, 4));
+                        if (dynamicData.LOCALIDAD != null)
+                        {
+                            localidad.nombre = dynamicData.LOCALIDAD;
+                        }
+                        else { localidad = null; }
+                    }
+                    else { localidad = null; }
+
+                    if (provincia != null)
+                    {
+                        ConexionBD.insertLocalidad(localidad);
+                    }
+
                 }
                 foreach (var centro in ListaCentros)
                 {
