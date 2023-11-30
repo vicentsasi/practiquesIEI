@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using OpenQA.Selenium;
 using OpenQA.Selenium.DevTools;
 using practiquesIEI.Entities;
 
@@ -52,16 +53,24 @@ namespace practiquesIEI
 
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM centro_educativo " +
-                                            $"WHERE nombre = '{centro.nombre}' AND " +
-                                                  $"tipo = '{centro.tipo}' AND " +
-                                                  $"direccion = '{centro.direccion}' AND " +
-                                                  $"codigo_postal = '{centro.cod_postal}' AND " +
-                                                  $"longitud = '{centro.longitud}' AND " +
-                                                  $"latitud = '{centro.latitud}' AND " +
-                                                  $"telefono = '{centro.telefono}' AND " +
-                                                  $"descripcion = '{centro.descripcion}'";
+                                            $"WHERE nombre = @nombre AND " +
+                                                  $"tipo = @tipo AND " +
+                                                  $"direccion = @direccion AND " +
+                                                  $"codigo_postal = @cod_postal AND " +
+                                                  $"longitud = @longitud AND " +
+                                                  $"latitud = @latitud AND " +
+                                                  $"telefono = @telefono AND " +
+                                                  $"descripcion = @descripcion";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
+                    commandExistencia.Parameters.AddWithValue("@nombre", centro.nombre);
+                    commandExistencia.Parameters.AddWithValue("@tipo", centro.tipo);
+                    commandExistencia.Parameters.AddWithValue("@direccion", centro.direccion);
+                    commandExistencia.Parameters.AddWithValue("@cod_postal", centro.cod_postal);
+                    commandExistencia.Parameters.AddWithValue("@longitud", centro.longitud);
+                    commandExistencia.Parameters.AddWithValue("@latitud", centro.latitud);
+                    commandExistencia.Parameters.AddWithValue("@telefono", centro.telefono);
+                    commandExistencia.Parameters.AddWithValue("@descripcion", centro.descripcion);
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
@@ -70,8 +79,17 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion, cod_localidad) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}','{centro.loc_codigo}')", conn))
+                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion, cod_localidad) VALUES (@nombre, @tipo, @direccion, @cod_postal, @longitud, @latitud, @telefono,@descripcion,@loc_codigo)", conn))
                         {
+                            command.Parameters.AddWithValue("@nombre", centro.nombre);
+                            command.Parameters.AddWithValue("@tipo", centro.tipo);
+                            command.Parameters.AddWithValue("@direccion", centro.direccion);
+                            command.Parameters.AddWithValue("@cod_postal", centro.cod_postal);
+                            command.Parameters.AddWithValue("@longitud", centro.longitud);
+                            command.Parameters.AddWithValue("@latitud", centro.latitud);
+                            command.Parameters.AddWithValue("@telefono", centro.telefono);
+                            command.Parameters.AddWithValue("@descripcion", centro.descripcion);
+                            command.Parameters.AddWithValue("@loc_codigo", centro.loc_codigo);
                             command.ExecuteNonQuery();
                             Console.WriteLine("Centro insertado correctamente.");
                         }
@@ -93,10 +111,12 @@ namespace practiquesIEI
             {
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM localidad " +
-                                            $"WHERE loc_nombre = '{loc.nombre}' AND " +
-                                                  $"loc_codigo = '{loc.codigo}'";
+                                            $"WHERE loc_nombre = @nombre AND " +
+                                                  $"loc_codigo = @codigo ";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
+                    commandExistencia.Parameters.AddWithValue("@nombre", loc.nombre);
+                    commandExistencia.Parameters.AddWithValue("@codigo", loc.codigo);
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
@@ -105,8 +125,11 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                        $"INSERT INTO localidad(loc_codigo, loc_nombre, prov_nombre) VALUES ('{loc.codigo}','{loc.nombre}','{loc.prov_nombre}')", conn))
+                        $"INSERT INTO localidad(loc_codigo, loc_nombre, prov_nombre) VALUES (@codigo,@nombre,@provnombre)", conn))
                         {
+                            command.Parameters.AddWithValue("@nombre", loc.nombre);
+                            command.Parameters.AddWithValue("@codigo", loc.codigo);
+                            command.Parameters.AddWithValue("@provnombre", loc.prov_nombre);
                             command.ExecuteNonQuery();
                             Console.WriteLine("Localidad insertada correctamente.");
                         }
@@ -128,10 +151,12 @@ namespace practiquesIEI
             {
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM provincia " +
-                                            $"WHERE prov_nombre = '{prov.nombre}' AND " +
-                                                  $"prov_codigo = '{prov.codigo}'";
+                                            $"WHERE prov_nombre = @nombre AND " +
+                                                  $"prov_codigo = @codigo";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
+                    commandExistencia.Parameters.AddWithValue("@nombre", prov.nombre);
+                    commandExistencia.Parameters.AddWithValue("@codigo", prov.codigo);
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
@@ -140,8 +165,10 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                        $"INSERT INTO provincia(prov_codigo, prov_nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
+                        $"INSERT INTO provincia(prov_codigo, prov_nombre) VALUES (@codigo,@nombre)", conn))
                         {
+                            command.Parameters.AddWithValue("@nombre", prov.nombre);
+                            command.Parameters.AddWithValue("@codigo", prov.codigo);
                             command.ExecuteNonQuery();
                             Console.WriteLine("Provincia insertada correctamente.");
                         }
