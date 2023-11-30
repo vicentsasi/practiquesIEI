@@ -74,7 +74,7 @@ namespace practiquesIEI.Extractors
             if (dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
             {
                 if (dynamicData.cpcen.ToString().Length == 5) {
-                    centro.cod_postal = int.Parse(dynamicData.cpcen.ToString("D2")); 
+                    centro.cod_postal = dynamicData.cpcen.ToString("D2"); 
                 }
                 else { centro.cod_postal = dynamicData.cpcen; }
             }

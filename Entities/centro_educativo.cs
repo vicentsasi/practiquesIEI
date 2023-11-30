@@ -15,10 +15,10 @@ namespace practiquesIEI.Entities
         public int telefono { get; set; }
         public string descripcion { get; set; }
         public string direccion { get; set; }
-        public int cod_postal { get; set; }
+        public string cod_postal { get; set; }
 
         public centro_educativo() { }
-        public centro_educativo(string nombre, tipo_centro tipo, string longitud, string latitud, int telefono, string descripcion, string direccion, int cod_postal)
+        public centro_educativo(string nombre, tipo_centro tipo, string longitud, string latitud, int telefono, string descripcion, string direccion, string cod_postal)
         {
             this.nombre = nombre;
             this.tipo = tipo;
