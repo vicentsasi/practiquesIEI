@@ -16,9 +16,10 @@ namespace practiquesIEI.Entities
         public string descripcion { get; set; }
         public string direccion { get; set; }
         public string cod_postal { get; set; }
+        public string loc_codigo { get; set; }
 
         public centro_educativo() { }
-        public centro_educativo(string nombre, tipo_centro tipo, string longitud, string latitud, int telefono, string descripcion, string direccion, string cod_postal)
+        public centro_educativo(string nombre, tipo_centro tipo, string longitud, string latitud, int telefono, string descripcion, string direccion, string cod_postal, string loc_codigo)
         {
             this.nombre = nombre;
             this.tipo = tipo;
@@ -28,6 +29,7 @@ namespace practiquesIEI.Entities
             this.descripcion = descripcion;
             this.direccion = direccion;
             this.cod_postal = cod_postal;
+            this.loc_codigo = loc_codigo;
         }
     }
 }

@@ -70,7 +70,7 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}')", conn))
+                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion, cod_localidad) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}','{centro.loc_codigo}')", conn))
                         {
                             command.ExecuteNonQuery();
                             Console.WriteLine("Centro insertado correctamente.");
@@ -93,8 +93,8 @@ namespace practiquesIEI
             {
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM localidad " +
-                                            $"WHERE nombre = '{loc.nombre}' AND " +
-                                                  $"codigo = '{loc.codigo}'";
+                                            $"WHERE loc_nombre = '{loc.nombre}' AND " +
+                                                  $"loc_codigo = '{loc.codigo}'";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
@@ -105,7 +105,7 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                        $"INSERT INTO localidad(codigo, nombre) VALUES ('{loc.codigo}','{loc.nombre}')", conn))
+                        $"INSERT INTO localidad(loc_codigo, loc_nombre, prov_nombre) VALUES ('{loc.codigo}','{loc.nombre}','{loc.prov_nombre}')", conn))
                         {
                             command.ExecuteNonQuery();
                             Console.WriteLine("Localidad insertada correctamente.");
@@ -128,8 +128,8 @@ namespace practiquesIEI
             {
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM provincia " +
-                                            $"WHERE nombre = '{prov.nombre}' AND " +
-                                                  $"codigo = '{prov.codigo}'";
+                                            $"WHERE prov_nombre = '{prov.nombre}' AND " +
+                                                  $"prov_codigo = '{prov.codigo}'";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
@@ -140,7 +140,7 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                        $"INSERT INTO provincia(codigo, nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
+                        $"INSERT INTO provincia(prov_codigo, prov_nombre) VALUES ('{prov.codigo}','{prov.nombre}')", conn))
                         {
                             command.ExecuteNonQuery();
                             Console.WriteLine("Provincia insertada correctamente.");

@@ -45,9 +45,11 @@ namespace practiquesIEI.Extractors
 
                     localidad localidad = new localidad();
 
-                    if (centro != null)
+                    if (centro != null && provincia != null)
                     {
                         localidad.codigo = centro.cod_postal.ToString().Substring(2,3);
+                        centro.loc_codigo = localidad.codigo;
+                        localidad.prov_nombre = provincia.nombre;
                         if (dynamicData.LOCALIDAD != null)
                         {
                             localidad.nombre = dynamicData.LOCALIDAD;

@@ -27,13 +27,11 @@ namespace practiquesIEI.Extractors
                     centro_educativo centro = JsonACentro(dynamicData);
                     ListaCentros.Add(centro);
                     //Crear la provincia 
+                    provincia provincia = new provincia();
                     if (centro != null)
                     {
-                        provincia provincia = new provincia
-                        {
-                            codigo = "30",
-                            nombre = "Múrcia"
-                        };
+                        provincia.codigo = "30";
+                        provincia.nombre= "Múrcia";
                         ConexionBD.insertProvincia(provincia);
                     }
                     //Crear localidad
@@ -44,6 +42,7 @@ namespace practiquesIEI.Extractors
                         {
                             localidad.codigo = dynamicData.cpcen.ToString().Substring(2, 3);
                             localidad.nombre = dynamicData.loccen;
+                            centro.loc_codigo = localidad.codigo;
                         }
                         else
                         {
@@ -52,7 +51,10 @@ namespace practiquesIEI.Extractors
                         }
                     }
                     else { localidad = null; }
-                    if (localidad != null) { ConexionBD.insertLocalidad(localidad); }
+                    if (localidad != null) {
+                        localidad.prov_nombre = provincia.nombre;
+                        ConexionBD.insertLocalidad(localidad);
+                    }
                    
                 }
                 foreach (var centro in ListaCentros) {
