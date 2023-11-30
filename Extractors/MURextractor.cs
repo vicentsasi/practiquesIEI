@@ -33,12 +33,18 @@ namespace practiquesIEI.Extractors
                     };
                     ConexionBD.insertProvincia(provincia);
                     //Crear localidad
-                    localidad localidad = new localidad
+                    localidad localidad = new localidad();
+                    if (dynamicData.loccen != null && dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
                     {
-                        nombre = dynamicData.loccen,
-                        codigo = int.Parse(dynamicData.cpcen.ToString()) % 1000
-                    };
-                    ConexionBD.insertLocalidad(localidad);
+                        localidad.codigo = int.Parse(dynamicData.cpcen.ToString()) % 1000;
+                        localidad.nombre = dynamicData.loccen;
+                    }
+                    else {
+                        Console.WriteLine($"El codigo postal o nombre de la localidad del centro es erroneo");
+                        localidad = null;
+                    }
+                    if (localidad != null) { ConexionBD.insertLocalidad(localidad); }
+                   
                 }
                 foreach (var centro in ListaCentros) {
                     if (centro != null) {
@@ -93,19 +99,18 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                Console.WriteLine($"La direccion del centro es null");
+                Console.WriteLine($"La direccion del centro {centro.nombre} es null");
                 return null;
             }
             //descripcion
             centro.descripcion = dynamicData.presentacionCorta;
             //latitud
-            if (dynamicData["geo-referencia"]["lat"] != null) { 
-
-                centro.latitud = decimal.Parse(dynamicData["geo-referencia"]["lat"].ToString(CultureInfo.InvariantCulture));
+            if (dynamicData["geo-referencia"]["lat"] != null) {
+                centro.latitud = decimal.Parse(dynamicData["geo-referencia"]["lat"].ToString(), CultureInfo.InvariantCulture);
             }
             else
             {
-                Console.WriteLine($"La latitud del centro es null");
+                Console.WriteLine($"La latitud del centro {centro.nombre} es null");
                 return null;
             }
             //longitud
@@ -114,7 +119,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                Console.WriteLine($"La longitud del centro es null");
+                Console.WriteLine($"La longitud del centro {centro.nombre} es null");
                 return null;
             }
 
@@ -132,8 +137,8 @@ namespace practiquesIEI.Extractors
                     case "C":
                         centro.tipo = tipo_centro.Concertado;
                         break;
-                    /*default:
-                        return null;*/
+                    default:
+                        return null;
                 }
             }
             else { return null; }
