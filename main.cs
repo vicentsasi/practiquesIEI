@@ -21,8 +21,8 @@ namespace practiquesIEI
         {   
             await ConexionBD.Conectar();
             await ConexionBD.BorrarCentros();
-            //string arxivo = XmlWrapper.ConvertXmlToJson("CAT.xml");
-            //CATextractor.LoadJsonDataIntoDatabase(arxivo);
+            string arxivo = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
+            CATextractor.LoadJsonDataIntoDatabase(arxivo);
 
             string arxivo1 = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
             CVextractor.LoadJsonDataIntoDatabase(arxivo1);

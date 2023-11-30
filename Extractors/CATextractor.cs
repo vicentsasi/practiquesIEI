@@ -28,7 +28,7 @@ namespace practiquesIEI.Extractors
                         if (provincia.codigo != "0")
                         {
                             switch (provincia.codigo) {
-                                case "8": provincia.nombre = "Barcelona"; break;
+                                case "08": provincia.nombre = "Barcelona"; break;
                                 case "17": provincia.nombre = "Girona"; break;
                                 case "43": provincia.nombre = "Tarragona"; break;
                                 case "25": provincia.nombre = "Lleida"; break;
@@ -47,7 +47,9 @@ namespace practiquesIEI.Extractors
 
                     if (centro != null)
                     {
-                        localidad.codigo = row.codi_municipi_5_digits;
+                        localidad.codigo = row.codi_municipi_6_digits.ToString().Substring(2,4);
+                        localidad.prov_nombre = provincia.nombre;
+                        centro.loc_codigo = localidad.codigo;
                         if (row.nom_municipi != null)
                         {
                             localidad.nombre = row.nom_municipi;
@@ -56,7 +58,7 @@ namespace practiquesIEI.Extractors
                     }
                     else { localidad = null; }
 
-                    if (provincia != null)
+                    if (localidad != null)
                     {
                         ConexionBD.insertLocalidad(localidad);
                     }
@@ -110,13 +112,13 @@ namespace practiquesIEI.Extractors
                 {
                     if (row.codi_postal.ToString().Length == 4)
                     {
-                        centro.cod_postal = int.Parse(row.codi_postal.ToString("D2"));
+                        centro.cod_postal = '0' + row.codi_postal.ToString();
                     }
                     else { centro.cod_postal = row.codi_postal; }
                 }
                 else
                 {
-                    Console.WriteLine($"El codigo postal de {centro.nombre = row.denCorta + " " + row.dencen} es nulo o no tiene el numero de digitos correspondientes ");
+                    Console.WriteLine($"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes ");
                     return null;
                 }
 

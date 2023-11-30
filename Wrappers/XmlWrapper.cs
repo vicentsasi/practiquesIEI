@@ -16,10 +16,10 @@ namespace practiquesIEI.Wrappers
         {
             try
             {
-                string dataFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Fuentes de datos");
-                string xmlFilePath = Path.Combine(dataFolderPath, xmlFileName);
+                //string dataFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Fuentes de datos");
+                //string xmlFilePath = Path.Combine(dataFolderPath, xmlFileName);
                 // Cargar el contenido del archivo XML
-                string xmlContent = File.ReadAllText(xmlFilePath);
+                string xmlContent = File.ReadAllText(xmlFileName);
 
                 // Crear un documento XML
                 XmlDocument xmlDoc = new XmlDocument();
