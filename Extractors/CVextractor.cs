@@ -29,7 +29,7 @@ namespace practiquesIEI.Extractors
 
                     if (centro != null)
                     {
-                        provincia.codigo = int.Parse(centro.cod_postal.ToString().Substring(0, 2));
+                        provincia.codigo = int.Parse(centro.cod_postal.ToString().Substring(0,2));
                         if (dynamicData.PROVINCIA != null)
                         {
                             provincia.nombre = dynamicData.PROVINCIA;
@@ -47,7 +47,7 @@ namespace practiquesIEI.Extractors
 
                     if (centro != null)
                     {
-                        localidad.codigo = int.Parse(centro.cod_postal.ToString().Substring(2, 4));
+                        localidad.codigo = int.Parse(centro.cod_postal.ToString().Substring(2,3));
                         if (dynamicData.LOCALIDAD != null)
                         {
                             localidad.nombre = dynamicData.LOCALIDAD;
@@ -82,8 +82,17 @@ namespace practiquesIEI.Extractors
             try
             {
                 centro_educativo centro = new centro_educativo();
-                // Extraer propiedades específicas y construir las columnas que deseas
-
+                //nombre del centro
+                if (dynamicData.DENOMINACION != null)
+                {
+                    centro.nombre = dynamicData.DENOMINACION;
+                }
+                else
+                {
+                    Console.WriteLine($"Error: no se puede obtener el nombre del centro");
+                    return null;
+                }
+                //diereccion
                 if (dynamicData.TIPO_VIA != null && dynamicData.DIRECCION != null && dynamicData.NUMERO != null)
                 {
                     string tipoVia = dynamicData.TIPO_VIA;
@@ -94,68 +103,61 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
+                    Console.WriteLine($"Error: no se puede obtener la direccion de {centro.nombre}");
                     return null;
                 }
-
-                if (dynamicData.DENOMINACION != null)
-                {
-                    centro.nombre = dynamicData.DENOMINACION;
-                }
-                else
-                {
-                    return null;
-                }
-
+                // codigo postal
                 if (dynamicData.CODIGO_POSTAL != null && (dynamicData.CODIGO_POSTAL.ToString().Length == 5 || dynamicData.CODIGO_POSTAL.ToString().Length == 4))
                 {
                     if (dynamicData.CODIGO_POSTAL.ToString().Length == 4)
                     {
-                        centro.cod_postal = int.Parse(dynamicData.CODIGO_POSTAL.ToString("D2"));
+                        centro.cod_postal = '0' + dynamicData.CODIGO_POSTAL.ToString();
                     }
                     else { centro.cod_postal = dynamicData.CODIGO_POSTAL; }
                 }
                 else
                 {
-                    Console.WriteLine($"El codigo postal de {centro.nombre = dynamicData.denCorta + " " + dynamicData.dencen} es nulo o no tiene el numero de digitos correspondientes ");
+                    Console.WriteLine($"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes ");
                     return null;
                 }
 
                 //telefono
-                if (dynamicData.TELEFONO != null && dynamicData.TELEFONO.ToString().Length == 9)
+                if (dynamicData.TELEFONO.ToString().Length == 9)
                 {
                     centro.telefono = dynamicData.TELEFONO;
                 }
                 else
                 {
-                    Console.WriteLine($"El numero de telefono de {centro.nombre = dynamicData.denCorta + " " + dynamicData.dencen} es nulo o no tiene 9 digitos ");
+                    Console.WriteLine($"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos ");
                     return null;
                 }
 
                 centro.descripcion = dynamicData.URL_VA;
 
 
-                if (dynamicData.REGIMEN != null)
+               //tipo de centro
+                string regimen = dynamicData.REGIMEN;
+                switch (regimen)
                 {
-                    string regimen = dynamicData.REGIMEN;
-                    switch (regimen)
-                    {
-                        case "PÚB": centro.tipo = tipo_centro.Público; break;
-                        case "PRIV": centro.tipo = tipo_centro.Privado; break;
-                        case "PRIV.CONC": centro.tipo = tipo_centro.Concertado; break;
-                        case "OTROS": centro.tipo = tipo_centro.Otros; break;
-                    }
+                    case "PÚB.": centro.tipo = tipo_centro.Público; break;
+                    case "PRIV.": centro.tipo = tipo_centro.Privado; break;
+                    case "PRIV. CONC.": centro.tipo = tipo_centro.Concertado; break;
+                    case "OTROS": centro.tipo = tipo_centro.Otros; break;
+                    default:
+                        Console.WriteLine($"El tipo de centro de {centro.nombre} no corresponde con ninguno de los tipos guardados");
+                        return null;
+
                 }
-                else { return null; }
+                //centro.longitud = GetLongitud(centro.direccion);
+                //centro.latitud = GetLatitud(centro.direccion);
+                centro.longitud = "22.02";
+                centro.latitud = "22.02";
 
-                 centro.longitud = GetLongitud(centro.direccion).Replace(",",".");
-                centro.latitud = GetLatitud(centro.direccion).Replace(",",".");
-
-            
                 return centro;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al convertir el JSON a objeto centro: {ex.Message}");
+                Console.WriteLine($"Error al obtener los datos para el centro: {ex.Message}");
                 return null;
             }
         }
@@ -173,7 +175,7 @@ namespace practiquesIEI.Extractors
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
                     // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(4000);
 
                     // Ingresa la dirección
                     IWebElement addressInput = driver.FindElement(By.Id("address"));
@@ -183,13 +185,13 @@ namespace practiquesIEI.Extractors
                     driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
                     // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(4000);
 
                     // Obtener y devolver el valor de latitud
                     IWebElement latInput = driver.FindElement(By.Id("latitude"));
-                    string longitud = latInput.GetAttribute("value");
-                    longitud = longitud.Replace(".", ",");
-                    return longitud;
+                    string latitud = latInput.GetAttribute("value");
+                    latitud = latitud.Replace(",", ".");
+                    return latitud;
                 }
             }
             catch (Exception ex)
@@ -211,7 +213,7 @@ namespace practiquesIEI.Extractors
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
                     // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(4000);
 
                     // Ingresa la dirección
                     IWebElement addressInput = driver.FindElement(By.Id("address"));
@@ -221,18 +223,18 @@ namespace practiquesIEI.Extractors
                     driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
                     // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(4000);
 
                     // Obtener y devolver el valor de latitud
                     IWebElement latInput = driver.FindElement(By.Id("longitude"));
                     string longitud = latInput.GetAttribute("value");
-                    longitud = longitud.Replace(".", ",");
+                    longitud = longitud.Replace(",", ".");
                     return longitud;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
+                Console.WriteLine($"Error al obtener la longitud: {ex.Message}");
                 return null;
             }
 

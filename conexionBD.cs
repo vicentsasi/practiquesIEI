@@ -165,19 +165,19 @@ namespace practiquesIEI
                     $"DELETE FROM centro_educativo", conn))
                 {
                     await command1.ExecuteNonQueryAsync();
-                    Console.WriteLine("Datos borrados correctamente.");
+                    Console.WriteLine("Datos de centros borrados correctamente.");
                 }
                 using (MySqlCommand command2 = new MySqlCommand(
                     $"DELETE FROM localidad", conn))
                 {
                     await command2.ExecuteNonQueryAsync();
-                    Console.WriteLine("Datos borrados correctamente.");
+                    Console.WriteLine("Datos de localidad borrados correctamente.");
                 }
                 using (MySqlCommand command3 = new MySqlCommand(
                     $"DELETE FROM provincia", conn))
                 {
                     await command3.ExecuteNonQueryAsync();
-                    Console.WriteLine("Datos borrados correctamente.");
+                    Console.WriteLine("Datos  de provincia borrados correctamente.");
                 }
             }
             catch (Exception e)

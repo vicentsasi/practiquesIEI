@@ -24,25 +24,34 @@ namespace practiquesIEI.Extractors
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
-                    ListaCentros.Add(JsonACentro(dynamicData));
+                    centro_educativo centro = JsonACentro(dynamicData);
+                    ListaCentros.Add(centro);
                     //Crear la provincia 
-                    provincia provincia = new provincia
+                    if (centro != null)
                     {
-                        codigo = 30,
-                        nombre = "Múrcia"
-                    };
-                    ConexionBD.insertProvincia(provincia);
+                        provincia provincia = new provincia
+                        {
+                            codigo = 30,
+                            nombre = "Múrcia"
+                        };
+                        ConexionBD.insertProvincia(provincia);
+                    }
                     //Crear localidad
                     localidad localidad = new localidad();
-                    if (dynamicData.loccen != null && dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
+                    if (centro != null)
                     {
-                        localidad.codigo = int.Parse(dynamicData.cpcen.ToString()) % 1000;
-                        localidad.nombre = dynamicData.loccen;
+                        if (dynamicData.loccen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
+                        {
+                            localidad.codigo = int.Parse(dynamicData.cpcen.ToString().Substring(2, 3));
+                            localidad.nombre = dynamicData.loccen;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"El codigo postal o nombre de la localidad del centro es erroneo");
+                            localidad = null;
+                        }
                     }
-                    else {
-                        Console.WriteLine($"El codigo postal o nombre de la localidad del centro es erroneo");
-                        localidad = null;
-                    }
+                    else { localidad = null; }
                     if (localidad != null) { ConexionBD.insertLocalidad(localidad); }
                    
                 }
@@ -74,23 +83,23 @@ namespace practiquesIEI.Extractors
             if (dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
             {
                 if (dynamicData.cpcen.ToString().Length == 5) {
-                    centro.cod_postal = dynamicData.cpcen.ToString("D2"); 
+                    centro.cod_postal = '0' + dynamicData.cpcen.ToString(); 
                 }
                 else { centro.cod_postal = dynamicData.cpcen; }
             }
             else
             {
-                Console.WriteLine($"El codigo postal de {centro.nombre = dynamicData.denCorta + " " + dynamicData.dencen} es nulo o no tiene el numero de digitos correspondientes ");
+                Console.WriteLine($"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes ");
                 return null;
             }
             //telefono
-            if (dynamicData.telcen != null && dynamicData.telcen.ToString().Length == 9)
+            if (dynamicData.telcen.ToString().Length == 9)
             {
                 centro.telefono = dynamicData.telcen;
             }
             else
             {
-                Console.WriteLine($"El numero de telefono de {centro.nombre = dynamicData.denCorta + " " + dynamicData.dencen} es nulo o no tiene 9 digitos ");
+                Console.WriteLine($"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos ");
                 return null;
             }
             //direccion
