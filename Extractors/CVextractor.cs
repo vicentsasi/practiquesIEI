@@ -147,10 +147,10 @@ namespace practiquesIEI.Extractors
                 }
                 else { return null; }
 
-                string longitud = GetLongitud(centro.direccion);
-                string latitud = GetLatitud(centro.direccion);
-                centro.latitud = decimal.Parse(GetLatitud(centro.direccion), CultureInfo.InvariantCulture);
-                centro.longitud = decimal.Parse(GetLongitud(centro.direccion), CultureInfo.InvariantCulture);
+                 centro.longitud = GetLongitud(centro.direccion).Replace(",",".");
+                centro.latitud = GetLatitud(centro.direccion).Replace(",",".");
+
+            
                 return centro;
             }
             catch (Exception ex)
@@ -164,32 +164,32 @@ namespace practiquesIEI.Extractors
         {
             try
             {
-                ChromeOptions options = new ChromeOptions();
-                options.AddArgument("--headless");
-                options.AddArgument("--disable-gpu");  // Añadir esta opción para solucionar problemas en algunos sistemas
+                //ChromeOptions options = new ChromeOptions();
+                //options.AddArgument("--headless");
+                 
 
-                using (var driver = new ChromeDriver(options))
+                using (var driver = new ChromeDriver())
                 {
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
-                    // Esperar hasta que el campo de dirección esté presente
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                    IWebElement addressInput = wait.Until(d => d.FindElement(By.Id("address")));
+                    // Esperar un tiempo fijo para dar tiempo a que la página cargue
+                    System.Threading.Thread.Sleep(2000);
 
                     // Ingresa la dirección
+                    IWebElement addressInput = driver.FindElement(By.Id("address"));
                     addressInput.SendKeys(address);
-
 
                     // Haz clic en el botón
                     driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
-                    // Esperar hasta que el campo de latitud esté presente y visible
-                    IWebElement latInput = wait.Until(d => d.FindElement(By.Id("latitude")));
+                    // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
+                    System.Threading.Thread.Sleep(2000);
 
                     // Obtener y devolver el valor de latitud
-                    string latitud = latInput.GetAttribute("value");
-                    latitud = latitud.Replace(".", ",");
-                    return latitud;
+                    IWebElement latInput = driver.FindElement(By.Id("latitude"));
+                    string longitud = latInput.GetAttribute("value");
+                    longitud = longitud.Replace(".", ",");
+                    return longitud;
                 }
             }
             catch (Exception ex)
@@ -204,14 +204,14 @@ namespace practiquesIEI.Extractors
         {
             try
             {
-                ChromeOptions options = new ChromeOptions();
-                options.AddArgument("--headless"); // Ejecutar en modo sin cabeza (headless)
-                using (var driver = new ChromeDriver(options))
+                //ChromeOptions options = new ChromeOptions();
+                //options.AddArgument("--headless"); // Ejecutar en modo sin cabeza (headless)
+                using (var driver = new ChromeDriver())
                 {
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
                     // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(3000);
+                    System.Threading.Thread.Sleep(2000);
 
                     // Ingresa la dirección
                     IWebElement addressInput = driver.FindElement(By.Id("address"));
@@ -221,7 +221,7 @@ namespace practiquesIEI.Extractors
                     driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
                     // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(3000);
+                    System.Threading.Thread.Sleep(2000);
 
                     // Obtener y devolver el valor de latitud
                     IWebElement latInput = driver.FindElement(By.Id("longitude"));

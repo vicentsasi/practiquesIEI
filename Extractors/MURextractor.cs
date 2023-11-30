@@ -106,7 +106,7 @@ namespace practiquesIEI.Extractors
             centro.descripcion = dynamicData.presentacionCorta;
             //latitud
             if (dynamicData["geo-referencia"]["lat"] != null) {
-                centro.latitud = decimal.Parse(dynamicData["geo-referencia"]["lat"].ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                centro.latitud = dynamicData["geo-referencia"]["lat"].ToString().Replace(",",".");
             }
             else
             {
@@ -115,7 +115,7 @@ namespace practiquesIEI.Extractors
             }
             //longitud
             if (dynamicData["geo-referencia"]["lon"] != null) {
-                centro.longitud = decimal.Parse(dynamicData["geo-referencia"]["lon"].ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                centro.longitud = dynamicData["geo-referencia"]["lon"].ToString().Replace(",", ".");
             }
             else
             {
