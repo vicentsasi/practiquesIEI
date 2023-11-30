@@ -151,7 +151,7 @@ namespace practiquesIEI.Extractors
                         return null;
 
                 }
-                GetLatitudyLongitud(centro.direccion, centro.latitud, centro.longitud);
+                GetLatitudyLongitud(centro.direccion, centro);
                 //centro.longitud = "22.02";
                 //centro.latitud = "22.02";
 
@@ -164,7 +164,7 @@ namespace practiquesIEI.Extractors
             }
         }
 
-        private static void GetLatitudyLongitud(string address, string latitud, string longitud)
+        private static void GetLatitudyLongitud(string address, centro_educativo centro)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace practiquesIEI.Extractors
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
                     // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(1000);
+                    System.Threading.Thread.Sleep(000);
 
                     // Ingresa la dirección
                     IWebElement addressInput = driver.FindElement(By.Id("address"));
@@ -194,7 +194,7 @@ namespace practiquesIEI.Extractors
                     driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
                     // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(1000);
 
                     try
                     {
@@ -211,19 +211,19 @@ namespace practiquesIEI.Extractors
 
                     // Obtener y devolver el valor de latitud
                     IWebElement latInput = driver.FindElement(By.Id("latitude"));
-                     latitud = latInput.GetAttribute("value");
-                    latitud = latitud.Replace(",", ".");
+                     centro.latitud = latInput.GetAttribute("value");
+                    centro.latitud =  centro.latitud.Replace(",", ".");
                     IWebElement lonInput = driver.FindElement(By.Id("longitude"));
-                     longitud = lonInput.GetAttribute("value");
-                    longitud = longitud.Replace(",", ".");
+                     centro.longitud = lonInput.GetAttribute("value");
+                    centro.longitud = centro.longitud.Replace(",", ".");
                     driver.Close();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
-                latitud = null;
-                longitud = null;
+                centro.latitud = null;
+                centro.longitud = null;
             }
         }
 
