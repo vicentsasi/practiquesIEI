@@ -124,13 +124,14 @@ namespace practiquesIEI.Extractors
                 }
 
                 //telefono
-                if (dynamicData.TELEFONO.ToString().Length == 9)
+                if (dynamicData.TELEFONO.ToString().Length == 9 || dynamicData.TELEFONO.ToString().Length == 0)
                 {
-                    centro.telefono = dynamicData.TELEFONO;
+                    if (dynamicData.TELEFONO.ToString().Length == 0) { centro.telefono = 0; }
+                    else { centro.telefono = dynamicData.TELEFONO; }
                 }
                 else
                 {
-                    Console.WriteLine($"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos ");
+                    Console.WriteLine($"El numero de telefono de {centro.nombre} es {dynamicData.TELEFONO.ToString().Length}");
                     return null;
                 }
 
