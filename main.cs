@@ -21,13 +21,13 @@ namespace practiquesIEI
         {   
             await ConexionBD.Conectar();
             await ConexionBD.BorrarCentros();
-            //string arxivo = XmlWrapper.ConvertXmlToJson("C:\\Users\\Usuario\\source\\repos\\practiquesIEI\\Fuentes de datos\\CAT.xml");
+            //string arxivo = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
             //CATextractor.LoadJsonDataIntoDatabase(arxivo);
 
-            string arxivo1 = CsvWrapper.ConvertCsvToJson("C:\\Users\\Usuario\\source\\repos\\practiquesIEI\\Fuentes de datos\\CV.csv");
+            string arxivo1 = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
             CVextractor.LoadJsonDataIntoDatabase(arxivo1);
 
-            //string arxivo2 = JsonWrapper.ConvertToJson("C:\\Users\\Usuario\\source\\repos\\practiquesIEI\\Fuentes de datos\\MUR.json");
+            //string arxivo2 = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
             //MURextractor.LoadJsonDataIntoDatabase(arxivo2);
 
             //Application.EnableVisualStyles();
