@@ -82,7 +82,7 @@ namespace practiquesIEI
                          $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion, cod_localidad) VALUES (@nombre, @tipo, @direccion, @cod_postal, @longitud, @latitud, @telefono,@descripcion,@loc_codigo)", conn))
                         {
                             command.Parameters.AddWithValue("@nombre", centro.nombre);
-                            command.Parameters.AddWithValue("@tipo", centro.tipo);
+                            command.Parameters.AddWithValue("@tipo", centro.tipo.ToString());
                             command.Parameters.AddWithValue("@direccion", centro.direccion);
                             command.Parameters.AddWithValue("@cod_postal", centro.cod_postal);
                             command.Parameters.AddWithValue("@longitud", centro.longitud);
