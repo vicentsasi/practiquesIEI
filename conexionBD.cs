@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,14 +48,17 @@ namespace practiquesIEI
             }
             try
             {
+                string lon = centro.longitud.ToString().Replace(",",".");
+                string lat = centro.latitud.ToString().Replace(",",".");    
+
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM centro_educativo " +
                                             $"WHERE nombre = '{centro.nombre}' AND " +
                                                   $"tipo = '{centro.tipo}' AND " +
                                                   $"direccion = '{centro.direccion}' AND " +
                                                   $"codigo_postal = '{centro.cod_postal}' AND " +
-                                                  $"longitud = '{centro.longitud}' AND " +
-                                                  $"latitud = '{centro.latitud}' AND " +
+                                                  $"longitud = '{lon}' AND " +
+                                                  $"latitud = '{lat}' AND " +
                                                   $"telefono = '{centro.telefono}' AND " +
                                                   $"descripcion = '{centro.descripcion}'";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
@@ -67,7 +71,7 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{centro.longitud}', '{centro.latitud}', '{centro.telefono}','{centro.descripcion}')", conn))
+                         $"INSERT INTO centro_educativo (nombre, tipo, direccion, codigo_postal, longitud, latitud, telefono, descripcion) VALUES ('{centro.nombre}', '{centro.tipo}', '{centro.direccion}', '{centro.cod_postal}', '{lon}', '{lat}', '{centro.telefono}','{centro.descripcion}')", conn))
                         {
                             command.ExecuteNonQuery();
                             Console.WriteLine("Centro insertado correctamente.");
