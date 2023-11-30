@@ -150,10 +150,9 @@ namespace practiquesIEI.Extractors
                         return null;
 
                 }
-                //centro.longitud = GetLongitud(centro.direccion);
-                //centro.latitud = GetLatitud(centro.direccion);
-                centro.longitud = "22.02";
-                centro.latitud = "22.02";
+                GetLatitudyLongitud(centro.direccion, centro.latitud, centro.longitud);
+                //centro.longitud = "22.02";
+                //centro.latitud = "22.02";
 
                 return centro;
             }
@@ -164,83 +163,69 @@ namespace practiquesIEI.Extractors
             }
         }
 
-        private static string GetLatitud(string address)
-        {
-            try
-            {
-                //ChromeOptions options = new ChromeOptions();
-                //options.AddArgument("--headless");
-                 
-
-                using (var driver = new ChromeDriver())
-                {
-                    driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
-
-                    // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(4000);
-
-                    // Ingresa la dirección
-                    IWebElement addressInput = driver.FindElement(By.Id("address"));
-                    addressInput.SendKeys(address);
-
-                    // Haz clic en el botón
-                    driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
-
-                    // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(4000);
-
-                    // Obtener y devolver el valor de latitud
-                    IWebElement latInput = driver.FindElement(By.Id("latitude"));
-                    string latitud = latInput.GetAttribute("value");
-                    latitud = latitud.Replace(",", ".");
-                    return latitud;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
-                return null;
-            }
-        }
-
-
-        private static string GetLongitud(string address)
+        private static void GetLatitudyLongitud(string address, string latitud, string longitud)
         {
             try
             {
                 //ChromeOptions options = new ChromeOptions();
                 //options.AddArgument("--headless"); // Ejecutar en modo sin cabeza (headless)
+                //options.AddArgument("--disable-extensions");
+                //options.AddArgument("--disable-popup-blocking");
+                //options.AddArgument("--disable-infobars");
+                //options.AddArgument("--disable-dev-shm-usage");
+                //options.AddArgument("--no-sandbox");
+                //options.AddArgument("--disable-gpu");
+
+
                 using (var driver = new ChromeDriver())
                 {
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
                     // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(4000);
+                    System.Threading.Thread.Sleep(1000);
 
                     // Ingresa la dirección
                     IWebElement addressInput = driver.FindElement(By.Id("address"));
+                    addressInput.Clear();
                     addressInput.SendKeys(address);
 
                     // Haz clic en el botón
                     driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
                     // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(4000);
+                    System.Threading.Thread.Sleep(2000);
+
+                    try
+                    {
+                        IAlert alert = driver.SwitchTo().Alert();
+                        string alertText = alert.Text;
+                        Console.WriteLine("Texto de la alerta: " + alertText);
+                        alert.Accept();
+                    }
+                    catch (NoAlertPresentException)
+                    {
+
+                        Console.WriteLine("No se encontró ninguna alerta.");
+                    }
 
                     // Obtener y devolver el valor de latitud
-                    IWebElement latInput = driver.FindElement(By.Id("longitude"));
-                    string longitud = latInput.GetAttribute("value");
+                    IWebElement latInput = driver.FindElement(By.Id("latitude"));
+                     latitud = latInput.GetAttribute("value");
+                    latitud = latitud.Replace(",", ".");
+                    IWebElement lonInput = driver.FindElement(By.Id("longitude"));
+                     longitud = lonInput.GetAttribute("value");
                     longitud = longitud.Replace(",", ".");
-                    return longitud;
+                    driver.Close();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener la longitud: {ex.Message}");
-                return null;
+                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
+                latitud = null;
+                longitud = null;
             }
-
         }
+
     }
 }
 
