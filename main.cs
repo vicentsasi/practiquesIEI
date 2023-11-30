@@ -24,11 +24,11 @@ namespace practiquesIEI
             //string arxivo = XmlWrapper.ConvertXmlToJson("CAT.xml");
             //CATextractor.LoadJsonDataIntoDatabase(arxivo);
 
-            //string arxivo1 = CsvWrapper.ConvertCsvToJson("CV.csv");
-            //CVextractor.LoadJsonDataIntoDatabase(arxivo1);
+            string arxivo1 = CsvWrapper.ConvertCsvToJson("C:\\Users\\vsabsim.IIE-ASME16\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
+            CVextractor.LoadJsonDataIntoDatabase(arxivo1);
 
-            string arxivo2 = JsonWrapper.ConvertToJson("C:\\Users\\vsabsim.IIE-ASME16\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-            MURextractor.LoadJsonDataIntoDatabase(arxivo2);
+            //string arxivo2 = JsonWrapper.ConvertToJson("C:\\Users\\vsabsim.IIE-ASME16\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
+            //MURextractor.LoadJsonDataIntoDatabase(arxivo2);
 
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);

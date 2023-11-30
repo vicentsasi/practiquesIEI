@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using OpenQA.Selenium.DevTools.V117.Debugger;
 using System.Reflection;
 using OpenQA.Selenium.Support.UI;
+using System.Globalization;
 
 namespace practiquesIEI.Extractors
 {
@@ -37,11 +38,12 @@ namespace practiquesIEI.Extractors
                     }
                     else { provincia = null; }
 
-                    if (provincia != null) {
+                    if (provincia != null)
+                    {
                         ConexionBD.insertProvincia(provincia);
                     }
 
-                    localidad localidad = new localidad();  
+                    localidad localidad = new localidad();
 
                     if (centro != null)
                     {
@@ -90,14 +92,17 @@ namespace practiquesIEI.Extractors
                     // Concatenar los valores en una sola cadena para la columna "Direccion"
                     centro.direccion = $"{tipoVia} {direccion} {numero}";
                 }
-                else {
+                else
+                {
                     return null;
                 }
 
-                if (dynamicData.DENOMINACION != null) {
+                if (dynamicData.DENOMINACION != null)
+                {
                     centro.nombre = dynamicData.DENOMINACION;
                 }
-                else {
+                else
+                {
                     return null;
                 }
 
@@ -142,8 +147,10 @@ namespace practiquesIEI.Extractors
                 }
                 else { return null; }
 
-                centro.latitud = decimal.Parse(GetLatitud(centro.direccion));
-                centro.longitud = decimal.Parse(GetLongitud(centro.direccion));
+                string longitud = GetLongitud(centro.direccion);
+                string latitud = GetLatitud(centro.direccion);
+                centro.latitud = decimal.Parse(GetLatitud(centro.direccion), CultureInfo.InvariantCulture);
+                centro.longitud = decimal.Parse(GetLongitud(centro.direccion), CultureInfo.InvariantCulture);
                 return centro;
             }
             catch (Exception ex)
@@ -157,187 +164,80 @@ namespace practiquesIEI.Extractors
         {
             try
             {
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.AddArgument("--headless");  // Configurar Chrome para ejecutarse en modo headless
+                ChromeOptions options = new ChromeOptions();
+                options.AddArgument("--headless");
+                options.AddArgument("--disable-gpu");  // Añadir esta opción para solucionar problemas en algunos sistemas
 
-                using (var driver = new ChromeDriver())
+                using (var driver = new ChromeDriver(options))
                 {
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
-                    // Esperar hasta que la página esté completamente cargada
-                    int timeoutSeconds = 10;
-                    IWebElement addressInput = null;
+                    // Esperar hasta que el campo de dirección esté presente
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    IWebElement addressInput = wait.Until(d => d.FindElement(By.Id("address")));
 
-                    for (int i = 0; i < timeoutSeconds; i++)
-                    {
-                        try
-                        {
-                            addressInput = driver.FindElement(By.Id("address"));
-
-                            // Si el elemento se encuentra, sal del bucle
-                            if (addressInput.Displayed)
-                            {
-                                break;
-                            }
-                        }
-                        catch (NoSuchElementException)
-                        {
-                            // Manejar la excepción si el elemento no se encuentra
-                        }
-
-                        // Esperar un segundo antes de volver a intentar
-                        System.Threading.Thread.Sleep(1000);
-                    }
-
-                    // Verificar si se encontró el elemento antes de continuar
-                    if (addressInput != null)
-                    {
-                        addressInput.SendKeys(address);
-                        driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
+                    // Ingresa la dirección
+                    addressInput.SendKeys(address);
 
 
-                        // Esperar hasta que el elemento de longitud esté presente en el DOM
-                        IWebElement lonInput = null;
+                    // Haz clic en el botón
+                    driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
-                        for (int i = 0; i < timeoutSeconds; i++)
-                        {
-                            try
-                            {
-                                lonInput = driver.FindElement(By.Id("latitude"));
+                    // Esperar hasta que el campo de latitud esté presente y visible
+                    IWebElement latInput = wait.Until(d => d.FindElement(By.Id("latitude")));
 
-                                // Si el elemento se encuentra, sal del bucle
-                                if (lonInput.Displayed)
-                                {
-                                    break;
-                                }
-                            }
-                            catch (NoSuchElementException)
-                            {
-                                return null;
-                            }
-
-                            // Esperar un segundo antes de volver a intentar
-                            System.Threading.Thread.Sleep(1000);
-                        }
-
-                        // Verificar si se encontró el elemento antes de obtener la longitud
-                        if (lonInput != null)
-                        {
-                            string longitud = lonInput.GetAttribute("value");
-                            return longitud;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    // Obtener y devolver el valor de latitud
+                    string latitud = latInput.GetAttribute("value");
+                    latitud = latitud.Replace(".", ",");
+                    return latitud;
                 }
             }
-
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener la longitud: {ex.Message}");
+                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
                 return null;
             }
-
         }
+
 
         private static string GetLongitud(string address)
         {
             try
             {
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.AddArgument("--headless");  // Configurar Chrome para ejecutarse en modo headless
-
-                using (var driver = new ChromeDriver())
+                ChromeOptions options = new ChromeOptions();
+                options.AddArgument("--headless"); // Ejecutar en modo sin cabeza (headless)
+                using (var driver = new ChromeDriver(options))
                 {
                     driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
 
-                    // Esperar hasta que la página esté completamente cargada
-                    int timeoutSeconds = 10;
-                    IWebElement addressInput = null;
+                    // Esperar un tiempo fijo para dar tiempo a que la página cargue
+                    System.Threading.Thread.Sleep(3000);
 
-                    for (int i = 0; i < timeoutSeconds; i++)
-                    {
-                        try
-                        {
-                            addressInput = driver.FindElement(By.Id("address"));
+                    // Ingresa la dirección
+                    IWebElement addressInput = driver.FindElement(By.Id("address"));
+                    addressInput.SendKeys(address);
 
-                            // Si el elemento se encuentra, sal del bucle
-                            if (addressInput.Displayed)
-                            {
-                                break;
-                            }
-                        }
-                        catch (NoSuchElementException)
-                        {
-                            // Manejar la excepción si el elemento no se encuentra
-                        }
+                    // Haz clic en el botón
+                    driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
 
-                        // Esperar un segundo antes de volver a intentar
-                        System.Threading.Thread.Sleep(1000);
-                    }
+                    // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
+                    System.Threading.Thread.Sleep(3000);
 
-                    // Verificar si se encontró el elemento antes de continuar
-                    if (addressInput != null)
-                    {
-                        addressInput.SendKeys(address);
-                        driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
-
-
-                        // Esperar hasta que el elemento de longitud esté presente en el DOM
-                        IWebElement lonInput = null;
-
-                        for (int i = 0; i < timeoutSeconds; i++)
-                        {
-                            try
-                            {
-                                lonInput = driver.FindElement(By.Id("longitude"));
-
-                                // Si el elemento se encuentra, sal del bucle
-                                if (lonInput.Displayed)
-                                {
-                                    break;
-                                }
-                            }
-                            catch (NoSuchElementException)
-                            {
-                                return null;
-                            }
-
-                            // Esperar un segundo antes de volver a intentar
-                            System.Threading.Thread.Sleep(1000);
-                        }
-
-                        // Verificar si se encontró el elemento antes de obtener la longitud
-                        if (lonInput != null)
-                        {
-                            string longitud = lonInput.GetAttribute("value");
-                            return longitud;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    // Obtener y devolver el valor de latitud
+                    IWebElement latInput = driver.FindElement(By.Id("longitude"));
+                    string longitud = latInput.GetAttribute("value");
+                    longitud = longitud.Replace(".", ",");
+                    return longitud;
                 }
             }
-            
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener la longitud: {ex.Message}");
+                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
                 return null;
             }
 
         }
     }
 }
+
 
