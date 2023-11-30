@@ -8,11 +8,11 @@ namespace practiquesIEI.Entities
 {
     public class localidad
     {
-        public int codigo { get; set; }
+        public string codigo { get; set; }
         public string nombre { get; set; }
 
         public localidad() { }
-        public localidad(int codigo, string nombre) {
+        public localidad(string codigo, string nombre) {
             this.codigo = codigo;
             this.nombre = nombre;
         }

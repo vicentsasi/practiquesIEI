@@ -29,7 +29,7 @@ namespace practiquesIEI.Extractors
 
                     if (centro != null)
                     {
-                        provincia.codigo = int.Parse(centro.cod_postal.ToString().Substring(0,2));
+                        provincia.codigo = centro.cod_postal.ToString().Substring(0,2);
                         if (dynamicData.PROVINCIA != null)
                         {
                             provincia.nombre = dynamicData.PROVINCIA;
@@ -47,7 +47,7 @@ namespace practiquesIEI.Extractors
 
                     if (centro != null)
                     {
-                        localidad.codigo = int.Parse(centro.cod_postal.ToString().Substring(2,3));
+                        localidad.codigo = centro.cod_postal.ToString().Substring(2,3);
                         if (dynamicData.LOCALIDAD != null)
                         {
                             localidad.nombre = dynamicData.LOCALIDAD;

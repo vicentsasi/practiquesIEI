@@ -24,14 +24,14 @@ namespace practiquesIEI.Extractors
 
                     if (centro != null)
                     {
-                        provincia.codigo = int.Parse(centro.cod_postal.ToString().Substring(0, 2));
-                        if (provincia.codigo != 0)
+                        provincia.codigo = centro.cod_postal.ToString().Substring(0, 2);
+                        if (provincia.codigo != "0")
                         {
                             switch (provincia.codigo) {
-                                case 8: provincia.nombre = "Barcelona"; break;
-                                case 17: provincia.nombre = "Girona"; break;
-                                case 43: provincia.nombre = "Tarragona"; break;
-                                case 25: provincia.nombre = "Lleida"; break;
+                                case "8": provincia.nombre = "Barcelona"; break;
+                                case "17": provincia.nombre = "Girona"; break;
+                                case "43": provincia.nombre = "Tarragona"; break;
+                                case "25": provincia.nombre = "Lleida"; break;
                             }
                         }
                         else { provincia = null; }

@@ -31,7 +31,7 @@ namespace practiquesIEI.Extractors
                     {
                         provincia provincia = new provincia
                         {
-                            codigo = 30,
+                            codigo = "30",
                             nombre = "Múrcia"
                         };
                         ConexionBD.insertProvincia(provincia);
@@ -42,7 +42,7 @@ namespace practiquesIEI.Extractors
                     {
                         if (dynamicData.loccen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
                         {
-                            localidad.codigo = int.Parse(dynamicData.cpcen.ToString().Substring(2, 3));
+                            localidad.codigo = dynamicData.cpcen.ToString().Substring(2, 3);
                             localidad.nombre = dynamicData.loccen;
                         }
                         else
@@ -80,12 +80,9 @@ namespace practiquesIEI.Extractors
                 return null;
             }
             //codigo postal
-            if (dynamicData.cpcen != null && (dynamicData.cpcen.ToString().Length == 6 || dynamicData.cpcen.ToString().Length == 5))
+            if (dynamicData.cpcen.ToString().Length == 5)
             {
-                if (dynamicData.cpcen.ToString().Length == 5) {
-                    centro.cod_postal = '0' + dynamicData.cpcen.ToString(); 
-                }
-                else { centro.cod_postal = dynamicData.cpcen; }
+                centro.cod_postal = dynamicData.cpcen.ToString(); 
             }
             else
             {
