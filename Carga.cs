@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace practiquesIEI
 {
-    public partial class Form1 : Form
+    public partial class Carga : Form
     {
-        public Form1()
+        public Carga()
         {
             InitializeComponent();
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
