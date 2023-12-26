@@ -31,6 +31,7 @@ namespace practiquesIEI
             string logs = "";
 
             ConexionBD.BorrarCentros();
+            tbLogs.Text = "";
 
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
@@ -89,6 +90,15 @@ namespace practiquesIEI
             
 
             
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Búsqueda Busqueda = new Búsqueda(this);
+            Busqueda.Show();
+            
+
         }
     }
 }

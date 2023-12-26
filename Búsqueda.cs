@@ -16,9 +16,11 @@ namespace practiquesIEI
     {
 
         List<centro_educativo> centros;
-        public Búsqueda()
+        Carga cargaPrin;
+        public Búsqueda(Carga carga)
         {
             //ConexionBD.Conectar();
+            cargaPrin = carga;  
             InitializeComponent();
             LoadMap();
         }
@@ -39,6 +41,7 @@ namespace practiquesIEI
 
         private void btAceptar_Click(object sender, EventArgs e)
         {
+            tbLogs.Text = "";
             centros = ConexionBD.buscarCentros(tbLocalidad.Text, int.Parse(tbCP.Text), tbProv.Text, cbTipo.SelectedValue.ToString());
             foreach (var centro in centros) {
                 tbLogs.Text += $"Centro cargado: {centro.nombre} ";
@@ -49,7 +52,8 @@ namespace practiquesIEI
 
         private void btCarga_Click(object sender, EventArgs e)
         {
-
+            this.Close();
+            cargaPrin.Show();
         }
 
         private void btCerrar_Click(object sender, EventArgs e)
