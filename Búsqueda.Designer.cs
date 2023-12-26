@@ -112,7 +112,7 @@
             this.groupBox1.Size = new System.Drawing.Size(447, 234);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Text = "Informacion";
             // 
             // btAceptar
             // 
@@ -213,8 +213,7 @@
             // 
             // Búsqueda
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1168, 743);
             this.Controls.Add(this.wbMapa);
             this.Controls.Add(this.btCerrar);
@@ -223,6 +222,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbLogs);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximizeBox = false;
             this.Name = "Búsqueda";
             this.Text = "Búsqueda";
             this.groupBox1.ResumeLayout(false);

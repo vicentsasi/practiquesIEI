@@ -20,8 +20,8 @@ namespace practiquesIEI
         static void Main()
         {
 
-             ConexionBD.Conectar();
-            ConexionBD.BorrarCentros();
+             //ConexionBD.Conectar();
+            //ConexionBD.BorrarCentros();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Búsqueda());
