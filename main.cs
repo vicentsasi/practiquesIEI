@@ -8,6 +8,7 @@ using practiquesIEI.Extractors;
 using practiquesIEI;
 using System.Diagnostics;
 using practiquesIEI.Wrappers;
+using OpenQA.Selenium;
 
 namespace practiquesIEI
 {
@@ -17,14 +18,18 @@ namespace practiquesIEI
         /// Punto de entrada principal para la aplicación.
         /// </summary>
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
 
-             //ConexionBD.Conectar();
-            //ConexionBD.BorrarCentros();
-            Application.EnableVisualStyles();
+            await ConexionBD.Conectar();
+            await ConexionBD.BorrarCentros();
+            string archivoJson = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
+            string logs = "";
+            MURextractor.LoadJsonDataIntoDatabase(archivoJson, logs);
+           
+            /*Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Carga());
+            Application.Run(new Carga());*/
         }
     }
 }
