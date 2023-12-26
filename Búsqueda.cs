@@ -59,6 +59,7 @@ namespace practiquesIEI
         private void btCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
+            cargaPrin.Close();
         }
 
         #endregion
