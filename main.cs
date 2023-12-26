@@ -24,7 +24,7 @@ namespace practiquesIEI
             //ConexionBD.BorrarCentros();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Búsqueda());
+            Application.Run(new Carga());
         }
     }
 }

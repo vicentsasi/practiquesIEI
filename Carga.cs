@@ -38,20 +38,20 @@ namespace practiquesIEI
                 if (itemChecked.ToString() == "Seleccionar todas")
                 {
                     string directorioAplicacionMUR = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativa = Path.Combine(directorioAplicacionMUR, "Fuentes de datos", "MUR.json");
+                    string rutaRelativa = Path.Combine(directorioAplicacionMUR,  "MUR.json");
                     string rutaAbsoluta = Path.GetFullPath(rutaRelativa);
                     string archivoJson = JsonWrapper.ConvertToJson(rutaAbsoluta);
                     MURextractor.LoadJsonDataIntoDatabase(archivoJson, logs);
 
                     string directorioAplicacionCV = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativaCsv = Path.Combine(directorioAplicacionCV, "Fuentes de datos", "CV.csv");
+                    string rutaRelativaCsv = Path.Combine(directorioAplicacionCV, "CV.csv");
                     string rutaAbsolutaCsv = Path.GetFullPath(rutaRelativaCsv);
                     string archivoJsonCV = CsvWrapper.ConvertCsvToJson(rutaAbsolutaCsv);
                     CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV, logs);
 
 
                     string directorioAplicacionCAT = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativaXml = Path.Combine(directorioAplicacionCAT, "Fuentes de datos", "CAT.xml");
+                    string rutaRelativaXml = Path.Combine(directorioAplicacionCAT, "CAT.xml");
                     string rutaAbsolutaXml = Path.GetFullPath(rutaRelativaXml);
                     string archivoJsonCAT = XmlWrapper.ConvertXmlToJson(rutaAbsolutaXml);
                     CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT, logs);
@@ -61,7 +61,7 @@ namespace practiquesIEI
                 else if (itemChecked.ToString() == "Murcia") {
 
                     string directorioAplicacionMUR = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativa = Path.Combine(directorioAplicacionMUR, "Fuentes de datos", "MUR.json");
+                    string rutaRelativa = Path.Combine(directorioAplicacionMUR, "MUR.json");
                     string rutaAbsoluta = Path.GetFullPath(rutaRelativa);
                     string archivoJson = JsonWrapper.ConvertToJson(rutaAbsoluta);
                     MURextractor.LoadJsonDataIntoDatabase(archivoJson, logs);
@@ -69,7 +69,7 @@ namespace practiquesIEI
                 else if (itemChecked.ToString() == "Comunitat Valenciana")
                 {
                     string directorioAplicacionCV = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativaCsv = Path.Combine(directorioAplicacionCV, "Fuentes de datos", "CV.csv");
+                    string rutaRelativaCsv = Path.Combine(directorioAplicacionCV, "CV.csv");
                     string rutaAbsolutaCsv = Path.GetFullPath(rutaRelativaCsv);
                     string archivoJsonCV = CsvWrapper.ConvertCsvToJson(rutaAbsolutaCsv);
                     CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV, logs);
@@ -77,7 +77,7 @@ namespace practiquesIEI
                 else if (itemChecked.ToString() == "Catalunya")
                 {
                     string directorioAplicacionCAT = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativaXml = Path.Combine(directorioAplicacionCAT, "Fuentes de datos", "CAT.xml");
+                    string rutaRelativaXml = Path.Combine(directorioAplicacionCAT,  "CAT.xml");
                     string rutaAbsolutaXml = Path.GetFullPath(rutaRelativaXml);
                     string archivoJsonCAT = XmlWrapper.ConvertXmlToJson(rutaAbsolutaXml);
                     CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT, logs);
