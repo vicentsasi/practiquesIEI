@@ -86,6 +86,7 @@
             // 
             // button2
             // 
+            this.button2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.button2.Location = new System.Drawing.Point(439, 214);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -93,7 +94,7 @@
             this.button2.Size = new System.Drawing.Size(81, 30);
             this.button2.TabIndex = 5;
             this.button2.Text = "Cargar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label3
@@ -119,7 +120,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(908, 479);
             this.Controls.Add(this.tbLogs);
             this.Controls.Add(this.label3);
