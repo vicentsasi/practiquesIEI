@@ -15,15 +15,18 @@ namespace practiquesIEI.Extractors
 {
     public class CVextractor
     {
-        public static void LoadJsonDataIntoDatabase(string jsonData)
+
+
+        public static void LoadJsonDataIntoDatabase(string jsonData, string logs)
         {
+
             try
             { // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
-                    centro_educativo centro = JsonACentro(dynamicData);
+                    centro_educativo centro = JsonACentro(dynamicData, logs);
                     ListaCentros.Add(centro);
                     provincia provincia = new provincia();
 
@@ -40,7 +43,7 @@ namespace practiquesIEI.Extractors
 
                     if (provincia != null)
                     {
-                        ConexionBD.insertProvincia(provincia);
+                        ConexionBD.insertProvincia(provincia, logs);
                     }
 
                     localidad localidad = new localidad();
@@ -60,7 +63,7 @@ namespace practiquesIEI.Extractors
 
                     if (provincia != null)
                     {
-                        ConexionBD.insertLocalidad(localidad);
+                        ConexionBD.insertLocalidad(localidad, logs);
                     }
 
                 }
@@ -68,18 +71,18 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        Console.WriteLine($"Se inserta el centro {centro.nombre}??");
-                        ConexionBD.insertCentro(centro);
+                        logs += $"Se inserta el centro {centro.nombre}?? \n";
+                        ConexionBD.insertCentro(centro, logs);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}");
+                logs += $"Error al convertir el JSON a objetos: {ex.Message} \n"; 
             }
 
         }
-        static centro_educativo JsonACentro(dynamic dynamicData)
+        static centro_educativo JsonACentro(dynamic dynamicData, string logs)
         {
             try
             {
@@ -91,7 +94,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    Console.WriteLine($"Error: no se puede obtener el nombre del centro");
+                    logs +=$"Error: no se puede obtener el nombre del centro\n";
                     return null;
                 }
                 //diereccion
@@ -105,8 +108,8 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    Console.WriteLine($"Error: no se puede obtener la direccion de {centro.nombre}");
-                    return null;
+                    logs += $"Error: no se puede obtener la direccion de {centro.nombre}\n";          
+                        return null;
                 }
                 // codigo postal
                 if (dynamicData.CODIGO_POSTAL != null && (dynamicData.CODIGO_POSTAL.ToString().Length == 5 || dynamicData.CODIGO_POSTAL.ToString().Length == 4))
@@ -119,7 +122,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    Console.WriteLine($"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes ");
+                    logs+=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
                     return null;
                 }
 
@@ -131,7 +134,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    Console.WriteLine($"El numero de telefono de {centro.nombre} es {dynamicData.TELEFONO.ToString().Length}");
+                    logs+=$"El numero de telefono de {centro.nombre} es {dynamicData.TELEFONO.ToString().Length}\n";
                     return null;
                 }
 
@@ -147,7 +150,7 @@ namespace practiquesIEI.Extractors
                     case "PRIV. CONC.": centro.tipo = tipo_centro.Concertado; break;
                     case "OTROS": centro.tipo = tipo_centro.Otros; break;
                     default:
-                        Console.WriteLine($"El tipo de centro de {centro.nombre} no corresponde con ninguno de los tipos guardados");
+                        logs+=$"El tipo de centro de {centro.nombre} no corresponde con ninguno de los tipos guardados\n";
                         return null;
 
                 }
@@ -159,7 +162,7 @@ namespace practiquesIEI.Extractors
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener los datos para el centro: {ex.Message}");
+                logs+=$"Error al obtener los datos para el centro: {ex.Message}\n";
                 return null;
             }
         }

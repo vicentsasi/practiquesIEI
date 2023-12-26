@@ -4,13 +4,14 @@ using System.IO;
 using System.Runtime.Remoting.Contexts;
 using Aspose.Cells;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
 using practiquesIEI.Entities;
 
 namespace practiquesIEI.Extractors
 {
     public class CATextractor
     {
-        public static void LoadJsonDataIntoDatabase(string jsonData)
+        public static void LoadJsonDataIntoDatabase(string jsonData, string logs)
         {
             try {
                 // Deserializar JSON a una lista de objetos dinámicos
@@ -18,7 +19,7 @@ namespace practiquesIEI.Extractors
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var row in jsontext.response.row.row)
                 {
-                    centro_educativo centro = JsonACentro(row);
+                    centro_educativo centro = JsonACentro(row, logs);
                     ListaCentros.Add(centro);
                     provincia provincia = new provincia();
 
@@ -40,7 +41,7 @@ namespace practiquesIEI.Extractors
 
                     if (provincia != null)
                     {
-                        ConexionBD.insertProvincia(provincia);
+                        ConexionBD.insertProvincia(provincia, logs);
                     }
 
                     localidad localidad = new localidad();
@@ -60,7 +61,7 @@ namespace practiquesIEI.Extractors
 
                     if (localidad != null)
                     {
-                        ConexionBD.insertLocalidad(localidad);
+                        ConexionBD.insertLocalidad(localidad, logs);
                     }
 
                 }
@@ -68,8 +69,8 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        Console.WriteLine($"Se inserta el centro {centro.nombre}??");
-                        ConexionBD.insertCentro(centro);
+                        logs+=$"Se inserta el centro {centro.nombre}??\n";
+                        ConexionBD.insertCentro(centro, logs);
                     }
                 }
 
@@ -78,10 +79,10 @@ namespace practiquesIEI.Extractors
    
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}");
+                logs+=$"Error al convertir el JSON a objetos: {ex.Message}\n";
             }
         }
-        static centro_educativo JsonACentro(dynamic row)
+        static centro_educativo JsonACentro(dynamic row, string logs)
         {
             try
             {
@@ -118,7 +119,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    Console.WriteLine($"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes ");
+                    logs +=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
                     return null;
                 }
 
@@ -164,7 +165,7 @@ namespace practiquesIEI.Extractors
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al convertir el JSON a objeto centro: {ex.Message}");
+                logs += $"Error al convertir el JSON a objeto centro: {ex.Message}\n";
                 return null;
             }
         }

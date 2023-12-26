@@ -16,23 +16,24 @@ namespace practiquesIEI.Extractors
 {
     public class MURextractor
     {
-        public static void LoadJsonDataIntoDatabase(string jsonFilePath)
+        public static void LoadJsonDataIntoDatabase(string jsonFilePath, string logs)
         {
-            try {
+            try
+            {
                 // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonFilePath);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
-                    centro_educativo centro = JsonACentro(dynamicData);
+                    centro_educativo centro = JsonACentro(dynamicData, logs);
                     ListaCentros.Add(centro);
                     //Crear la provincia 
                     provincia provincia = new provincia();
                     if (centro != null)
                     {
                         provincia.codigo = "30";
-                        provincia.nombre= "Múrcia";
-                        ConexionBD.insertProvincia(provincia);
+                        provincia.nombre = "Múrcia";
+                        ConexionBD.insertProvincia(provincia, logs);
                     }
                     //Crear localidad
                     localidad localidad = new localidad();
@@ -46,30 +47,35 @@ namespace practiquesIEI.Extractors
                         }
                         else
                         {
-                            Console.WriteLine($"El codigo postal o nombre de la localidad del centro es erroneo");
+                            logs += $"El codigo postal o nombre de la localidad del centro es erroneo\n";
                             localidad = null;
                         }
                     }
                     else { localidad = null; }
-                    if (localidad != null) {
+                    if (localidad != null)
+                    {
                         localidad.prov_nombre = provincia.nombre;
-                        ConexionBD.insertLocalidad(localidad);
+                        ConexionBD.insertLocalidad(localidad, logs);
                     }
-                   
+
                 }
-                foreach (var centro in ListaCentros) {
-                    if (centro != null) {
-                        Console.WriteLine($"Se inserta el centro {centro.nombre}??");
-                        ConexionBD.insertCentro(centro);
+                foreach (var centro in ListaCentros)
+                {
+                    if (centro != null)
+                    {
+                        logs += $"Se inserta el centro {centro.nombre}??\n";
+                        ConexionBD.insertCentro(centro, logs);
                     }
                 }
             }
-            catch (Exception e) {
-                Console.WriteLine($"Error: {e.Message}");
+            catch (Exception e)
+            {
+                logs += $"Error: {e.Message}\n";
             }
         }
-       
-        public static centro_educativo JsonACentro(dynamic dynamicData) {
+
+        public static centro_educativo JsonACentro(dynamic dynamicData, string logs)
+        {
             centro_educativo centro = new centro_educativo();
             //nombre del centro
             if (dynamicData.dencen != null)
@@ -78,17 +84,17 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                Console.WriteLine($"El nombre del centro es null");
+                logs +=$"El nombre del centro es null\n";
                 return null;
             }
             //codigo postal
             if (dynamicData.cpcen.ToString().Length == 5)
             {
-                centro.cod_postal = dynamicData.cpcen.ToString(); 
+                centro.cod_postal = dynamicData.cpcen.ToString();
             }
             else
             {
-                Console.WriteLine($"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes ");
+                logs +=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
                 return null;
             }
             //telefono
@@ -98,41 +104,45 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                Console.WriteLine($"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos ");
+                logs +=$"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos \n";
                 return null;
             }
             //direccion
-            if (dynamicData.domcen != null) { 
+            if (dynamicData.domcen != null)
+            {
                 centro.direccion = dynamicData.domcen;
             }
             else
             {
-                Console.WriteLine($"La direccion del centro {centro.nombre} es null");
+                logs += $"La direccion del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
                 return null;
             }
             //descripcion
             centro.descripcion = dynamicData.presentacionCorta;
             //latitud
-            if (dynamicData["geo-referencia"]["lat"] != null) {
-                centro.latitud = dynamicData["geo-referencia"]["lat"].ToString().Replace(",",".");
+            if (dynamicData["geo-referencia"]["lat"] != null)
+            {
+                centro.latitud = dynamicData["geo-referencia"]["lat"].ToString().Replace(",", ".");
             }
             else
             {
-                Console.WriteLine($"La latitud del centro {centro.nombre} es null");
+                logs += $"La latitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
                 return null;
             }
             //longitud
-            if (dynamicData["geo-referencia"]["lon"] != null) {
+            if (dynamicData["geo-referencia"]["lon"] != null)
+            {
                 centro.longitud = dynamicData["geo-referencia"]["lon"].ToString().Replace(",", ".");
             }
             else
             {
-                Console.WriteLine($"La longitud del centro {centro.nombre} es null");
+                logs += $"La longitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
                 return null;
             }
 
             //tipo de centro
-            if (dynamicData.titularidad != null) {
+            if (dynamicData.titularidad != null)
+            {
                 string tipo = dynamicData.titularidad;
                 switch (tipo)
                 {
@@ -151,7 +161,10 @@ namespace practiquesIEI.Extractors
             }
             else { return null; }
             return centro;
+
         }
+
+
     }
 }
 

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,7 +29,7 @@ namespace practiquesIEI
             try
             {
                 string connectionString = "" +
-                    "server=172.23.186.115;" +
+                     "server=172.23.186.115;" +
                     "port=3306;" +
                     "user=Administrador;" +
                     "password=root;" +
@@ -42,7 +43,7 @@ namespace practiquesIEI
                 Console.WriteLine($"Error: {e.Message}");
             }
         }
-        public static async void insertCentro(centro_educativo centro) {
+        public static async void insertCentro(centro_educativo centro, string logs) {
             if (conn.State == ConnectionState.Closed)
             {
                 await conn.OpenAsync();
@@ -74,7 +75,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        Console.WriteLine($"El centro {centro.nombre} ya existe en la base de datos.");
+                        logs += $"El centro {centro.nombre} ya existe en la base de datos.\n";
                     }
                     else
                     {
@@ -91,17 +92,17 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@descripcion", centro.descripcion);
                             command.Parameters.AddWithValue("@loc_codigo", centro.loc_codigo);
                             command.ExecuteNonQuery();
-                            Console.WriteLine("Centro insertado correctamente.");
+                            logs += "Centro insertado correctamente.\n";
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+                logs +=$"Error al ejecutar el comando: {e.Message}\n";
             }
         }
-        public static async void insertLocalidad(localidad loc)
+        public static async void insertLocalidad(localidad loc, string logs)
         {
             if (conn.State == ConnectionState.Closed)
             {
@@ -120,7 +121,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        Console.WriteLine($"La localidad {loc.nombre} ya existe en la base de datos.");
+                        logs += $"La localidad {loc.nombre} ya existe en la base de datos.\n";
                     }
                     else
                     {
@@ -131,17 +132,17 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@codigo", loc.codigo);
                             command.Parameters.AddWithValue("@provnombre", loc.prov_nombre);
                             command.ExecuteNonQuery();
-                            Console.WriteLine("Localidad insertada correctamente.");
+                            logs += "Localidad insertada correctamente.\n";
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+                logs += $"Error al ejecutar el comando: {e.Message}\n";
             }
         }
-        public static async void insertProvincia(provincia prov)
+        public static async void insertProvincia(provincia prov, string logs)
         {
             if (conn.State == ConnectionState.Closed)
             {
@@ -160,7 +161,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        Console.WriteLine($"La Provincia {prov.nombre} ya existe en la base de datos.");
+                        logs += $"La Provincia {prov.nombre} ya existe en la base de datos.\n";
                     }
                     else
                     {
@@ -170,14 +171,14 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@nombre", prov.nombre);
                             command.Parameters.AddWithValue("@codigo", prov.codigo);
                             command.ExecuteNonQuery();
-                            Console.WriteLine("Provincia insertada correctamente.");
+                            logs +="Provincia insertada correctamente.\n";
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+                logs += $"Error al ejecutar el comando: {e.Message}\n";
             }
         }
         public static async Task BorrarCentros()
@@ -204,13 +205,64 @@ namespace practiquesIEI
                     $"DELETE FROM provincia", conn))
                 {
                     await command3.ExecuteNonQueryAsync();
-                    Console.WriteLine("Datos  de provincia borrados correctamente.");
+                    Console.WriteLine( "Datos  de provincia borrados correctamente. \n");
+                }
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine($"Error al ejecutar el comando: {e.Message} \n")  ;
+            }
+        }
+
+        public static List<centro_educativo> buscarCentros(string Localidad = "", int codPos = 0, string provincia = "", string  tipo = "") {
+
+            List<centro_educativo> listaCentros = new List<centro_educativo>();
+
+            if (conn.State == ConnectionState.Closed)
+            {
+                 conn.OpenAsync();
+            }
+            try
+            {
+                string consultaExistencia = $"SELECT * " +
+                                            $"FROM centro_educativo C, localidad L " +
+                                            $"WHERE C.loc_codigo = L.loc_codigo ";
+
+                if (Localidad != "" || codPos != 0 || provincia != "" || tipo != "") {
+                    if (Localidad != "") { consultaExistencia += $" AND L.loc_nombre = '{Localidad}' "; }
+                    if (codPos != 0) { consultaExistencia += $" AND C.codigo_postal = '{codPos.ToString()}' "; }
+                    if (provincia != "") { consultaExistencia += $" AND L.prov_nombre = {provincia} "; }
+                    if (tipo != "") { consultaExistencia += $" AND C.tipo = {tipo} "; }
+                }
+                MySqlCommand command1 = new MySqlCommand(consultaExistencia);
+
+                using (MySqlDataReader reader = command1.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        centro_educativo centro = new centro_educativo();
+                        {
+                            centro.nombre = reader["nombre"].ToString();
+                            centro.tipo = (tipo_centro)Enum.Parse(typeof(tipo_centro), reader["tipo"].ToString());
+                            centro.longitud = reader["longitud"].ToString();
+                            centro.latitud = reader["latitud"].ToString();
+                            centro.telefono = Convert.ToInt32(reader["telefono"]);
+                            centro.descripcion = reader["descripcion"].ToString();
+                            centro.direccion = reader["direccion"].ToString();
+                            centro.cod_postal = reader["codigo_postal"].ToString();
+                            centro.loc_codigo = reader["loc_codigo"].ToString();
+                        };
+
+                        listaCentros.Add(centro);
+                    }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
             }
+
+            return listaCentros;
         }
 
     }

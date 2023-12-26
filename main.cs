@@ -17,22 +17,14 @@ namespace practiquesIEI
         /// Punto de entrada principal para la aplicación.
         /// </summary>
         [STAThread]
-        static async Task Main()
-        {   
-            await ConexionBD.Conectar();
-            await ConexionBD.BorrarCentros();
-            //string arxivo = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
-            //CATextractor.LoadJsonDataIntoDatabase(arxivo);
+        static void Main()
+        {
 
-            string arxivo1 = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
-            CVextractor.LoadJsonDataIntoDatabase(arxivo1);
-
-            //string arxivo2 = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-            //MURextractor.LoadJsonDataIntoDatabase(arxivo2);
-
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+             ConexionBD.Conectar();
+            ConexionBD.BorrarCentros();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Búsqueda());
         }
     }
 }
