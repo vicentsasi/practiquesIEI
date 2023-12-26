@@ -29,8 +29,8 @@ namespace practiquesIEI
         private async void button2_Click(object sender, EventArgs e)
         {
             string logs = "";
-            
-            
+
+            ConexionBD.BorrarCentros();
 
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
