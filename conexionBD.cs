@@ -19,6 +19,7 @@ namespace practiquesIEI
     public class ConexionBD
     {
         private static MySqlConnection conn;
+        private static List<string> listCenters;
         public static async Task Conectar()
         {
             Console.WriteLine("Conectando");
@@ -213,14 +214,53 @@ namespace practiquesIEI
                Console.WriteLine($"Error al ejecutar el comando: {e.Message} \n")  ;
             }
         }
-
-        public static List<centro_educativo> buscarCentros(string Localidad = "", int codPos = 0, string provincia = "", string  tipo = "") {
-
-            List<centro_educativo> listaCentros = new List<centro_educativo>();
-
+        public static async Task FindCentrosByLocalidad(string loc) {
             if (conn.State == ConnectionState.Closed)
             {
-                 conn.OpenAsync();
+                await conn.OpenAsync();
+            }
+            try
+            {
+                listCenters = new List<string>();
+                string consulta = $"SELECT * " +
+                                  $"FROM centro_educativo c " +
+                                  $"JOIN localidad l ON l.loc_codigo = c.cod_localidad " +
+                                  $"WHERE l.loc_nombre = @nombre_loc";
+                using (MySqlCommand command = new MySqlCommand(consulta, conn))
+                {
+                    command.Parameters.AddWithValue("@nombre_loc", loc);
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Verifica si hay filas en el resultado
+                        if (reader.HasRows)
+                        {
+                            // Itera a través de las filas
+                            while (reader.Read())
+                            {
+                                string nombre = reader["nombre"].ToString();
+                                Console.WriteLine(nombre);
+                                listCenters.Add(nombre);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No se encontraron resultados.");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {e.Message} \n");
+            }
+
+        }
+        public static List<centro_educativo> buscarCentros(string Localidad, int codPos, string provincia, string  tipo) {
+
+            List <centro_educativo> listaCentros = new List<centro_educativo>();
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.OpenAsync();
             }
             try
             {
@@ -256,14 +296,13 @@ namespace practiquesIEI
                         listaCentros.Add(centro);
                     }
                 }
+                return listaCentros;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al ejecutar el comando: {e.Message}");
+                Console.WriteLine($"Error al conectar con la BD: {e.Message}");
             }
-
             return listaCentros;
         }
-
     }
 }

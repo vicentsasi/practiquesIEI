@@ -8,18 +8,18 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using practiquesIEI.Entities;
 using OpenQA.Selenium.Support.UI;
-
-
-
+using System.Threading.Tasks;
 
 namespace practiquesIEI.Extractors
 {
     public class MURextractor
     {
-        public static void LoadJsonDataIntoDatabase(string jsonFilePath, string logs)
+        public static async Task<string> LoadJsonDataIntoDatabase(string jsonFilePath, string logs)
         {
             try
             {
+                await ConexionBD.Conectar();
+                await ConexionBD.BorrarCentros();
                 // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonFilePath);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
@@ -71,7 +71,9 @@ namespace practiquesIEI.Extractors
             catch (Exception e)
             {
                 logs += $"Error: {e.Message}\n";
+                return logs;
             }
+            return logs;
         }
 
         public static centro_educativo JsonACentro(dynamic dynamicData, string logs)

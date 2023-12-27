@@ -17,10 +17,9 @@ namespace practiquesIEI
 
         List<centro_educativo> centros;
         Carga cargaPrin;
-        public Búsqueda(Carga carga)
+        public Búsqueda()
         {
-            //ConexionBD.Conectar();
-            cargaPrin = carga;  
+            //ConexionBD.Conectar(); 
             InitializeComponent();
             LoadMap();
         }
@@ -41,8 +40,15 @@ namespace practiquesIEI
 
         private void btAceptar_Click(object sender, EventArgs e)
         {
+           
             tbLogs.Text = "";
-            centros = ConexionBD.buscarCentros(tbLocalidad.Text, int.Parse(tbCP.Text), tbProv.Text, cbTipo.SelectedValue.ToString());
+            string localidad = tbLocalidad.Text;
+            int cod_postal= 0;
+            if (tbCP.Text != "") {cod_postal = int.Parse(tbCP.Text); }
+            string provincia = tbProv.Text;
+            string tipo = "";
+            if (cbTipo.SelectedIndex != -1){ tipo = cbTipo.SelectedItem.ToString(); }
+            centros = ConexionBD.buscarCentros(localidad, cod_postal,provincia , tipo);
             foreach (var centro in centros) {
                 tbLogs.Text += $"Centro cargado: {centro.nombre} ";
                 AddMarker(centro.latitud, centro.longitud, centro.nombre);
@@ -58,7 +64,7 @@ namespace practiquesIEI
 
         private void btCerrar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
             cargaPrin.Close();
         }
 

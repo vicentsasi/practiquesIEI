@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting.Contexts;
+using System.Threading.Tasks;
 using Aspose.Cells;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
@@ -11,9 +12,11 @@ namespace practiquesIEI.Extractors
 {
     public class CATextractor
     {
-        public static void LoadJsonDataIntoDatabase(string jsonData, string logs)
+        public static async Task<string> LoadJsonDataIntoDatabase(string jsonData, string logs)
         {
             try {
+                await ConexionBD.Conectar();
+                await ConexionBD.BorrarCentros();
                 // Deserializar JSON a una lista de objetos dinámicos
                 dynamic jsontext = JsonConvert.DeserializeObject<dynamic>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
@@ -81,6 +84,7 @@ namespace practiquesIEI.Extractors
             {
                 logs+=$"Error al convertir el JSON a objetos: {ex.Message}\n";
             }
+            return logs;
         }
         static centro_educativo JsonACentro(dynamic row, string logs)
         {

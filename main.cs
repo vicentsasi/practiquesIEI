@@ -18,18 +18,11 @@ namespace practiquesIEI
         /// Punto de entrada principal para la aplicación.
         /// </summary>
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
-
-            await ConexionBD.Conectar();
-            await ConexionBD.BorrarCentros();
-            string archivoJson = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-            string logs = "";
-            MURextractor.LoadJsonDataIntoDatabase(archivoJson, logs);
-           
-            /*Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Carga());*/
+            Application.Run(new Principal());
         }
     }
 }

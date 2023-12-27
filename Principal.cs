@@ -17,9 +17,16 @@ namespace practiquesIEI
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            new Carga().Show();
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new Búsqueda().Show();
         }
     }
 }

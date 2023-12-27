@@ -10,6 +10,7 @@ using OpenQA.Selenium.DevTools.V117.Debugger;
 using System.Reflection;
 using OpenQA.Selenium.Support.UI;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace practiquesIEI.Extractors
 {
@@ -17,11 +18,13 @@ namespace practiquesIEI.Extractors
     {
 
 
-        public static void LoadJsonDataIntoDatabase(string jsonData, string logs)
+        public static async Task<string> LoadJsonDataIntoDatabase(string jsonData, string logs)
         {
 
             try
             { // Deserializar JSON a una lista de objetos dinámicos
+                await ConexionBD.Conectar();
+                await ConexionBD.BorrarCentros();
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
@@ -80,7 +83,7 @@ namespace practiquesIEI.Extractors
             {
                 logs += $"Error al convertir el JSON a objetos: {ex.Message} \n"; 
             }
-
+            return logs;
         }
         static centro_educativo JsonACentro(dynamic dynamicData, string logs)
         {
