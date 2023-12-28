@@ -24,6 +24,21 @@ namespace practiquesIEI
         }
 
         #region BOTONES
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            tbLogs.Text = "";
+            centros = await ConexionBD.getAllCentros();
+            if (centros != null)
+            {
+                foreach (var centro in centros)
+                {
+                    Console.WriteLine(centro);
+                    tbLogs.Text += $"{centro.nombre}\n";
+                    AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                }
+            }
+            else { tbLogs.Text = "No se han encontrado resultados."; }
+        }
 
         private void cbTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -137,9 +152,5 @@ namespace practiquesIEI
                 MessageBox.Show($"Error al agregar marcador: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
-
     }
 }

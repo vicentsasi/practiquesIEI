@@ -46,6 +46,7 @@
             this.btCarga = new System.Windows.Forms.Button();
             this.btCerrar = new System.Windows.Forms.Button();
             this.wbMapa = new System.Windows.Forms.WebBrowser();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,11 +88,11 @@
             // tbLogs
             // 
             this.tbLogs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbLogs.Location = new System.Drawing.Point(46, 361);
+            this.tbLogs.Location = new System.Drawing.Point(46, 377);
             this.tbLogs.Multiline = true;
             this.tbLogs.Name = "tbLogs";
             this.tbLogs.ReadOnly = true;
-            this.tbLogs.Size = new System.Drawing.Size(447, 304);
+            this.tbLogs.Size = new System.Drawing.Size(448, 288);
             this.tbLogs.TabIndex = 4;
             // 
             // contextMenuStrip1
@@ -102,6 +103,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.btAceptar);
             this.groupBox1.Controls.Add(this.btCancelar);
             this.groupBox1.Controls.Add(this.label5);
@@ -114,7 +116,7 @@
             this.groupBox1.Controls.Add(this.cbTipo);
             this.groupBox1.Location = new System.Drawing.Point(47, 105);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(447, 234);
+            this.groupBox1.Size = new System.Drawing.Size(447, 257);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Informacion";
@@ -124,17 +126,17 @@
             this.btAceptar.BackColor = System.Drawing.SystemColors.Window;
             this.btAceptar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.btAceptar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btAceptar.Location = new System.Drawing.Point(228, 182);
+            this.btAceptar.Location = new System.Drawing.Point(129, 182);
             this.btAceptar.Name = "btAceptar";
             this.btAceptar.Size = new System.Drawing.Size(100, 33);
             this.btAceptar.TabIndex = 9;
-            this.btAceptar.Text = "Aceptar";
+            this.btAceptar.Text = "Buscar";
             this.btAceptar.UseVisualStyleBackColor = false;
             this.btAceptar.Click += new System.EventHandler(this.btAceptar_Click);
             // 
             // btCancelar
             // 
-            this.btCancelar.Location = new System.Drawing.Point(122, 182);
+            this.btCancelar.Location = new System.Drawing.Point(235, 182);
             this.btCancelar.Name = "btCancelar";
             this.btCancelar.Size = new System.Drawing.Size(100, 33);
             this.btCancelar.TabIndex = 8;
@@ -216,6 +218,16 @@
             this.wbMapa.Size = new System.Drawing.Size(615, 560);
             this.wbMapa.TabIndex = 11;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(174, 221);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(127, 29);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Obtener todos";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Búsqueda
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -256,5 +268,6 @@
         private System.Windows.Forms.Button btCarga;
         private System.Windows.Forms.Button btCerrar;
         private System.Windows.Forms.WebBrowser wbMapa;
+        private System.Windows.Forms.Button button1;
     }
 }
