@@ -44,8 +44,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btCarga = new System.Windows.Forms.Button();
-            this.btCerrar = new System.Windows.Forms.Button();
             this.wbMapa = new System.Windows.Forms.WebBrowser();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -120,7 +118,7 @@
             this.groupBox1.Size = new System.Drawing.Size(447, 257);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Informacion";
+            this.groupBox1.Text = "Información";
             // 
             // button1
             // 
@@ -201,47 +199,27 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "Buscador centros educativos";
             // 
-            // btCarga
-            // 
-            this.btCarga.Location = new System.Drawing.Point(57, 603);
-            this.btCarga.Name = "btCarga";
-            this.btCarga.Size = new System.Drawing.Size(189, 36);
-            this.btCarga.TabIndex = 9;
-            this.btCarga.Text = "Carga de datos";
-            this.btCarga.UseVisualStyleBackColor = true;
-            this.btCarga.Click += new System.EventHandler(this.btCarga_Click);
-            // 
-            // btCerrar
-            // 
-            this.btCerrar.Location = new System.Drawing.Point(265, 603);
-            this.btCerrar.Name = "btCerrar";
-            this.btCerrar.Size = new System.Drawing.Size(189, 36);
-            this.btCerrar.TabIndex = 10;
-            this.btCerrar.Text = "Cerrar";
-            this.btCerrar.UseVisualStyleBackColor = true;
-            this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click);
-            // 
             // wbMapa
             // 
             this.wbMapa.Location = new System.Drawing.Point(525, 105);
             this.wbMapa.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbMapa.Name = "wbMapa";
-            this.wbMapa.Size = new System.Drawing.Size(615, 560);
+            this.wbMapa.Size = new System.Drawing.Size(607, 478);
             this.wbMapa.TabIndex = 11;
             // 
             // Búsqueda
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1206, 722);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1174, 609);
             this.Controls.Add(this.wbMapa);
-            this.Controls.Add(this.btCerrar);
-            this.Controls.Add(this.btCarga);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbLogs);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.Name = "Búsqueda";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Búsqueda";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -266,8 +244,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btAceptar;
         private System.Windows.Forms.Button btCancelar;
-        private System.Windows.Forms.Button btCarga;
-        private System.Windows.Forms.Button btCerrar;
         private System.Windows.Forms.WebBrowser wbMapa;
         private System.Windows.Forms.Button button1;
     }

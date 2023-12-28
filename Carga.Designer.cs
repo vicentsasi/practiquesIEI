@@ -115,6 +115,7 @@
             this.ResCarga.Multiline = true;
             this.ResCarga.Name = "ResCarga";
             this.ResCarga.ReadOnly = true;
+            this.ResCarga.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.ResCarga.Size = new System.Drawing.Size(542, 152);
             this.ResCarga.TabIndex = 7;
             this.ResCarga.TextChanged += new System.EventHandler(this.CargarRes);

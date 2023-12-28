@@ -80,19 +80,6 @@ namespace practiquesIEI
             
 
         }
-
-        private void btCarga_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            cargaPrin.Show();
-        }
-
-        private void btCerrar_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            cargaPrin.Close();
-        }
-
         #endregion
         private void LoadMap()
         {
