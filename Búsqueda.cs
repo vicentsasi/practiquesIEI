@@ -32,7 +32,6 @@ namespace practiquesIEI
             {
                 foreach (var centro in centros)
                 {
-                    Console.WriteLine(centro);
                     tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                     AddMarker(centro.latitud, centro.longitud, centro.nombre);
                 }
@@ -63,21 +62,58 @@ namespace practiquesIEI
             if (cbTipo.SelectedIndex != -1) { tipo = cbTipo.SelectedItem.ToString(); }
             string provincia = tbProv.Text;
             string cod_postal = tbCP.Text;
-         
+            
             if (localidad != "" && tipo == "" && provincia == "" && cod_postal == "") {
                 centros = await ConexionBD.FindCentrosByLocalidad(localidad);
                 if (centros != null)
                 {
                     foreach (var centro in centros)
                     {
-                        Console.WriteLine(centro);
                         tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                         AddMarker(centro.latitud, centro.longitud, centro.nombre);
                     }
                 }
                 else { tbLogs.Text = "No se han encontrado resultados."; }
             }
-            
+            if (localidad == "" && tipo != "" && provincia == "" && cod_postal == "")
+            {
+                centros = await ConexionBD.FindCentrosByTipo(tipo);
+                if (centros != null)
+                {
+                    foreach (var centro in centros)
+                    {
+                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                    }
+                }
+                else { tbLogs.Text = "No se han encontrado resultados."; }
+            }
+            if (localidad == "" && tipo == "" && provincia != "" && cod_postal == "")
+            {
+                centros = await ConexionBD.FindCentrosByProvincia(provincia);
+                if (centros != null)
+                {
+                    foreach (var centro in centros)
+                    {
+                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                    }
+                }
+                else { tbLogs.Text = "No se han encontrado resultados."; }
+            }
+            if (localidad == "" && tipo == "" && provincia == "" && cod_postal != "")
+            {
+                centros = await ConexionBD.FindCentrosByCod_Postal(cod_postal);
+                if (centros != null)
+                {
+                    foreach (var centro in centros)
+                    {
+                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                    }
+                }
+                else { tbLogs.Text = "No se han encontrado resultados."; }
+            }
 
         }
         #endregion

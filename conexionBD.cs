@@ -55,7 +55,6 @@ namespace practiquesIEI
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM centro_educativo " +
                                             $"WHERE nombre = @nombre AND " +
-                                                  $"tipo = @tipo AND " +
                                                   $"direccion = @direccion AND " +
                                                   $"codigo_postal = @cod_postal AND " +
                                                   $"longitud = @longitud AND " +
@@ -65,7 +64,6 @@ namespace practiquesIEI
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
                     commandExistencia.Parameters.AddWithValue("@nombre", centro.nombre);
-                    commandExistencia.Parameters.AddWithValue("@tipo", centro.tipo);
                     commandExistencia.Parameters.AddWithValue("@direccion", centro.direccion);
                     commandExistencia.Parameters.AddWithValue("@cod_postal", centro.cod_postal);
                     commandExistencia.Parameters.AddWithValue("@longitud", centro.longitud);
@@ -332,7 +330,7 @@ namespace practiquesIEI
                                   $"WHERE p.prov_nombre = @nombre_prov";
                 using (MySqlCommand command = new MySqlCommand(consulta, conn))
                 {
-                    command.Parameters.AddWithValue("@nombre_loc", prov);
+                    command.Parameters.AddWithValue("@nombre_prov", prov);
                     using (MySqlDataReader reader = command.ExecuteReader())
                     {
                         // Verifica si hay filas en el resultado

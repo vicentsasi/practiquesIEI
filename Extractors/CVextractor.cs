@@ -72,14 +72,14 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        logs += $"Se inserta el centro {centro.nombre}?? \n";
-                        ConexionBD.insertCentro(centro, logs);
+                        logs += $"Se inserta el centro {centro.nombre}?? \r\n";
+                        logs = await ConexionBD.insertCentro(centro, logs);
                     }
                 }
             }
             catch (Exception ex)
             {
-                logs += $"Error al convertir el JSON a objetos: {ex.Message} \n"; 
+                logs += $"Error al convertir el JSON a objetos: {ex.Message} \r\n"; 
             }
             return logs;
         }
@@ -95,7 +95,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    logs +=$"Error: no se puede obtener el nombre del centro\n";
+                    logs +=$"Error: no se puede obtener el nombre del centro\r\n";
                     return null;
                 }
                 //diereccion
@@ -109,7 +109,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    logs += $"Error: no se puede obtener la direccion de {centro.nombre}\n";          
+                    logs += $"Error: no se puede obtener la direccion de {centro.nombre}\r\n";          
                         return null;
                 }
                 // codigo postal
@@ -123,7 +123,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    logs+=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
+                    logs+=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes\r\n";
                     return null;
                 }
 
@@ -135,7 +135,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    logs+=$"El numero de telefono de {centro.nombre} es {dynamicData.TELEFONO.ToString().Length}\n";
+                    logs+=$"El numero de telefono de {centro.nombre} es {dynamicData.TELEFONO.ToString().Length}\r\n";
                     return null;
                 }
 
@@ -151,7 +151,7 @@ namespace practiquesIEI.Extractors
                     case "PRIV. CONC.": centro.tipo = tipo_centro.Concertado; break;
                     case "OTROS": centro.tipo = tipo_centro.Otros; break;
                     default:
-                        logs+=$"El tipo de centro de {centro.nombre} no corresponde con ninguno de los tipos guardados\n";
+                        logs+=$"El tipo de centro de {centro.nombre} no corresponde con ninguno de los tipos guardados\r\n";
                         return null;
 
                 }
@@ -163,7 +163,7 @@ namespace practiquesIEI.Extractors
             }
             catch (Exception ex)
             {
-                logs+=$"Error al obtener los datos para el centro: {ex.Message}\n";
+                logs+=$"Error al obtener los datos para el centro: {ex.Message}\r\n";
                 return null;
             }
         }

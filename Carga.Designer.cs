@@ -110,13 +110,13 @@
             // 
             // ResCarga
             // 
-            this.ResCarga.Location = new System.Drawing.Point(228, 404);
+            this.ResCarga.Location = new System.Drawing.Point(177, 390);
             this.ResCarga.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ResCarga.Multiline = true;
             this.ResCarga.Name = "ResCarga";
             this.ResCarga.ReadOnly = true;
             this.ResCarga.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ResCarga.Size = new System.Drawing.Size(542, 269);
+            this.ResCarga.Size = new System.Drawing.Size(623, 278);
             this.ResCarga.TabIndex = 7;
             this.ResCarga.TextChanged += new System.EventHandler(this.CargarRes);
             // 

@@ -30,8 +30,6 @@ namespace practiquesIEI
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            
-           
             ResCarga.Text = "";
             logs = "";
 
