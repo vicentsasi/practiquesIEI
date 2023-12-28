@@ -45,7 +45,7 @@ namespace practiquesIEI.Extractors
                         }
                         else
                         {
-                            logs += $"El codigo postal o nombre de la localidad del centro es erroneo\n";
+                            logs += $"El codigo postal o nombre de la localidad del centro es erroneo\r\n";
                             localidad = null;
                         }
                     }
@@ -61,15 +61,15 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        logs += $"Se inserta el centro {centro.nombre}?\n";
-                        ConexionBD.insertCentro(centro, logs);
+                        logs += $"Se inserta el centro {centro.nombre}?\r\n";
+                        logs = await ConexionBD.insertCentro(centro, logs);
                     }
                 }
             }
             catch (Exception e)
             {
                 logs += $"Error: {e.Message}\n";
-                return logs;
+                
             }
             return logs;
         }
@@ -84,7 +84,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs +=$"El nombre del centro es null\n";
+                logs +="El centro no se inserta en la BD porque nombre es null\r\n";
                 return null;
             }
             //codigo postal
@@ -94,7 +94,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs +=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
+                logs +=$"Se descarta {centro.nombre} porque su codigo postal es nulo o no tiene el numero de digitos correspondientes \r\n";
                 return null;
             }
             //telefono
@@ -104,7 +104,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs +=$"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos \n";
+                logs +=$"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos \r\n";
                 return null;
             }
             //direccion
@@ -114,7 +114,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs += $"La direccion del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
+                logs += $"La direccion del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
                 return null;
             }
             //descripcion
@@ -126,7 +126,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs += $"La latitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
+                logs += $"La latitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
                 return null;
             }
             //longitud
@@ -136,7 +136,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs += $"La longitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \n";
+                logs += $"La longitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
                 return null;
             }
 

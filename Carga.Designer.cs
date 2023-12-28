@@ -116,7 +116,7 @@
             this.ResCarga.Name = "ResCarga";
             this.ResCarga.ReadOnly = true;
             this.ResCarga.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ResCarga.Size = new System.Drawing.Size(542, 152);
+            this.ResCarga.Size = new System.Drawing.Size(542, 269);
             this.ResCarga.TabIndex = 7;
             this.ResCarga.TextChanged += new System.EventHandler(this.CargarRes);
             // 
@@ -125,7 +125,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1022, 599);
+            this.ClientSize = new System.Drawing.Size(1043, 711);
             this.Controls.Add(this.ResCarga);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);

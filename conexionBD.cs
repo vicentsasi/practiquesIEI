@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -44,15 +45,13 @@ namespace practiquesIEI
                 Console.WriteLine($"Error: {e.Message}");
             }
         }
-        public static async void insertCentro(centro_educativo centro, string logs) {
+        public static async Task<string> insertCentro(centro_educativo centro, string logs) {
             if (conn.State == ConnectionState.Closed)
             {
                 await conn.OpenAsync();
             }
             try
             {
-      
-
                 string consultaExistencia = $"SELECT COUNT(*) " +
                                             $"FROM centro_educativo " +
                                             $"WHERE nombre = @nombre AND " +
@@ -76,7 +75,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        logs += $"El centro {centro.nombre} ya existe en la base de datos.\n";
+                        logs += $"El centro {centro.nombre} ya existe en la base de datos.\r\n";
                     }
                     else
                     {
@@ -93,15 +92,16 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@descripcion", centro.descripcion);
                             command.Parameters.AddWithValue("@loc_codigo", centro.loc_codigo);
                             command.ExecuteNonQuery();
-                            logs += "Centro insertado correctamente.\n";
+                            logs += "Centro insertado correctamente.\r\n";
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                logs +=$"Error al ejecutar el comando: {e.Message}\n";
+                logs +=$"Error al ejecutar el comando: {e.Message}\r\n";
             }
+            return logs;
         }
         public static async void insertLocalidad(localidad loc, string logs)
         {

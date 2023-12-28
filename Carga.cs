@@ -33,6 +33,7 @@ namespace practiquesIEI
             
            
             ResCarga.Text = "";
+            logs = "";
 
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
