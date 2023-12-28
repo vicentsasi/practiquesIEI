@@ -36,6 +36,7 @@
             this.tbLogs = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.btAceptar = new System.Windows.Forms.Button();
             this.btCancelar = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -46,7 +47,6 @@
             this.btCarga = new System.Windows.Forms.Button();
             this.btCerrar = new System.Windows.Forms.Button();
             this.wbMapa = new System.Windows.Forms.WebBrowser();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,7 +92,8 @@
             this.tbLogs.Multiline = true;
             this.tbLogs.Name = "tbLogs";
             this.tbLogs.ReadOnly = true;
-            this.tbLogs.Size = new System.Drawing.Size(448, 288);
+            this.tbLogs.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbLogs.Size = new System.Drawing.Size(448, 206);
             this.tbLogs.TabIndex = 4;
             // 
             // contextMenuStrip1
@@ -121,12 +122,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Informacion";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(163, 217);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(138, 33);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Obtener todos";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // btAceptar
             // 
             this.btAceptar.BackColor = System.Drawing.SystemColors.Window;
             this.btAceptar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.btAceptar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btAceptar.Location = new System.Drawing.Point(129, 182);
+            this.btAceptar.Location = new System.Drawing.Point(47, 217);
             this.btAceptar.Name = "btAceptar";
             this.btAceptar.Size = new System.Drawing.Size(100, 33);
             this.btAceptar.TabIndex = 9;
@@ -136,7 +147,7 @@
             // 
             // btCancelar
             // 
-            this.btCancelar.Location = new System.Drawing.Point(235, 182);
+            this.btCancelar.Location = new System.Drawing.Point(313, 217);
             this.btCancelar.Name = "btCancelar";
             this.btCancelar.Size = new System.Drawing.Size(100, 33);
             this.btCancelar.TabIndex = 8;
@@ -192,7 +203,7 @@
             // 
             // btCarga
             // 
-            this.btCarga.Location = new System.Drawing.Point(47, 689);
+            this.btCarga.Location = new System.Drawing.Point(57, 603);
             this.btCarga.Name = "btCarga";
             this.btCarga.Size = new System.Drawing.Size(189, 36);
             this.btCarga.TabIndex = 9;
@@ -202,7 +213,7 @@
             // 
             // btCerrar
             // 
-            this.btCerrar.Location = new System.Drawing.Point(255, 689);
+            this.btCerrar.Location = new System.Drawing.Point(265, 603);
             this.btCerrar.Name = "btCerrar";
             this.btCerrar.Size = new System.Drawing.Size(189, 36);
             this.btCerrar.TabIndex = 10;
@@ -218,20 +229,10 @@
             this.wbMapa.Size = new System.Drawing.Size(615, 560);
             this.wbMapa.TabIndex = 11;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(174, 221);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(127, 29);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Obtener todos";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // Búsqueda
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1168, 743);
+            this.ClientSize = new System.Drawing.Size(1206, 722);
             this.Controls.Add(this.wbMapa);
             this.Controls.Add(this.btCerrar);
             this.Controls.Add(this.btCarga);

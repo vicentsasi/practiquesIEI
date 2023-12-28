@@ -33,7 +33,7 @@ namespace practiquesIEI
                 foreach (var centro in centros)
                 {
                     Console.WriteLine(centro);
-                    tbLogs.Text += $"{centro.nombre}\n";
+                    tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                     AddMarker(centro.latitud, centro.longitud, centro.nombre);
                 }
             }
@@ -71,7 +71,7 @@ namespace practiquesIEI
                     foreach (var centro in centros)
                     {
                         Console.WriteLine(centro);
-                        tbLogs.Text += $"{centro.nombre}\n";
+                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                         AddMarker(centro.latitud, centro.longitud, centro.nombre);
                     }
                 }
