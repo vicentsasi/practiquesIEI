@@ -19,7 +19,6 @@ namespace practiquesIEI
     public class ConexionBD
     {
         private static MySqlConnection conn;
-        private static List<string> listCenters;
         public static async Task Conectar()
         {
             Console.WriteLine("Conectando");
@@ -38,6 +37,7 @@ namespace practiquesIEI
                 conn = new MySqlConnection(connectionString);
                 await conn.OpenAsync();
                 Console.WriteLine("Conectado");
+                await BorrarCentros();
             }
             catch (Exception e)
             {
@@ -214,14 +214,16 @@ namespace practiquesIEI
                Console.WriteLine($"Error al ejecutar el comando: {e.Message} \n")  ;
             }
         }
-        public static async Task FindCentrosByLocalidad(string loc) {
+        public static async Task<List<centro_educativo>> FindCentrosByLocalidad(string loc) {
+
+            List<centro_educativo> listCenters = new List<centro_educativo>();
+
             if (conn.State == ConnectionState.Closed)
             {
                 await conn.OpenAsync();
             }
             try
             {
-                listCenters = new List<string>();
                 string consulta = $"SELECT * " +
                                   $"FROM centro_educativo c " +
                                   $"JOIN localidad l ON l.loc_codigo = c.cod_localidad " +
@@ -237,14 +239,21 @@ namespace practiquesIEI
                             // Itera a través de las filas
                             while (reader.Read())
                             {
-                                string nombre = reader["nombre"].ToString();
-                                Console.WriteLine(nombre);
-                                listCenters.Add(nombre);
+                                centro_educativo centro = new centro_educativo();
+                                centro.nombre = reader["nombre"].ToString();
+                                centro.latitud = reader["latitud"].ToString();
+                                centro.longitud = reader["longitud"].ToString();
+                                //centro.tipo = reader["tipo"].ToString();
+                                centro.cod_postal = reader["codigo_postal"].ToString();
+                                centro.telefono = int.Parse(reader["telefono"].ToString());
+                                centro.descripcion = reader["descripcion"].ToString();
+                                centro.direccion = reader["direccion"].ToString();
+                                listCenters.Add(centro);
                             }
                         }
                         else
                         {
-                            Console.WriteLine("No se encontraron resultados.");
+                            return null;
                         }
                     }
                 }
@@ -253,7 +262,7 @@ namespace practiquesIEI
             {
                 Console.WriteLine($"Error al ejecutar el comando: {e.Message} \n");
             }
-
+            return listCenters;
         }
         public static List<centro_educativo> buscarCentros(string Localidad, int codPos, string provincia, string  tipo) {
 

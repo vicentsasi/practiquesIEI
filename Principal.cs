@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +15,12 @@ namespace practiquesIEI
     {
         public Principal()
         {
+            //Conecta en la BD i borra els datos existents(esta tot dins del metodo conectar)
+            Load();
             InitializeComponent();
+        }
+        public static async Task Load() {
+            await ConexionBD.Conectar();
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -19,7 +19,6 @@ namespace practiquesIEI
         Carga cargaPrin;
         public Búsqueda()
         {
-            //ConexionBD.Conectar(); 
             InitializeComponent();
             LoadMap();
         }
@@ -34,25 +33,36 @@ namespace practiquesIEI
         private void btCancelar_Click(object sender, EventArgs e)
         {
             // Llamada a la función para agregar marcadores
-            AddMarker("41.3851", "2.1734", "Barcelona, España");
+            //AddMarker("41.3851", "2.1734", "Barcelona, España");
+            this.Hide();
+            new Principal().Show();
 
         }
 
-        private void btAceptar_Click(object sender, EventArgs e)
+        private async void btAceptar_Click(object sender, EventArgs e)
         {
            
             tbLogs.Text = "";
             string localidad = tbLocalidad.Text;
-            int cod_postal= 0;
-            if (tbCP.Text != "") {cod_postal = int.Parse(tbCP.Text); }
+            string tipo ="";
+            if (cbTipo.SelectedIndex != -1) { tipo = cbTipo.SelectedItem.ToString(); }
             string provincia = tbProv.Text;
-            string tipo = "";
-            if (cbTipo.SelectedIndex != -1){ tipo = cbTipo.SelectedItem.ToString(); }
-            centros = ConexionBD.buscarCentros(localidad, cod_postal,provincia , tipo);
-            foreach (var centro in centros) {
-                tbLogs.Text += $"Centro cargado: {centro.nombre} ";
-                AddMarker(centro.latitud, centro.longitud, centro.nombre);
+            string cod_postal = tbCP.Text;
+         
+            if (localidad != "" && tipo == "" && provincia == "" && cod_postal == "") {
+                centros = await ConexionBD.FindCentrosByLocalidad(localidad);
+                if (centros != null)
+                {
+                    foreach (var centro in centros)
+                    {
+                        Console.WriteLine(centro);
+                        tbLogs.Text += $"{centro.nombre}\n";
+                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                    }
+                }
+                else { tbLogs.Text = "No se han encontrado resultados."; }
             }
+            
 
         }
 

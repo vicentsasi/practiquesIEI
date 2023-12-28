@@ -15,8 +15,6 @@ namespace practiquesIEI.Extractors
         public static async Task<string> LoadJsonDataIntoDatabase(string jsonData, string logs)
         {
             try {
-                await ConexionBD.Conectar();
-                await ConexionBD.BorrarCentros();
                 // Deserializar JSON a una lista de objetos dinámicos
                 dynamic jsontext = JsonConvert.DeserializeObject<dynamic>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();

@@ -23,8 +23,6 @@ namespace practiquesIEI.Extractors
 
             try
             { // Deserializar JSON a una lista de objetos dinámicos
-                await ConexionBD.Conectar();
-                await ConexionBD.BorrarCentros();
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)

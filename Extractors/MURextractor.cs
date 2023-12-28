@@ -18,8 +18,6 @@ namespace practiquesIEI.Extractors
         {
             try
             {
-                await ConexionBD.Conectar();
-                await ConexionBD.BorrarCentros();
                 // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonFilePath);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
@@ -63,7 +61,7 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        logs += $"Se inserta el centro {centro.nombre}??\n";
+                        logs += $"Se inserta el centro {centro.nombre}?\n";
                         ConexionBD.insertCentro(centro, logs);
                     }
                 }
