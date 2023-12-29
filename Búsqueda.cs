@@ -33,7 +33,7 @@ namespace practiquesIEI
                 foreach (var centro in centros)
                 {
                     tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                    AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                    AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                 }
             }
             else { tbLogs.Text = "No se han encontrado resultados."; }
@@ -70,7 +70,7 @@ namespace practiquesIEI
                     foreach (var centro in centros)
                     {
                         tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
                 else { tbLogs.Text = "No se han encontrado resultados."; }
@@ -83,7 +83,7 @@ namespace practiquesIEI
                     foreach (var centro in centros)
                     {
                         tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
                 else { tbLogs.Text = "No se han encontrado resultados."; }
@@ -96,7 +96,7 @@ namespace practiquesIEI
                     foreach (var centro in centros)
                     {
                         tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
                 else { tbLogs.Text = "No se han encontrado resultados."; }
@@ -109,7 +109,7 @@ namespace practiquesIEI
                     foreach (var centro in centros)
                     {
                         tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, centro.nombre);
+                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
                 else { tbLogs.Text = "No se han encontrado resultados."; }
@@ -151,8 +151,8 @@ namespace practiquesIEI
                                     }
 
 
-                                    // Agrega un marcador en Valencia
-                                    addMarker(39.4699,-0.3763,'Valencia, España')
+                                    
+                                   
                                 </script>
                             </body>
                             </html>

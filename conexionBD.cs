@@ -239,8 +239,8 @@ namespace practiquesIEI
                             {
                                 centro_educativo centro = new centro_educativo();
                                 centro.nombre = reader["nombre"].ToString();
-                                centro.latitud = reader["latitud"].ToString();
-                                centro.longitud = reader["longitud"].ToString();
+                                centro.latitud = reader["latitud"].ToString().Replace(',', '.');
+                                centro.longitud = reader["longitud"].ToString().Replace(',', '.');
                                 //centro.tipo = reader["tipo"].ToString();
                                 centro.cod_postal = reader["codigo_postal"].ToString();
                                 centro.telefono = int.Parse(reader["telefono"].ToString());
@@ -289,8 +289,8 @@ namespace practiquesIEI
                             {
                                 centro_educativo centro = new centro_educativo();
                                 centro.nombre = reader["nombre"].ToString();
-                                centro.latitud = reader["latitud"].ToString();
-                                centro.longitud = reader["longitud"].ToString();
+                                centro.latitud = reader["latitud"].ToString().Replace(',', '.');
+                                centro.longitud = reader["longitud"].ToString().Replace(',', '.');
                                 //centro.tipo = reader["tipo"].ToString();
                                 centro.cod_postal = reader["codigo_postal"].ToString();
                                 centro.telefono = int.Parse(reader["telefono"].ToString());
@@ -341,8 +341,8 @@ namespace practiquesIEI
                             {
                                 centro_educativo centro = new centro_educativo();
                                 centro.nombre = reader["nombre"].ToString();
-                                centro.latitud = reader["latitud"].ToString();
-                                centro.longitud = reader["longitud"].ToString();
+                                centro.latitud = reader["latitud"].ToString().Replace(',', '.');
+                                centro.longitud = reader["longitud"].ToString().Replace(',', '.');
                                 //centro.tipo = reader["tipo"].ToString();
                                 centro.cod_postal = reader["codigo_postal"].ToString();
                                 centro.telefono = int.Parse(reader["telefono"].ToString());
@@ -391,8 +391,8 @@ namespace practiquesIEI
                             {
                                 centro_educativo centro = new centro_educativo();
                                 centro.nombre = reader["nombre"].ToString();
-                                centro.latitud = reader["latitud"].ToString();
-                                centro.longitud = reader["longitud"].ToString();
+                                centro.latitud = reader["latitud"].ToString().Replace(',', '.');
+                                centro.longitud = reader["longitud"].ToString().Replace(',', '.');
                                 //centro.tipo = reader["tipo"].ToString();
                                 centro.cod_postal = reader["codigo_postal"].ToString();
                                 centro.telefono = int.Parse(reader["telefono"].ToString());
@@ -439,8 +439,8 @@ namespace practiquesIEI
                             {
                                 centro_educativo centro = new centro_educativo();
                                 centro.nombre = reader["nombre"].ToString();
-                                centro.latitud = reader["latitud"].ToString();
-                                centro.longitud = reader["longitud"].ToString();
+                                centro.latitud = reader["latitud"].ToString().Replace(',', '.');
+                                centro.longitud = reader["longitud"].ToString().Replace(',', '.');
                                 //centro.tipo = reader["tipo"].ToString();
                                 centro.cod_postal = reader["codigo_postal"].ToString();
                                 centro.telefono = int.Parse(reader["telefono"].ToString());
