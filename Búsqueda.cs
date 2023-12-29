@@ -1,4 +1,5 @@
-﻿using practiquesIEI.Entities;
+﻿using OpenQA.Selenium.DevTools;
+using practiquesIEI.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,6 +27,7 @@ namespace practiquesIEI
         #region BOTONES
         private async void button1_Click(object sender, EventArgs e)
         {
+            wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
             tbLogs.Text = "";
             centros = await ConexionBD.getAllCentros();
             if (centros != null)
@@ -55,7 +57,7 @@ namespace practiquesIEI
 
         private async void btAceptar_Click(object sender, EventArgs e)
         {
-           
+            wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
             tbLogs.Text = "";
             string localidad = tbLocalidad.Text;
             string tipo ="";
@@ -145,9 +147,18 @@ namespace practiquesIEI
 
                                     L.control.scale().addTo(map);
 
+                                    var markers = [];
                                     function addMarker(lat, lng, popupText) {
                                     var marker = L.marker([lat, lng]).addTo(map);
                                     marker.bindPopup(popupText);
+                                    markers.push(marker);
+                                    }
+
+                                    function removeAllMarkers() {
+                                        for (var i = 0; i < markers.length; i++) {
+                                            map.removeLayer(markers[i]); // Elimina el marcador del mapa
+                                        }
+                                        markers = []; // Vacía el array de marcadores
                                     }
 
 
