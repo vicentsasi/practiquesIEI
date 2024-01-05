@@ -171,12 +171,21 @@ namespace practiquesIEI.Extractors
         public static void GetLatitudyLongitud(string direccion, centro_educativo centro)
         {
             ChromeOptions options = new ChromeOptions();
-            options.AddArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-software-rasterizer", "--disable-dev-shm-usage", "--disable-extensions");
+            options.AddArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-software-rasterizer", "--disable-dev-shm-usage", "--disable-extensions", "--disable-notifications");
             options.AddArguments("--silent", "--disable-logging", "--log-level=3", "--log-file=log.txt");
+            options.AddArgument("service.silent");
 
             // Iniciar el navegador Chrome
             using (var driver = new ChromeDriver(options))
             {
+                StreamWriter writer = new StreamWriter(Console.OpenStandardOutput());
+                writer.AutoFlush = true;
+                Console.SetOut(writer);
+
+                StreamWriter errorWriter = new StreamWriter(Console.OpenStandardError());
+                errorWriter.AutoFlush = true;
+                Console.SetError(errorWriter);
+
                 try
                 {
                     // Navegar a la URL de Nominatim para obtener la latitud y longitud
