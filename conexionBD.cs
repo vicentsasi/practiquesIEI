@@ -59,8 +59,7 @@ namespace practiquesIEI
                                                   $"codigo_postal = @cod_postal AND " +
                                                   $"longitud = @longitud AND " +
                                                   $"latitud = @latitud AND " +
-                                                  $"telefono = @telefono AND " +
-                                                  $"descripcion = @descripcion";
+                                                  $"telefono = @telefono ";
                 using (MySqlCommand commandExistencia = new MySqlCommand(consultaExistencia, conn))
                 {
                     commandExistencia.Parameters.AddWithValue("@nombre", centro.nombre);
@@ -69,7 +68,6 @@ namespace practiquesIEI
                     commandExistencia.Parameters.AddWithValue("@longitud", centro.longitud);
                     commandExistencia.Parameters.AddWithValue("@latitud", centro.latitud);
                     commandExistencia.Parameters.AddWithValue("@telefono", centro.telefono);
-                    commandExistencia.Parameters.AddWithValue("@descripcion", centro.descripcion);
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {

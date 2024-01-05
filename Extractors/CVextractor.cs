@@ -155,7 +155,7 @@ namespace practiquesIEI.Extractors
                         return null;
 
                 }
-                GetLatitudyLongitud(centro.direccion, centro);
+                GetLatitudyLongitud(centro.direccion+","+ centro.cod_postal, centro);
                 //centro.longitud = "22.02";
                 //centro.latitud = "22.02";
 
