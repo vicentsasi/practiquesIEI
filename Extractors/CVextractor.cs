@@ -171,7 +171,8 @@ namespace practiquesIEI.Extractors
         public static void GetLatitudyLongitud(string direccion, centro_educativo centro)
         {
             ChromeOptions options = new ChromeOptions();
-            options.AddArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-software-rasterizer", "--disable-dev-shm-usage", "--silent");
+            options.AddArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-software-rasterizer", "--disable-dev-shm-usage", "--disable-extensions");
+            options.AddArguments("--silent", "--disable-logging", "--log-level=3", "--log-file=log.txt");
 
             // Iniciar el navegador Chrome
             using (var driver = new ChromeDriver(options))
