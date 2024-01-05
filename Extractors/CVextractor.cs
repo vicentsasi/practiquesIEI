@@ -173,19 +173,13 @@ namespace practiquesIEI.Extractors
             ChromeOptions options = new ChromeOptions();
             options.AddArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-software-rasterizer", "--disable-dev-shm-usage", "--disable-extensions", "--disable-notifications");
             options.AddArguments("--silent", "--disable-logging", "--log-level=3", "--log-file=log.txt");
-            options.AddArgument("service.silent");
+
+            ChromeDriverService driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;  // Esto oculta la ventana de consola
 
             // Iniciar el navegador Chrome
-            using (var driver = new ChromeDriver(options))
+            using (var driver = new ChromeDriver(driverService, options))
             {
-                StreamWriter writer = new StreamWriter(Console.OpenStandardOutput());
-                writer.AutoFlush = true;
-                Console.SetOut(writer);
-
-                StreamWriter errorWriter = new StreamWriter(Console.OpenStandardError());
-                errorWriter.AutoFlush = true;
-                Console.SetError(errorWriter);
-
                 try
                 {
                     // Navegar a la URL de Nominatim para obtener la latitud y longitud
