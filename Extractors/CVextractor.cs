@@ -168,66 +168,57 @@ namespace practiquesIEI.Extractors
             }
         }
 
-        private static void GetLatitudyLongitud(string address, centro_educativo centro)
+        public static void GetLatitudyLongitud(string direccion, centro_educativo centro)
         {
-            try
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless");
+            options.AddArgument("--disable-gpu");
+
+            // Iniciar el navegador Chrome
+            using (var driver = new ChromeDriver(options))
             {
-                //ChromeOptions options = new ChromeOptions();
-                //options.AddArgument("--headless"); // Ejecutar en modo sin cabeza (headless)
-                //options.AddArgument("--disable-extensions");
-                //options.AddArgument("--disable-popup-blocking");
-                //options.AddArgument("--disable-infobars");
-                //options.AddArgument("--disable-dev-shm-usage");
-                //options.AddArgument("--no-sandbox");
-                //options.AddArgument("--disable-gpu");
-
-
-                using (var driver = new ChromeDriver())
+                try
                 {
-                    driver.Navigate().GoToUrl($"https://www.coordenadas-gps.com");
+                    // Navegar a la URL de Nominatim para obtener la latitud y longitud
+                    driver.Navigate().GoToUrl($"https://nominatim.openstreetmap.org/search?format=json&q={direccion}");
 
-                    // Esperar un tiempo fijo para dar tiempo a que la página cargue
-                    System.Threading.Thread.Sleep(000);
+                    // Esperar a que la página se cargue completamente
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    wait.Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
 
-                    // Ingresa la dirección
-                    IWebElement addressInput = driver.FindElement(By.Id("address"));
-                    addressInput.Clear();
-                    addressInput.SendKeys(address);
+                    // Obtener la respuesta en formato JSON
+                    string responseJson = driver.FindElement(By.TagName("pre")).Text;
 
-                    // Haz clic en el botón
-                    driver.FindElement(By.CssSelector("button.btn.btn-primary[onclick='codeAddress()']")).Click();
+                    // Deserializar la respuesta JSON
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(responseJson);
 
-                    // Esperar un tiempo fijo para dar tiempo a que la latitud se actualice
-                    System.Threading.Thread.Sleep(1000);
-
-                    try
+                    // Verificar si se obtuvo alguna información de geolocalización
+                    if (jsonResponse.Count > 0)
                     {
-                        IAlert alert = driver.SwitchTo().Alert();
-                        string alertText = alert.Text;
-                        Console.WriteLine("Texto de la alerta: " + alertText);
-                        alert.Accept();
+                        // Obtener las coordenadas (latitud y longitud)
+                        centro.latitud = jsonResponse[0].lat;
+                        centro.longitud = jsonResponse[0].lon;
                     }
-                    catch (NoAlertPresentException)
+                    else
                     {
-
-                        Console.WriteLine("No se encontró ninguna alerta.");
+                        // Manejar el caso en el que no se encuentre la geolocalización
+                        centro.latitud = null;
+                        centro.longitud = null;
+                        Console.WriteLine("No se ha podido obtener la geolocalización");
                     }
-
-                    // Obtener y devolver el valor de latitud
-                    IWebElement latInput = driver.FindElement(By.Id("latitude"));
-                     centro.latitud = latInput.GetAttribute("value");
-                    centro.latitud =  centro.latitud.Replace(",", ".");
-                    IWebElement lonInput = driver.FindElement(By.Id("longitude"));
-                     centro.longitud = lonInput.GetAttribute("value");
-                    centro.longitud = centro.longitud.Replace(",", ".");
-                    driver.Close();
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener la latitud: {ex.Message}");
-                centro.latitud = null;
-                centro.longitud = null;
+                catch (Exception ex)
+                {
+                    // Manejar cualquier excepción que pueda ocurrir durante la obtención de la geolocalización
+                    centro.latitud = null;
+                    centro.longitud = null;
+                    Console.WriteLine($"Error al obtener la geolocalización: {ex.Message}");
+                }
+                finally
+                {
+                    // Cerrar el navegador
+                    driver.Quit();
+                }
             }
         }
 
