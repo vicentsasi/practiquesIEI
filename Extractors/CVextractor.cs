@@ -17,17 +17,21 @@ namespace practiquesIEI.Extractors
     public class CVextractor
     {
 
-
-        public static async Task<string> LoadJsonDataIntoDatabase(string jsonData, string logs)
+        public static string eliminados;
+        public static string reparados;
+        public static int inserts;
+        public static async Task LoadJsonDataIntoDatabase(string jsonData)
         {
-
+            eliminados = "";
+            reparados = "";
+            inserts = 0;
             try
             { // Deserializar JSON a una lista de objetos dinámicos
                 List<dynamic> dynamicDataList = JsonConvert.DeserializeObject<List<dynamic>>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
-                    centro_educativo centro = JsonACentro(dynamicData, logs);
+                    centro_educativo centro = JsonACentro(dynamicData);
                     ListaCentros.Add(centro);
                     provincia provincia = new provincia();
 
@@ -44,7 +48,7 @@ namespace practiquesIEI.Extractors
 
                     if (provincia != null)
                     {
-                        ConexionBD.insertProvincia(provincia, logs);
+                        ConexionBD.insertProvincia(provincia);
                     }
 
                     localidad localidad = new localidad();
@@ -64,7 +68,7 @@ namespace practiquesIEI.Extractors
 
                     if (provincia != null)
                     {
-                        ConexionBD.insertLocalidad(localidad, logs);
+                        ConexionBD.insertLocalidad(localidad);
                     }
 
                 }
@@ -72,18 +76,25 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        logs += $"Se inserta el centro {centro.nombre}?? \r\n";
-                        logs = await ConexionBD.insertCentro(centro, logs);
+                        //Se inserta el centro en la BD y se suma en el recuento de centros introducidos 
+                        if (await ConexionBD.insertCentro(centro))
+                        {
+                            inserts++;
+                        }
+                        else
+                        {
+                            reparados = "";
+                            eliminados += $"(Comunitat Valenciana, {centro.nombre}, Ya existe en la base de datos)\r\n";
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                logs += $"Error al convertir el JSON a objetos: {ex.Message} \r\n"; 
+                Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}"); 
             }
-            return logs;
         }
-        static centro_educativo JsonACentro(dynamic dynamicData, string logs)
+        static centro_educativo JsonACentro(dynamic dynamicData)
         {
             try
             {
@@ -95,7 +106,6 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    logs +=$"Error: no se puede obtener el nombre del centro\r\n";
                     return null;
                 }
                 //diereccion
@@ -106,11 +116,12 @@ namespace practiquesIEI.Extractors
                     string numero = dynamicData.NUMERO;
                     // Concatenar los valores en una sola cadena para la columna "Direccion"
                     centro.direccion = $"{tipoVia} {direccion} {numero}";
+                    reparados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, La dirección esta separada en diferentes campos, Se han concatenado todos los campos)\r\n";
                 }
                 else
                 {
-                    logs += $"Error: no se puede obtener la direccion de {centro.nombre}\r\n";          
-                        return null;
+                    eliminados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, No tiene la dirección del centro)\r\n";
+                    return null;
                 }
                 // codigo postal
                 if (dynamicData.CODIGO_POSTAL != null && (dynamicData.CODIGO_POSTAL.ToString().Length == 5 || dynamicData.CODIGO_POSTAL.ToString().Length == 4))
@@ -118,12 +129,14 @@ namespace practiquesIEI.Extractors
                     if (dynamicData.CODIGO_POSTAL.ToString().Length == 4)
                     {
                         centro.cod_postal = '0' + dynamicData.CODIGO_POSTAL.ToString();
+                        reparados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, El código postal contiene 4 dígitos, Se ha añadido un 0 delante)\r\n";
+
                     }
                     else { centro.cod_postal = dynamicData.CODIGO_POSTAL; }
                 }
                 else
                 {
-                    logs+=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes\r\n";
+                    eliminados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, El código postal no contiene 5 dígitos)\r\n";
                     return null;
                 }
 
@@ -135,7 +148,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
-                    logs+=$"El numero de telefono de {centro.nombre} es {dynamicData.TELEFONO.ToString().Length}\r\n";
+                    eliminados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, El número de télefono tiene menos de 9 dígitos)\r\n";
                     return null;
                 }
 
@@ -151,19 +164,19 @@ namespace practiquesIEI.Extractors
                     case "PRIV. CONC.": centro.tipo = tipo_centro.Concertado; break;
                     case "OTROS": centro.tipo = tipo_centro.Otros; break;
                     default:
-                        logs+=$"El tipo de centro de {centro.nombre} no corresponde con ninguno de los tipos guardados\r\n";
+                        eliminados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, El tipo de centro no corresponde)\r\n";
                         return null;
 
                 }
                 GetLatitudyLongitud(centro.direccion+","+ centro.cod_postal, centro);
-                //centro.longitud = "22.02";
-                //centro.latitud = "22.02";
+                reparados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, No tiene las coordenadas geográficas, Se han obtenido las coordenadas mediante una web)\r\n";
+
 
                 return centro;
             }
             catch (Exception ex)
             {
-                logs+=$"Error al obtener los datos para el centro: {ex.Message}\r\n";
+                Console.WriteLine($"Error al obtener los datos para el centro: {ex.Message}");
                 return null;
             }
         }

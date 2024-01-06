@@ -72,7 +72,7 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(234, 115);
             this.checkedListBox1.TabIndex = 3;
-            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+            this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             // 
             // button1
             // 
@@ -102,21 +102,22 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.SystemColors.Window;
-            this.label3.Location = new System.Drawing.Point(294, 366);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(106, 351);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(180, 20);
+            this.label3.Size = new System.Drawing.Size(288, 30);
             this.label3.TabIndex = 6;
             this.label3.Text = "Resultados de la carga :";
             // 
             // ResCarga
             // 
-            this.ResCarga.Location = new System.Drawing.Point(177, 390);
+            this.ResCarga.Location = new System.Drawing.Point(228, 428);
             this.ResCarga.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ResCarga.Multiline = true;
             this.ResCarga.Name = "ResCarga";
             this.ResCarga.ReadOnly = true;
             this.ResCarga.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ResCarga.Size = new System.Drawing.Size(623, 278);
+            this.ResCarga.Size = new System.Drawing.Size(560, 191);
             this.ResCarga.TabIndex = 7;
             this.ResCarga.TextChanged += new System.EventHandler(this.CargarRes);
             // 

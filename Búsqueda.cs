@@ -17,7 +17,6 @@ namespace practiquesIEI
     {
 
         List<centro_educativo> centros;
-        Carga cargaPrin;
         public Búsqueda()
         {
             InitializeComponent();

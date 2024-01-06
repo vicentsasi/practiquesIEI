@@ -45,7 +45,7 @@ namespace practiquesIEI
                 Console.WriteLine($"Error: {e.Message}");
             }
         }
-        public static async Task<string> insertCentro(centro_educativo centro, string logs) {
+        public static async Task<bool> insertCentro(centro_educativo centro) {
             if (conn.State == ConnectionState.Closed)
             {
                 await conn.OpenAsync();
@@ -71,7 +71,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        logs += $"El centro {centro.nombre} ya existe en la base de datos.\r\n";
+                        return false;
                     }
                     else
                     {
@@ -87,19 +87,19 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@telefono", centro.telefono);
                             command.Parameters.AddWithValue("@descripcion", centro.descripcion);
                             command.Parameters.AddWithValue("@loc_codigo", centro.loc_codigo);
-                            command.ExecuteNonQuery();
-                            logs += "Centro insertado correctamente.\r\n";
+                            command.ExecuteNonQuery(); 
+                            return true;
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                logs +=$"Error al ejecutar el comando: {e.Message}\r\n";
+                Console.WriteLine($"Error al insertar centro: {e.Message}");
             }
-            return logs;
+            return false;
         }
-        public static async void insertLocalidad(localidad loc, string logs)
+        public static async void insertLocalidad(localidad loc)
         {
             if (conn.State == ConnectionState.Closed)
             {
@@ -118,7 +118,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        logs += $"La localidad {loc.nombre} ya existe en la base de datos.\n";
+                        Console.WriteLine($"La localidad {loc.nombre} ya existe en la base de datos.");
                     }
                     else
                     {
@@ -129,17 +129,16 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@codigo", loc.codigo);
                             command.Parameters.AddWithValue("@provnombre", loc.prov_nombre);
                             command.ExecuteNonQuery();
-                            logs += "Localidad insertada correctamente.\n";
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                logs += $"Error al ejecutar el comando: {e.Message}\n";
+                Console.WriteLine($"Error al insertar Localidad: {e.Message}");
             }
         }
-        public static async void insertProvincia(provincia prov, string logs)
+        public static async void insertProvincia(provincia prov)
         {
             if (conn.State == ConnectionState.Closed)
             {
@@ -158,7 +157,7 @@ namespace practiquesIEI
                     int cantidadExistente = Convert.ToInt32(commandExistencia.ExecuteScalar());
                     if (cantidadExistente > 0)
                     {
-                        logs += $"La Provincia {prov.nombre} ya existe en la base de datos.\n";
+                        Console.WriteLine($"La Provincia {prov.nombre} ya existe en la base de datos.");
                     }
                     else
                     {
@@ -168,14 +167,13 @@ namespace practiquesIEI
                             command.Parameters.AddWithValue("@nombre", prov.nombre);
                             command.Parameters.AddWithValue("@codigo", prov.codigo);
                             command.ExecuteNonQuery();
-                            logs +="Provincia insertada correctamente.\n";
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                logs += $"Error al ejecutar el comando: {e.Message}\n";
+                Console.WriteLine($"Error al insertar Provincia: {e.Message}");
             }
         }
         public static async Task BorrarCentros()

@@ -14,8 +14,14 @@ namespace practiquesIEI.Extractors
 {
     public class MURextractor
     {
-        public static async Task<string> LoadJsonDataIntoDatabase(string jsonFilePath, string logs)
+        public static string eliminados;
+        public static string reparados;
+        public static int inserts;
+        public static async Task LoadJsonDataIntoDatabase(string jsonFilePath)
         {
+            eliminados = "";
+            reparados = "";
+            inserts = 0;
             try
             {
                 // Deserializar JSON a una lista de objetos dinámicos
@@ -23,7 +29,7 @@ namespace practiquesIEI.Extractors
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var dynamicData in dynamicDataList)
                 {
-                    centro_educativo centro = JsonACentro(dynamicData, logs);
+                    centro_educativo centro = JsonACentro(dynamicData);
                     ListaCentros.Add(centro);
                     //Crear la provincia 
                     provincia provincia = new provincia();
@@ -31,7 +37,7 @@ namespace practiquesIEI.Extractors
                     {
                         provincia.codigo = "30";
                         provincia.nombre = "Múrcia";
-                        ConexionBD.insertProvincia(provincia, logs);
+                        ConexionBD.insertProvincia(provincia);
                     }
                     //Crear localidad
                     localidad localidad = new localidad();
@@ -45,7 +51,7 @@ namespace practiquesIEI.Extractors
                         }
                         else
                         {
-                            logs += $"El codigo postal o nombre de la localidad del centro es erroneo\r\n";
+                            //logs += $"El codigo postal o nombre de la localidad del centro es erroneo\r\n";
                             localidad = null;
                         }
                     }
@@ -53,7 +59,7 @@ namespace practiquesIEI.Extractors
                     if (localidad != null)
                     {
                         localidad.prov_nombre = provincia.nombre;
-                        ConexionBD.insertLocalidad(localidad, logs);
+                        ConexionBD.insertLocalidad(localidad);
                     }
 
                 }
@@ -61,20 +67,25 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        logs += $"Se inserta el centro {centro.nombre}?\r\n";
-                        logs = await ConexionBD.insertCentro(centro, logs);
+                        if (await ConexionBD.insertCentro(centro))
+                        {
+                            inserts++;
+                        }
+                        else
+                        {
+                            eliminados += $"(Múrcia, {centro.nombre}, Ya existe en la base de datos)\r\n";
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
-                logs += $"Error: {e.Message}\n";
+                Console.WriteLine($"Error: {e.Message}");
                 
             }
-            return logs;
         }
 
-        public static centro_educativo JsonACentro(dynamic dynamicData, string logs)
+        public static centro_educativo JsonACentro(dynamic dynamicData)
         {
             centro_educativo centro = new centro_educativo();
             //nombre del centro
@@ -84,7 +95,6 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs +="El centro no se inserta en la BD porque nombre es null\r\n";
                 return null;
             }
             //codigo postal
@@ -94,17 +104,19 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs +=$"Se descarta {centro.nombre} porque su codigo postal es nulo o no tiene el numero de digitos correspondientes \r\n";
+                eliminados += $"(Múrcia, {centro.nombre}, {dynamicData.loccen}, No tiene codigo postal)\r\n";
                 return null;
             }
             //telefono
-            if (dynamicData.telcen.ToString().Length == 9)
+            if (dynamicData.telcen == null) { centro.telefono = 0; }
+            if (dynamicData.telcen.ToString().Length == 9 )
             {
                 centro.telefono = dynamicData.telcen;
             }
             else
             {
-                logs +=$"El numero de telefono de {centro.nombre} es nulo o no tiene 9 digitos \r\n";
+                
+                eliminados += $"(Múrcia, {centro.nombre}, {dynamicData.loccen}, El número de télefono tiene menos de 9 dígitos)\r\n";
                 return null;
             }
             //direccion
@@ -114,7 +126,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs += $"La direccion del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
+                eliminados += $"(Múrcia, {centro.nombre}, {dynamicData.loccen}, No tiene dirección)\r\n";
                 return null;
             }
             //descripcion
@@ -126,7 +138,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs += $"La latitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
+                eliminados += $"(Múrcia, {centro.nombre}, {dynamicData.loccen}, No tiene las coordenadas geográficas(Latitud))\r\n";
                 return null;
             }
             //longitud
@@ -136,7 +148,7 @@ namespace practiquesIEI.Extractors
             }
             else
             {
-                logs += $"La longitud del centro {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
+                eliminados += $"(Múrcia, {centro.nombre}, {dynamicData.loccen}, No tiene las coordenadas geográficas(Longitud))\r\n";
                 return null;
             }
 

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.IO;
 using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using Aspose.Cells;
+using MySqlX.XDevAPI.Relational;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using practiquesIEI.Entities;
@@ -12,15 +14,21 @@ namespace practiquesIEI.Extractors
 {
     public class CATextractor
     {
-        public static async Task<string> LoadJsonDataIntoDatabase(string jsonData, string logs)
+        public static string eliminados;
+        public static string reparados;
+        public static int inserts;
+        public static async Task LoadJsonDataIntoDatabase(string jsonData)
         {
+            eliminados = "";
+            reparados = "";
+            inserts = 0;
             try {
                 // Deserializar JSON a una lista de objetos dinámicos
                 dynamic jsontext = JsonConvert.DeserializeObject<dynamic>(jsonData);
                 List<centro_educativo> ListaCentros = new List<centro_educativo>();
                 foreach (var row in jsontext.response.row.row)
                 {
-                    centro_educativo centro = JsonACentro(row, logs);
+                    centro_educativo centro = JsonACentro(row);
                     ListaCentros.Add(centro);
                     provincia provincia = new provincia();
 
@@ -42,7 +50,7 @@ namespace practiquesIEI.Extractors
 
                     if (provincia != null)
                     {
-                        ConexionBD.insertProvincia(provincia, logs);
+                        ConexionBD.insertProvincia(provincia);
                     }
 
                     localidad localidad = new localidad();
@@ -62,7 +70,7 @@ namespace practiquesIEI.Extractors
 
                     if (localidad != null)
                     {
-                        ConexionBD.insertLocalidad(localidad, logs);
+                        ConexionBD.insertLocalidad(localidad);
                     }
 
                 }
@@ -70,38 +78,33 @@ namespace practiquesIEI.Extractors
                 {
                     if (centro != null)
                     {
-                        logs+=$"Se inserta el centro {centro.nombre}??\r\n";
-                        logs = await ConexionBD.insertCentro(centro, logs);
+                        //Se inserta el centro en la BD y se suma en el recuento de centros introducidos 
+                        if (await ConexionBD.insertCentro(centro))
+                        {
+                            inserts++;
+                        }
+                        else
+                        {
+                            eliminados += $"(Catalunya, {centro.nombre}, Ya existe en la base de datos)\r\n";
+                        }
                     }
                 }
-
-            
+                //rest.Add(inserts.ToString());
             } 
-   
             catch (Exception ex)
             {
-                logs+=$"Error al convertir el JSON a objetos: {ex.Message}\r\n";
+                
+                Console.WriteLine($"Error al convertir el JSON a objetos: {ex.Message}");
             }
-            return logs;
+            //return eliminados;
         }
-        static centro_educativo JsonACentro(dynamic row, string logs)
+        public static centro_educativo JsonACentro(dynamic row)
         {
             try
             {
                 centro_educativo centro = new centro_educativo();
                 // Extraer propiedades específicas y construir las columnas que deseas
-
-                if (row.adre_a != null)
-                {
-                    
-                    // Concatenar los valores en una sola cadena para la columna "Direccion"
-                    centro.direccion = row.adre_a;
-                }
-                else
-                {
-                    return null;
-                }
-
+                //nombre
                 if (row.denominaci_completa != null)
                 {
                     centro.nombre = row.denominaci_completa;
@@ -110,24 +113,35 @@ namespace practiquesIEI.Extractors
                 {
                     return null;
                 }
-
+                //Dirección
+                if (row.adre_a != null)
+                {
+                    centro.direccion = row.adre_a;
+                }
+                else
+                {
+                    eliminados += $"(Catalunya, {centro.nombre}, {row.nom_municipi}, No tiene la dirección del centro)\r\n";
+                    return null;
+                }
+                //Codigo Postal
                 if (row.codi_postal != null && (row.codi_postal.ToString().Length == 5 || row.codi_postal.ToString().Length == 4))
                 {
                     if (row.codi_postal.ToString().Length == 4)
                     {
                         centro.cod_postal = '0' + row.codi_postal.ToString();
+                        reparados += $"(Catalunya, {centro.nombre}, {row.nom_municipi}, El código postal contiene 4 dígitos, Se ha añadido un 0 delante)\r\n";
                     }
                     else { centro.cod_postal = row.codi_postal; }
                 }
                 else
                 {
-                    logs +=$"El codigo postal de {centro.nombre} es nulo o no tiene el numero de digitos correspondientes \r\n";
+                    eliminados += $"(Catalunya, {centro.nombre}, {row.nom_municipi}, No tiene codigo postal)\r\n";
                     return null;
                 }
 
                 //telefono
                 centro.telefono = 0;
-
+                //descripción
                 centro.descripcion = row.estudis;
 
 
@@ -141,7 +155,9 @@ namespace practiquesIEI.Extractors
                         default: centro.tipo = tipo_centro.Otros; break;
                     }
                 }
-                else { return null; }
+                else {
+                    eliminados += $"(Catalunya, {centro.nombre}, {row.nom_municipi}, No tiene el tipo de centro)\r\n";
+                    return null; }
 
                 if (row.coordenades_geo_x != null)
                 {
@@ -149,6 +165,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
+                    eliminados += $"(Catalunya, {centro.nombre}, {row.nom_municipi}, No tiene las coordenadas de geolocalización)\r\n";
                     return null;
                 }
 
@@ -159,6 +176,7 @@ namespace practiquesIEI.Extractors
                 }
                 else
                 {
+                    eliminados += $"(Catalunya, {centro.nombre}, {row.nom_municipi}, No tiene las coordenadas de geolocalización)\r\n";
                     return null;
                 }
 
@@ -167,10 +185,11 @@ namespace practiquesIEI.Extractors
             }
             catch (Exception ex)
             {
-                logs += $"Error al convertir el JSON a objeto centro: {ex.Message}\r\n";
+                Console.WriteLine($"Error al convertir el JSON a objeto centro: {ex.Message}");
                 return null;
             }
         }
+       
 
     }
 }

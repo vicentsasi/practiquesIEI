@@ -22,17 +22,13 @@ namespace practiquesIEI
             InitializeComponent();
         }
 
-
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private async void button2_Click(object sender, EventArgs e)
         {
             ResCarga.Text = "";
-            logs = "";
-
+            MURextractor.inserts = 0;
+            CATextractor.inserts = 0;
+            CVextractor.inserts = 0;
+            //CVextractor.inserts = 0;
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
                 // Verifica si el nombre del elemento coincide
@@ -42,39 +38,41 @@ namespace practiquesIEI
                     string rutaRelativa = Path.Combine(directorioAplicacionMUR,  "MUR.json");
                     string rutaAbsoluta = Path.GetFullPath(rutaRelativa);*/
                     string archivoJson = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-                    logs = await MURextractor.LoadJsonDataIntoDatabase(archivoJson, logs);
+                    await MURextractor.LoadJsonDataIntoDatabase(archivoJson);
 
                     /*string directorioAplicacionCV = AppDomain.CurrentDomain.BaseDirectory;
                     string rutaRelativaCsv = Path.Combine(directorioAplicacionCV, "CV.csv");
                     string rutaAbsolutaCsv = Path.GetFullPath(rutaRelativaCsv);*/
                     string archivoJsonCV = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
-                    logs = await CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV, logs);
+                    await CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV);
 
 
                     /*string directorioAplicacionCAT = AppDomain.CurrentDomain.BaseDirectory;
                     string rutaRelativaXml = Path.Combine(directorioAplicacionCAT, "CAT.xml");
                     string rutaAbsolutaXml = Path.GetFullPath(rutaRelativaXml);*/
                     string archivoJsonCAT = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
-                    logs =  await CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT, logs);
+                    await CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT);
 
 
                 }
                 else if (itemChecked.ToString() == "Murcia") {
                     string archivoJson = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-                    logs = await MURextractor.LoadJsonDataIntoDatabase(archivoJson, logs);
+                    await MURextractor.LoadJsonDataIntoDatabase(archivoJson);
                 }
                 else if (itemChecked.ToString() == "Comunitat Valenciana")
                 {
                     string archivoJsonCV = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
-                    logs = await CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV, logs);
+                    await CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV);
                 }
                 else if (itemChecked.ToString() == "Catalunya")
                 {
                     string archivoJsonCAT = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
-                    logs = await CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT, logs);
+                    await CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT);
                 }
             }
-            ResCarga.Text = logs; 
+            ResCarga.Text = $"Número de registros cargados correctamente:{CATextractor.inserts + CVextractor.inserts + MURextractor.inserts}\r\n\r\n" +
+                $"Registros con errores y reparados:\r\n{CATextractor.reparados}{MURextractor.reparados}{CVextractor.reparados}\r\n\r\n" +
+                $"Registros con errores y rechazados:\r\n{CATextractor.eliminados}{MURextractor.eliminados}{CVextractor.eliminados}\r\n"; 
         }
 
         private void Cancelar_Click(object sender, EventArgs e)
@@ -86,6 +84,29 @@ namespace practiquesIEI
         private void CargarRes(object sender, EventArgs e)
         {
             
+        }
+
+        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            CheckedListBox checkBoxList = (CheckedListBox)sender;
+
+            // Desmarcar todos los elementos si se está marcando un nuevo elemento
+            if (e.Index == 0)
+            {
+                for (int i = 0; i < checkBoxList.Items.Count; i++)
+                {
+                    if (i != e.Index)  // No desmarcar el elemento actual
+                    {
+                        checkBoxList.SetItemCheckState(i, CheckState.Unchecked);
+                    }
+                }
+            }
+            if (e.Index != 0)
+            {
+                checkBoxList.SetItemCheckState(0, CheckState.Unchecked);
+                   
+            }
+
         }
     }
 }
