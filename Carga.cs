@@ -16,7 +16,6 @@ namespace practiquesIEI
 {
     public partial class Carga : Form
     {
-        string logs;
         public Carga()
         {
             InitializeComponent();
@@ -89,18 +88,18 @@ namespace practiquesIEI
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             CheckedListBox checkBoxList = (CheckedListBox)sender;
-
-            // Desmarcar todos los elementos si se está marcando un nuevo elemento
+            //si se marca "Seleccionar todos" desmarcar los otros items
             if (e.Index == 0)
             {
                 for (int i = 0; i < checkBoxList.Items.Count; i++)
                 {
-                    if (i != e.Index)  // No desmarcar el elemento actual
+                    if (i != e.Index)  
                     {
                         checkBoxList.SetItemCheckState(i, CheckState.Unchecked);
                     }
                 }
             }
+            //si se marca el item de catalunya, comunitat valenciana o murcia, desmarcar el de seleccionar todos
             if (e.Index != 0)
             {
                 checkBoxList.SetItemCheckState(0, CheckState.Unchecked);

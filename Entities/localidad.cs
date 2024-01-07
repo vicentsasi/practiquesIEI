@@ -10,14 +10,14 @@ namespace practiquesIEI.Entities
     {
         public string codigo { get; set; }
         public string nombre { get; set; }
-        public string prov_nombre { get; set; }
+        public string prov_codigo { get; set; }
 
         public localidad() { }
-        public localidad(string codigo, string nombre, string prov_nombre)
+        public localidad(string codigo, string nombre, string prov_codigo)
         {
             this.codigo = codigo;
             this.nombre = nombre;
-            this.prov_nombre = prov_nombre;
+            this.prov_codigo = prov_codigo;
         }
     }
 }

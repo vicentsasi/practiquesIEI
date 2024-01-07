@@ -58,11 +58,12 @@ namespace practiquesIEI.Extractors
                     if (centro != null)
                     {
                         localidad.codigo = row.codi_municipi_6_digits.ToString().Substring(2,4);
-                        localidad.prov_nombre = provincia.nombre;
+                        localidad.prov_codigo = provincia.codigo;
                         centro.loc_codigo = localidad.codigo;
                         if (row.nom_municipi != null)
                         {
                             localidad.nombre = row.nom_municipi;
+                            centro.loc_nombre = localidad.nombre;
                         }
                         else { localidad = null; }
                     }
@@ -85,7 +86,7 @@ namespace practiquesIEI.Extractors
                         }
                         else
                         {
-                            eliminados += $"(Catalunya, {centro.nombre}, Ya existe en la base de datos)\r\n";
+                            eliminados += $"(Catalunya, {centro.nombre}, {centro.loc_nombre}, Ya existe en la base de datos)\r\n";
                         }
                     }
                 }

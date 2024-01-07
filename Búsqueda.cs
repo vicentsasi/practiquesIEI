@@ -27,8 +27,13 @@ namespace practiquesIEI
         private async void button1_Click(object sender, EventArgs e)
         {
             wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
-            //tbLogs.Text = "";
+            //limpia los campos de búsqueda
+            tbLocalidad.Text = "";
+            cbTipo.SelectedIndex = -1;
+            tbProv.Text = "";
+            tbCP.Text = "";
 
+            //obtiene todos los centros de la BD y los inserta en el dataGridView
             centros = await ConexionBD.getAllCentros();
             BindingList<object> bindinglist = new BindingList<object>();
             if (centros != null)
@@ -114,11 +119,11 @@ namespace practiquesIEI
                             <body>
                                 <div id=""map""></div>
                                 <script>
-                                    var map = L.map('map').setView([40.5, -4], 6);
+                                    var map = L.map('map').setView([35.4, 0], 5);
 
                                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                         attribution: 'Map data &copy; <a href=""http://openstreetmap.org"">OpenStreetMap</a> contributors, <a href=""http://creativecommons.org/licenses/by-sa/2.0/"">CC-BY-SA</a>, Imagery © <a href=""http://cloudmade.com"">CloudMade</a>',
-                                        maxZoom: 18
+                                        maxZoom: 13
                                     }).addTo(map);
 
                                     L.control.scale().addTo(map);

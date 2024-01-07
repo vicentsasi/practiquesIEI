@@ -11,6 +11,7 @@ using System.Reflection;
 using OpenQA.Selenium.Support.UI;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace practiquesIEI.Extractors
 {
@@ -40,7 +41,13 @@ namespace practiquesIEI.Extractors
                         provincia.codigo = centro.cod_postal.ToString().Substring(0,2);
                         if (dynamicData.PROVINCIA != null)
                         {
-                            provincia.nombre = dynamicData.PROVINCIA;
+                            switch (dynamicData.PROVINCIA.ToString())
+                            {
+                                case "ALICANTE/ALACANT": provincia.nombre = "Alicante"; break;
+                                case "CASTELLÓN/CASTELLÓ": provincia.nombre = "Castellón"; break;
+                                case "VALENCIA/VALÈNCIA": provincia.nombre = "Valencia"; break;
+                            }
+                            
                         }
                         else { provincia = null; }
                     }
@@ -57,10 +64,11 @@ namespace practiquesIEI.Extractors
                     {
                         localidad.codigo = centro.cod_postal.ToString().Substring(2,3);
                         centro.loc_codigo = localidad.codigo;
-                        localidad.prov_nombre = provincia.nombre;
+                        localidad.prov_codigo = provincia.codigo;
                         if (dynamicData.LOCALIDAD != null)
                         {
                             localidad.nombre = dynamicData.LOCALIDAD;
+                            centro.loc_nombre = dynamicData.LOCALIDAD;
                         }
                         else { localidad = null; }
                     }
@@ -84,7 +92,7 @@ namespace practiquesIEI.Extractors
                         else
                         {
                             reparados = "";
-                            eliminados += $"(Comunitat Valenciana, {centro.nombre}, Ya existe en la base de datos)\r\n";
+                            eliminados += $"(Comunitat Valenciana, {centro.nombre}, {centro.loc_nombre}, Ya existe en la base de datos)\r\n";
                         }
                     }
                 }
@@ -108,7 +116,7 @@ namespace practiquesIEI.Extractors
                 {
                     return null;
                 }
-                //diereccion
+                //direccion
                 if (dynamicData.TIPO_VIA != null && dynamicData.DIRECCION != null && dynamicData.NUMERO != null)
                 {
                     string tipoVia = dynamicData.TIPO_VIA;
@@ -151,8 +159,8 @@ namespace practiquesIEI.Extractors
                     eliminados += $"(Comunitat Valenciana, {centro.nombre}, {dynamicData.LOCALIDAD}, El número de télefono tiene menos de 9 dígitos)\r\n";
                     return null;
                 }
-
-                centro.descripcion = dynamicData.URL_VA;
+                //descripcion
+                centro.descripcion = dynamicData.URL_ES.ToString();
 
 
                //tipo de centro

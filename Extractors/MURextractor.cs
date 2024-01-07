@@ -48,17 +48,17 @@ namespace practiquesIEI.Extractors
                             localidad.codigo = dynamicData.cpcen.ToString().Substring(2, 3);
                             localidad.nombre = dynamicData.loccen;
                             centro.loc_codigo = localidad.codigo;
+                            centro.loc_nombre = localidad.nombre;
                         }
                         else
                         {
-                            //logs += $"El codigo postal o nombre de la localidad del centro es erroneo\r\n";
                             localidad = null;
                         }
                     }
                     else { localidad = null; }
                     if (localidad != null)
                     {
-                        localidad.prov_nombre = provincia.nombre;
+                        localidad.prov_codigo = provincia.codigo;
                         ConexionBD.insertLocalidad(localidad);
                     }
 
@@ -73,7 +73,7 @@ namespace practiquesIEI.Extractors
                         }
                         else
                         {
-                            eliminados += $"(Múrcia, {centro.nombre}, Ya existe en la base de datos)\r\n";
+                            eliminados += $"(Múrcia, {centro.nombre}, {centro.loc_nombre}, Ya existe en la base de datos)\r\n";
                         }
                     }
                 }

@@ -123,11 +123,11 @@ namespace practiquesIEI
                     else
                     {
                         using (MySqlCommand command = new MySqlCommand(
-                        $"INSERT INTO localidad(loc_codigo, loc_nombre, prov_nombre) VALUES (@codigo,@nombre,@provnombre)", conn))
+                        $"INSERT INTO localidad(loc_codigo, loc_nombre, prov_codigo) VALUES (@codigo,@nombre,@prov_codigo)", conn))
                         {
                             command.Parameters.AddWithValue("@nombre", loc.nombre);
                             command.Parameters.AddWithValue("@codigo", loc.codigo);
-                            command.Parameters.AddWithValue("@provnombre", loc.prov_nombre);
+                            command.Parameters.AddWithValue("@prov_codigo", loc.prov_codigo);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -222,7 +222,7 @@ namespace practiquesIEI
                 string consulta = $"SELECT * " +
                                   $"FROM centro_educativo c " +
                                   $"JOIN localidad l ON l.loc_codigo = c.cod_localidad " +
-                                  $"JOIN provincia p ON l.prov_nombre = p.prov_nombre ";
+                                  $"JOIN provincia p ON l.prov_codigo = p.prov_codigo ";
                 using (MySqlCommand command = new MySqlCommand(consulta, conn))
                 {
                     using (MySqlDataReader reader = command.ExecuteReader())
@@ -288,7 +288,7 @@ namespace practiquesIEI
                 string consulta = $"SELECT * " +
                                   $"FROM centro_educativo c " +
                                   $"JOIN localidad l ON l.loc_codigo = c.cod_localidad " +
-                                  $"JOIN provincia p ON l.prov_nombre = p.prov_nombre " +
+                                  $"JOIN provincia p ON l.prov_codigo = p.prov_codigo " +
                                   $"WHERE (c.codigo_postal = COALESCE(@cod_postal, c.codigo_postal) OR COALESCE(@cod_postal, '') = '') " +
                                     $"AND (c.tipo = COALESCE(@tipo, c.tipo) OR COALESCE(@tipo, '') = '') " +
                                     $"AND (l.loc_nombre = COALESCE(@loc_nombre, l.loc_nombre) OR COALESCE(@loc_nombre, '') = '') " +
