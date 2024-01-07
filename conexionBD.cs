@@ -422,7 +422,9 @@ namespace practiquesIEI
             try
             {
                 string consulta = $"SELECT * " +
-                                  $"FROM centro_educativo c ";
+                                  $"FROM centro_educativo c " +
+                                  $"JOIN localidad l ON l.loc_codigo = c.cod_localidad " +
+                                  $"JOIN provincia p ON l.prov_nombre = p.prov_nombre ";
                 using (MySqlCommand command = new MySqlCommand(consulta, conn))
                 {
                     using (MySqlDataReader reader = command.ExecuteReader())
@@ -437,11 +439,105 @@ namespace practiquesIEI
                                 centro.nombre = reader["nombre"].ToString();
                                 centro.latitud = reader["latitud"].ToString().Replace(',', '.');
                                 centro.longitud = reader["longitud"].ToString().Replace(',', '.');
-                                //centro.tipo = reader["tipo"].ToString();
+                                switch (reader["tipo"].ToString())
+                                {
+                                    case "Público":
+                                        centro.tipo = tipo_centro.Público;
+                                        break;
+                                    case "Privado":
+                                        centro.tipo = tipo_centro.Privado;
+                                        break;
+                                    case "Concertado":
+                                        centro.tipo = tipo_centro.Concertado;
+                                        break;
+                                    case "Otros":
+                                        centro.tipo = tipo_centro.Otros;
+                                        break;
+                                    default:
+                                        return null;
+                                }
                                 centro.cod_postal = reader["codigo_postal"].ToString();
                                 centro.telefono = int.Parse(reader["telefono"].ToString());
                                 centro.descripcion = reader["descripcion"].ToString();
                                 centro.direccion = reader["direccion"].ToString();
+                                centro.prov_nombre = reader["prov_nombre"].ToString();
+                                centro.loc_nombre = reader["loc_nombre"].ToString();
+                                listCenters.Add(centro);
+                            }
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {e.Message} \n");
+            }
+            return listCenters;
+        }
+        public static async Task<List<centro_educativo>> FindCentros(string loc, string tipo, string prov, string cp) {
+            List<centro_educativo> listCenters = new List<centro_educativo>();
+
+            if (conn.State == ConnectionState.Closed)
+            {
+                await conn.OpenAsync();
+            }
+            try
+            {
+                string consulta = $"SELECT * " +
+                                  $"FROM centro_educativo c " +
+                                  $"JOIN localidad l ON l.loc_codigo = c.cod_localidad " +
+                                  $"JOIN provincia p ON l.prov_nombre = p.prov_nombre " +
+                                  $"WHERE (c.codigo_postal = COALESCE(@cod_postal, c.codigo_postal) OR COALESCE(@cod_postal, '') = '') " +
+                                    $"AND (c.tipo = COALESCE(@tipo, c.tipo) OR COALESCE(@tipo, '') = '') " +
+                                    $"AND (l.loc_nombre = COALESCE(@loc_nombre, l.loc_nombre) OR COALESCE(@loc_nombre, '') = '') " +
+                                    $"AND (p.prov_nombre = COALESCE(@prov_nombre, p.prov_nombre) OR COALESCE(@prov_nombre, '') = '')";
+                using (MySqlCommand command = new MySqlCommand(consulta, conn))
+                {
+                    command.Parameters.AddWithValue("@cod_postal", cp);
+                    command.Parameters.AddWithValue("@tipo", tipo);
+                    command.Parameters.AddWithValue("@loc_nombre", loc);
+                    command.Parameters.AddWithValue("@prov_nombre", prov);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Verifica si hay filas en el resultado
+                        if (reader.HasRows)
+                        {
+                            // Itera a través de las filas
+                            while (reader.Read())
+                            {
+                                centro_educativo centro = new centro_educativo();
+                                centro.nombre = reader["nombre"].ToString();
+                                centro.latitud = reader["latitud"].ToString().Replace(',', '.');
+                                centro.longitud = reader["longitud"].ToString().Replace(',', '.');
+                                switch (reader["tipo"].ToString())
+                                {
+                                    case "Público":
+                                        centro.tipo = tipo_centro.Público;
+                                        break;
+                                    case "Privado":
+                                        centro.tipo = tipo_centro.Privado;
+                                        break;
+                                    case "Concertado":
+                                        centro.tipo = tipo_centro.Concertado;
+                                        break;
+                                    case "Otros":
+                                        centro.tipo = tipo_centro.Otros;
+                                        break;
+                                    default:
+                                        return null;
+                                }
+                                centro.cod_postal = reader["codigo_postal"].ToString();
+                                centro.telefono = int.Parse(reader["telefono"].ToString());
+                                centro.descripcion = reader["descripcion"].ToString();
+                                centro.direccion = reader["direccion"].ToString();
+                                centro.prov_nombre = reader["prov_nombre"].ToString();
+                                centro.loc_nombre = reader["loc_nombre"].ToString();
+
                                 listCenters.Add(centro);
                             }
                         }

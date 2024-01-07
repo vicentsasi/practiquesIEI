@@ -27,17 +27,29 @@ namespace practiquesIEI
         private async void button1_Click(object sender, EventArgs e)
         {
             wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
-            tbLogs.Text = "";
+            //tbLogs.Text = "";
+
             centros = await ConexionBD.getAllCentros();
+            BindingList<object> bindinglist = new BindingList<object>();
             if (centros != null)
             {
-                foreach (var centro in centros)
+                foreach (centro_educativo centro in centros)
                 {
-                    tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                    bindinglist.Add(new
+                    {
+                        nombre = centro.nombre,
+                        tipo = centro.tipo,
+                        direccion = centro.direccion,
+                        loc = centro.loc_nombre,
+                        prov = centro.prov_nombre,
+                        desc = centro.descripcion,
+                        cod_postal = centro.cod_postal
+                    });
                     AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
+
                 }
             }
-            else { tbLogs.Text = "No se han encontrado resultados."; }
+            bindingSource1.DataSource = bindinglist;
         }
 
         private void cbTipo_SelectedIndexChanged(object sender, EventArgs e)
@@ -57,24 +69,48 @@ namespace practiquesIEI
         private async void btAceptar_Click(object sender, EventArgs e)
         {
             wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
-            tbLogs.Text = "";
             string localidad = tbLocalidad.Text;
             string tipo ="";
             if (cbTipo.SelectedIndex != -1) { tipo = cbTipo.SelectedItem.ToString(); }
             string provincia = tbProv.Text;
             string cod_postal = tbCP.Text;
-            
-            if (localidad != "" && tipo == "" && provincia == "" && cod_postal == "") {
+
+            //obtiene los centros y los introduce en el dataGridView
+            centros = await ConexionBD.FindCentros(localidad, tipo, provincia, cod_postal);
+            BindingList<object> bindinglist = new BindingList<object>();
+            if (centros != null)
+            {
+                foreach (centro_educativo centro in centros)
+                {
+                    bindinglist.Add(new
+                    {
+                        nombre = centro.nombre,
+                        tipo = centro.tipo,
+                        direccion = centro.direccion,
+                        loc = centro.loc_nombre,
+                        prov = centro.prov_nombre,
+                        desc = centro.descripcion,
+                        cod_postal = centro.cod_postal
+                    });
+                    AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
+
+                }
+            }
+            bindingSource1.DataSource = bindinglist;
+
+            /*if (localidad != "" && tipo == "" && provincia == "" && cod_postal == "") {
                 centros = await ConexionBD.FindCentrosByLocalidad(localidad);
                 if (centros != null)
                 {
                     foreach (var centro in centros)
                     {
-                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                         AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
-                else { tbLogs.Text = "No se han encontrado resultados."; }
+                else { 
+                    //tbLogs.Text = "No se han encontrado resultados."; 
+                }
             }
             if (localidad == "" && tipo != "" && provincia == "" && cod_postal == "")
             {
@@ -83,11 +119,13 @@ namespace practiquesIEI
                 {
                     foreach (var centro in centros)
                     {
-                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                         AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
-                else { tbLogs.Text = "No se han encontrado resultados."; }
+                else { 
+                    //tbLogs.Text = "No se han encontrado resultados."; 
+                }
             }
             if (localidad == "" && tipo == "" && provincia != "" && cod_postal == "")
             {
@@ -96,11 +134,13 @@ namespace practiquesIEI
                 {
                     foreach (var centro in centros)
                     {
-                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                         AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
-                else { tbLogs.Text = "No se han encontrado resultados."; }
+                else { 
+                    //tbLogs.Text = "No se han encontrado resultados.";
+                }
             }
             if (localidad == "" && tipo == "" && provincia == "" && cod_postal != "")
             {
@@ -109,12 +149,14 @@ namespace practiquesIEI
                 {
                     foreach (var centro in centros)
                     {
-                        tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
+                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
                         AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
                     }
                 }
-                else { tbLogs.Text = "No se han encontrado resultados."; }
-            }
+                else { 
+                    //tbLogs.Text = "No se han encontrado resultados."; 
+                }
+            }*/
 
         }
         #endregion

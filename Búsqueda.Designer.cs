@@ -33,7 +33,6 @@
             this.tbCP = new System.Windows.Forms.TextBox();
             this.tbProv = new System.Windows.Forms.TextBox();
             this.cbTipo = new System.Windows.Forms.ComboBox();
-            this.tbLogs = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -46,7 +45,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.wbMapa = new System.Windows.Forms.WebBrowser();
             this.label6 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Direccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Localidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Provincia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // tbLocalidad
@@ -83,18 +93,6 @@
             this.cbTipo.Size = new System.Drawing.Size(259, 28);
             this.cbTipo.TabIndex = 3;
             this.cbTipo.SelectedIndexChanged += new System.EventHandler(this.cbTipo_SelectedIndexChanged);
-            // 
-            // tbLogs
-            // 
-            this.tbLogs.BackColor = System.Drawing.Color.White;
-            this.tbLogs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbLogs.Location = new System.Drawing.Point(46, 391);
-            this.tbLogs.Multiline = true;
-            this.tbLogs.Name = "tbLogs";
-            this.tbLogs.ReadOnly = true;
-            this.tbLogs.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbLogs.Size = new System.Drawing.Size(448, 206);
-            this.tbLogs.TabIndex = 4;
             // 
             // contextMenuStrip1
             // 
@@ -204,40 +202,133 @@
             // 
             // wbMapa
             // 
-            this.wbMapa.Location = new System.Drawing.Point(525, 105);
+            this.wbMapa.Location = new System.Drawing.Point(649, 105);
             this.wbMapa.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbMapa.Name = "wbMapa";
-            this.wbMapa.Size = new System.Drawing.Size(609, 492);
+            this.wbMapa.Size = new System.Drawing.Size(426, 280);
             this.wbMapa.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(46, 365);
+            this.label6.Location = new System.Drawing.Point(80, 394);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 20);
             this.label6.TabIndex = 12;
             this.label6.Text = "Resultados de la búsqueda :";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Nombre,
+            this.Tipo,
+            this.Direccion,
+            this.Localidad,
+            this.cp,
+            this.Provincia,
+            this.descripcion});
+            this.dataGridView1.DataSource = this.bindingSource1;
+            this.dataGridView1.Location = new System.Drawing.Point(176, 448);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidth = 30;
+            this.dataGridView1.RowTemplate.Height = 28;
+            this.dataGridView1.Size = new System.Drawing.Size(789, 175);
+            this.dataGridView1.TabIndex = 13;
+            // 
+            // Nombre
+            // 
+            this.Nombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Nombre.DataPropertyName = "nombre";
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.MinimumWidth = 8;
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
+            this.Nombre.Width = 101;
+            // 
+            // Tipo
+            // 
+            this.Tipo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Tipo.DataPropertyName = "tipo";
+            this.Tipo.HeaderText = "Tipo";
+            this.Tipo.MinimumWidth = 8;
+            this.Tipo.Name = "Tipo";
+            this.Tipo.ReadOnly = true;
+            this.Tipo.Width = 75;
+            // 
+            // Direccion
+            // 
+            this.Direccion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Direccion.DataPropertyName = "direccion";
+            this.Direccion.HeaderText = "Dirección";
+            this.Direccion.MinimumWidth = 8;
+            this.Direccion.Name = "Direccion";
+            this.Direccion.ReadOnly = true;
+            this.Direccion.Width = 111;
+            // 
+            // Localidad
+            // 
+            this.Localidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Localidad.DataPropertyName = "loc";
+            this.Localidad.HeaderText = "Localidad";
+            this.Localidad.MinimumWidth = 8;
+            this.Localidad.Name = "Localidad";
+            this.Localidad.ReadOnly = true;
+            this.Localidad.Width = 113;
+            // 
+            // cp
+            // 
+            this.cp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.cp.DataPropertyName = "cod_postal";
+            this.cp.HeaderText = "Cód. postal";
+            this.cp.MinimumWidth = 2;
+            this.cp.Name = "cp";
+            this.cp.ReadOnly = true;
+            this.cp.Width = 125;
+            // 
+            // Provincia
+            // 
+            this.Provincia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Provincia.DataPropertyName = "prov";
+            this.Provincia.HeaderText = "Provincia";
+            this.Provincia.MinimumWidth = 8;
+            this.Provincia.Name = "Provincia";
+            this.Provincia.ReadOnly = true;
+            this.Provincia.Width = 108;
+            // 
+            // descripcion
+            // 
+            this.descripcion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.descripcion.DataPropertyName = "desc";
+            this.descripcion.HeaderText = "Descripción";
+            this.descripcion.MinimumWidth = 8;
+            this.descripcion.Name = "descripcion";
+            this.descripcion.ReadOnly = true;
+            this.descripcion.Width = 128;
+            // 
             // Búsqueda
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.AutoScroll = true;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(1204, 635);
+            this.ClientSize = new System.Drawing.Size(1179, 687);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.wbMapa);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.tbLogs);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximizeBox = false;
             this.Name = "Búsqueda";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Búsqueda";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -249,7 +340,6 @@
         private System.Windows.Forms.TextBox tbCP;
         private System.Windows.Forms.TextBox tbProv;
         private System.Windows.Forms.ComboBox cbTipo;
-        private System.Windows.Forms.TextBox tbLogs;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
@@ -262,5 +352,14 @@
         private System.Windows.Forms.WebBrowser wbMapa;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tipo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Direccion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Localidad;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Provincia;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descripcion;
     }
 }

@@ -17,6 +17,8 @@ namespace practiquesIEI.Entities
         public string direccion { get; set; }
         public string cod_postal { get; set; }
         public string loc_codigo { get; set; }
+        public string loc_nombre { get; set; }
+        public string prov_nombre { get; set; }
 
         public centro_educativo() { }
         public centro_educativo(string nombre, tipo_centro tipo, string longitud, string latitud, int telefono, string descripcion, string direccion, string cod_postal, string loc_codigo)
