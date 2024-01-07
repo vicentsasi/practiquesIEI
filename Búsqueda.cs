@@ -52,15 +52,8 @@ namespace practiquesIEI
             bindingSource1.DataSource = bindinglist;
         }
 
-        private void cbTipo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btCancelar_Click(object sender, EventArgs e)
         {
-            // Llamada a la función para agregar marcadores
-            //AddMarker("41.3851", "2.1734", "Barcelona, España");
             this.Hide();
             new Principal().Show();
 
@@ -68,7 +61,9 @@ namespace practiquesIEI
 
         private async void btAceptar_Click(object sender, EventArgs e)
         {
+            //remueve todos los marcadores que haya en el mapa
             wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
+            //obtiene los parametros de la búsqueda
             string localidad = tbLocalidad.Text;
             string tipo ="";
             if (cbTipo.SelectedIndex != -1) { tipo = cbTipo.SelectedItem.ToString(); }
@@ -97,66 +92,6 @@ namespace practiquesIEI
                 }
             }
             bindingSource1.DataSource = bindinglist;
-
-            /*if (localidad != "" && tipo == "" && provincia == "" && cod_postal == "") {
-                centros = await ConexionBD.FindCentrosByLocalidad(localidad);
-                if (centros != null)
-                {
-                    foreach (var centro in centros)
-                    {
-                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
-                    }
-                }
-                else { 
-                    //tbLogs.Text = "No se han encontrado resultados."; 
-                }
-            }
-            if (localidad == "" && tipo != "" && provincia == "" && cod_postal == "")
-            {
-                centros = await ConexionBD.FindCentrosByTipo(tipo);
-                if (centros != null)
-                {
-                    foreach (var centro in centros)
-                    {
-                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
-                    }
-                }
-                else { 
-                    //tbLogs.Text = "No se han encontrado resultados."; 
-                }
-            }
-            if (localidad == "" && tipo == "" && provincia != "" && cod_postal == "")
-            {
-                centros = await ConexionBD.FindCentrosByProvincia(provincia);
-                if (centros != null)
-                {
-                    foreach (var centro in centros)
-                    {
-                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
-                    }
-                }
-                else { 
-                    //tbLogs.Text = "No se han encontrado resultados.";
-                }
-            }
-            if (localidad == "" && tipo == "" && provincia == "" && cod_postal != "")
-            {
-                centros = await ConexionBD.FindCentrosByCod_Postal(cod_postal);
-                if (centros != null)
-                {
-                    foreach (var centro in centros)
-                    {
-                        //tbLogs.Lines = tbLogs.Lines.Append(centro.nombre).ToArray();
-                        AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
-                    }
-                }
-                else { 
-                    //tbLogs.Text = "No se han encontrado resultados."; 
-                }
-            }*/
 
         }
         #endregion
