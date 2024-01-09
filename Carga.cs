@@ -27,7 +27,6 @@ namespace practiquesIEI
             ExtractionResult extractionResultCV = new ExtractionResult();
             ExtractionResult extractionResultCat = new ExtractionResult();
             ExtractionResult extractionResultMur = new ExtractionResult();
-            //CVextractor.inserts = 0;
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
                 // Verifica si el nombre del elemento coincide
