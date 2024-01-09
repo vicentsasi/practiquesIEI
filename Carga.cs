@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using practiquesIEI.Extractors;
 using practiquesIEI.Wrappers;
 using System;
@@ -8,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,54 +26,36 @@ namespace practiquesIEI
         private async void button2_Click(object sender, EventArgs e)
         {
             ResCarga.Text = "";
-            MURextractor.inserts = 0;
-            CATextractor.inserts = 0;
-            CVextractor.inserts = 0;
+            ExtractionResult extractionResultCV = new ExtractionResult();
+            ExtractionResult extractionResultCat = new ExtractionResult();
+            ExtractionResult extractionResultMur = new ExtractionResult();
             //CVextractor.inserts = 0;
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
                 // Verifica si el nombre del elemento coincide
                 if (itemChecked.ToString() == "Seleccionar todas")
                 {
-                    /*string directorioAplicacionMUR = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativa = Path.Combine(directorioAplicacionMUR,  "MUR.json");
-                    string rutaAbsoluta = Path.GetFullPath(rutaRelativa);*/
-                    string archivoJson = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-                    await MURextractor.LoadJsonDataIntoDatabase(archivoJson);
-
-                    /*string directorioAplicacionCV = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativaCsv = Path.Combine(directorioAplicacionCV, "CV.csv");
-                    string rutaAbsolutaCsv = Path.GetFullPath(rutaRelativaCsv);*/
-                    string archivoJsonCV = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
-                    await CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV);
-
-
-                    /*string directorioAplicacionCAT = AppDomain.CurrentDomain.BaseDirectory;
-                    string rutaRelativaXml = Path.Combine(directorioAplicacionCAT, "CAT.xml");
-                    string rutaAbsolutaXml = Path.GetFullPath(rutaRelativaXml);*/
-                    string archivoJsonCAT = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
-                    await CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT);
-
+                    
+                    extractionResultMur = await cargarMur();
+                    extractionResultCV = await cargarCV();
+                    extractionResultCat = await cargarCat();
 
                 }
                 else if (itemChecked.ToString() == "Murcia") {
-                    string archivoJson = JsonWrapper.ConvertToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\MUR.json");
-                    await MURextractor.LoadJsonDataIntoDatabase(archivoJson);
+                    extractionResultMur = await cargarMur();
                 }
                 else if (itemChecked.ToString() == "Comunitat Valenciana")
                 {
-                    string archivoJsonCV = CsvWrapper.ConvertCsvToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CV.csv");
-                    await CVextractor.LoadJsonDataIntoDatabase(archivoJsonCV);
+                    extractionResultCV = await cargarCV();
                 }
                 else if (itemChecked.ToString() == "Catalunya")
                 {
-                    string archivoJsonCAT = XmlWrapper.ConvertXmlToJson("C:\\Users\\Sergi\\Source\\Repos\\vicentsasi\\practiquesIEI\\Fuentes de datos\\CAT.xml");
-                    await CATextractor.LoadJsonDataIntoDatabase(archivoJsonCAT);
+                   extractionResultCat = await cargarCat();
                 }
             }
-            ResCarga.Text = $"Número de registros cargados correctamente:{CATextractor.inserts + CVextractor.inserts + MURextractor.inserts}\r\n\r\n" +
-                $"Registros con errores y reparados:\r\n{CATextractor.reparados}{MURextractor.reparados}{CVextractor.reparados}\r\n\r\n" +
-                $"Registros con errores y rechazados:\r\n{CATextractor.eliminados}{MURextractor.eliminados}{CVextractor.eliminados}\r\n"; 
+            ResCarga.Text = $"Número de registros cargados correctamente:{extractionResultCat.Inserts + extractionResultCV.Inserts + extractionResultMur.Inserts}\r\n\r\n" +
+                $"Registros con errores y reparados:\r\n{extractionResultCat.Reparados}{extractionResultMur.Reparados}{extractionResultCV.Reparados}\r\n\r\n" +
+                $"Registros con errores y rechazados:\r\n{extractionResultCat.Eliminados}{extractionResultCV.Eliminados}{extractionResultCV.Eliminados}\r\n"; 
         }
 
         private void Cancelar_Click(object sender, EventArgs e)
@@ -85,6 +69,122 @@ namespace practiquesIEI
             
         }
 
+        async Task<ExtractionResult> cargarMur() {
+            ExtractionResult extractionResultMur = new ExtractionResult();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Reemplaza la URL con la dirección correcta de tu API
+                    string apiUrl = "https://localhost:7194/api/Extractor/mur";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserializa el contenido a un objeto ExtractionResult
+                        extractionResultMur = JsonConvert.DeserializeObject<ExtractionResult>(responseContent);
+
+                        // Ahora puedes acceder a las propiedades de extractionResult
+                        Console.WriteLine($"Eliminados: {extractionResultMur.Eliminados}");
+                        Console.WriteLine($"Reparados: {extractionResultMur.Reparados}");
+                        Console.WriteLine($"Inserts: {extractionResultMur.Inserts}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return extractionResultMur;
+        }
+
+        async Task<ExtractionResult> cargarCat() {
+            ExtractionResult extractionResultCat = new ExtractionResult();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Reemplaza la URL con la dirección correcta de tu API
+                    string apiUrl = "https://localhost:7194/api/Extractor/cat";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserializa el contenido a un objeto ExtractionResult
+                        extractionResultCat = JsonConvert.DeserializeObject<ExtractionResult>(responseContent);
+
+                        // Ahora puedes acceder a las propiedades de extractionResult
+                        Console.WriteLine($"Eliminados: {extractionResultCat.Eliminados}");
+                        Console.WriteLine($"Reparados: {extractionResultCat.Reparados}");
+                        Console.WriteLine($"Inserts: {extractionResultCat.Inserts}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return extractionResultCat;
+        }
+
+        async Task<ExtractionResult> cargarCV() {
+            ExtractionResult extractionResultCV = new ExtractionResult();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Reemplaza la URL con la dirección correcta de tu API
+                    string apiUrl = "https://localhost:7194/api/Extractor/cv";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserializa el contenido a un objeto ExtractionResult
+                        extractionResultCV = JsonConvert.DeserializeObject<ExtractionResult>(responseContent);
+
+                        // Ahora puedes acceder a las propiedades de extractionResult
+                        Console.WriteLine($"Eliminados: {extractionResultCV.Eliminados}");
+                        Console.WriteLine($"Reparados: {extractionResultCV.Reparados}");
+                        Console.WriteLine($"Inserts: {extractionResultCV.Inserts}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return extractionResultCV;
+        }
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             CheckedListBox checkBoxList = (CheckedListBox)sender;
@@ -106,6 +206,11 @@ namespace practiquesIEI
                    
             }
 
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

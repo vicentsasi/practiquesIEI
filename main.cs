@@ -20,6 +20,9 @@ namespace practiquesIEI
         [STAThread]
         static void Main()
         {
+
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Principal());

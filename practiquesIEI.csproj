@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtractionResult.cs" />
     <Compile Include="Extractors\CATextractor.cs" />
     <Compile Include="Entities\centro_educativo.cs" />
     <Compile Include="conexionBD.cs" />
