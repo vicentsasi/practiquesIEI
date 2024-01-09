@@ -16,11 +16,11 @@ namespace practiquesIEI
         public Principal()
         {
             //Conecta en la BD i borra els datos existents(esta tot dins del metodo conectar)
-            Load();
+            //Load();
             InitializeComponent();
         }
         public static async Task Load() {
-            await ConexionBD.Conectar();
+            //await ConexionBD.Conectar();
         }
 
         private void button1_Click(object sender, EventArgs e)

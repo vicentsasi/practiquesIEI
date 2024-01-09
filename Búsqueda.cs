@@ -36,7 +36,7 @@ namespace practiquesIEI
             tbCP.Text = "";
 
             //obtiene todos los centros de la BD y los inserta en el dataGridView
-            centros = await ConexionBD.getAllCentros();
+            //centros = await ConexionBD.getAllCentros();
             BindingList<object> bindinglist = new BindingList<object>();
             if (centros != null)
             {
