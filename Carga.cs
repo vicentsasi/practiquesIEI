@@ -53,7 +53,7 @@ namespace practiquesIEI
             }
             ResCarga.Text = $"Número de registros cargados correctamente:{extractionResultCat.Inserts + extractionResultCV.Inserts + extractionResultMur.Inserts}\r\n\r\n" +
                 $"Registros con errores y reparados:\r\n{extractionResultCat.Reparados}{extractionResultMur.Reparados}{extractionResultCV.Reparados}\r\n\r\n" +
-                $"Registros con errores y rechazados:\r\n{extractionResultCat.Eliminados}{extractionResultCV.Eliminados}{extractionResultCV.Eliminados}\r\n"; 
+                $"Registros con errores y rechazados:\r\n{extractionResultCat.Eliminados}{extractionResultMur.Eliminados}{extractionResultCV.Eliminados}\r\n"; 
         }
 
         private void Cancelar_Click(object sender, EventArgs e)
