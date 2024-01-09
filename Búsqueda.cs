@@ -36,8 +36,39 @@ namespace practiquesIEI
             tbCP.Text = "";
 
             //obtiene todos los centros de la BD y los inserta en el dataGridView
-            centros = await ConexionBD.getAllCentros();
-            BindingList<object> bindinglist = new BindingList<object>();
+            List<centro_educativo> centros = new List<centro_educativo>();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Construye la URL con los parámetros de consulta
+                    var apiUrl = "https://localhost:7194/api/Extractor/getAllCentros";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserializa el contenido a un objeto ExtractionResult
+                        centros = JsonConvert.DeserializeObject<List<centro_educativo>>(responseContent);
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+                BindingList<object> bindinglist = new BindingList<object>();
             if (centros != null)
             {
                 foreach (centro_educativo centro in centros)
@@ -138,6 +169,8 @@ namespace practiquesIEI
             }
             return centros;
         }
+
+
 
         #endregion
         private void LoadMap()

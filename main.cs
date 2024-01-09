@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using practiquesIEI.Entities;
-using practiquesIEI.Extractors;
 using practiquesIEI;
 using System.Diagnostics;
-using practiquesIEI.Wrappers;
 using OpenQA.Selenium;
 
 namespace practiquesIEI

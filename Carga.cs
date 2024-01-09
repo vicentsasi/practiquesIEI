@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
-using practiquesIEI.Extractors;
-using practiquesIEI.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
