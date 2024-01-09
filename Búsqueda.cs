@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.DevTools;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium.DevTools;
 using practiquesIEI.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -76,7 +78,7 @@ namespace practiquesIEI
             string cod_postal = tbCP.Text;
 
             //obtiene los centros y los introduce en el dataGridView
-            centros = await ConexionBD.FindCentros(localidad, tipo, provincia, cod_postal);
+            centros = await buscarCentros(localidad, tipo, provincia, cod_postal);
             BindingList<object> bindinglist = new BindingList<object>();
             if (centros != null)
             {
@@ -99,6 +101,44 @@ namespace practiquesIEI
             bindingSource1.DataSource = bindinglist;
 
         }
+
+        async Task<List<centro_educativo>> buscarCentros(string localidad, string tipo, string provincia, string cod_postal)
+        {
+            List<centro_educativo> centros = new List<centro_educativo> ();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Construye la URL con los parámetros de consulta
+                    var apiUrl = $"https://localhost:7194/api/Extractor/findCentros?loc={localidad}&tipo={tipo}&prov={provincia}&cp={cod_postal}";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserializa el contenido a un objeto ExtractionResult
+                        centros = JsonConvert.DeserializeObject<List<centro_educativo>>(responseContent);
+
+  
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return centros;
+        }
+
         #endregion
         private void LoadMap()
         {
