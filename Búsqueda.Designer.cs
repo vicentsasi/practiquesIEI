@@ -35,7 +35,6 @@
             this.cbTipo = new System.Windows.Forms.ComboBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.btAceptar = new System.Windows.Forms.Button();
             this.btCancelar = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -46,7 +45,6 @@
             this.wbMapa = new System.Windows.Forms.WebBrowser();
             this.label6 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Direccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,6 +52,9 @@
             this.cp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Provincia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.label7 = new System.Windows.Forms.Label();
+            this.lbTotal = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -63,34 +64,35 @@
             // 
             this.tbLocalidad.Location = new System.Drawing.Point(129, 25);
             this.tbLocalidad.Name = "tbLocalidad";
-            this.tbLocalidad.Size = new System.Drawing.Size(281, 26);
+            this.tbLocalidad.Size = new System.Drawing.Size(281, 22);
             this.tbLocalidad.TabIndex = 0;
             // 
             // tbCP
             // 
             this.tbCP.Location = new System.Drawing.Point(129, 62);
             this.tbCP.Name = "tbCP";
-            this.tbCP.Size = new System.Drawing.Size(281, 26);
+            this.tbCP.Size = new System.Drawing.Size(281, 22);
             this.tbCP.TabIndex = 1;
             // 
             // tbProv
             // 
             this.tbProv.Location = new System.Drawing.Point(129, 100);
             this.tbProv.Name = "tbProv";
-            this.tbProv.Size = new System.Drawing.Size(281, 26);
+            this.tbProv.Size = new System.Drawing.Size(281, 22);
             this.tbProv.TabIndex = 2;
             // 
             // cbTipo
             // 
             this.cbTipo.FormattingEnabled = true;
             this.cbTipo.Items.AddRange(new object[] {
+            "",
             "Público",
             "Privado",
             "Concertado",
             "Otros"});
             this.cbTipo.Location = new System.Drawing.Point(129, 137);
             this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(281, 28);
+            this.cbTipo.Size = new System.Drawing.Size(281, 24);
             this.cbTipo.TabIndex = 3;
             // 
             // contextMenuStrip1
@@ -101,7 +103,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.btAceptar);
             this.groupBox1.Controls.Add(this.btCancelar);
             this.groupBox1.Controls.Add(this.label5);
@@ -119,23 +120,12 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Información";
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(152, 183);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(138, 33);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Obtener todos";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // btAceptar
             // 
             this.btAceptar.BackColor = System.Drawing.Color.Gray;
             this.btAceptar.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btAceptar.ForeColor = System.Drawing.Color.White;
-            this.btAceptar.Location = new System.Drawing.Point(36, 183);
+            this.btAceptar.Location = new System.Drawing.Point(129, 183);
             this.btAceptar.Name = "btAceptar";
             this.btAceptar.Size = new System.Drawing.Size(100, 33);
             this.btAceptar.TabIndex = 9;
@@ -145,7 +135,7 @@
             // 
             // btCancelar
             // 
-            this.btCancelar.Location = new System.Drawing.Point(302, 183);
+            this.btCancelar.Location = new System.Drawing.Point(244, 183);
             this.btCancelar.Name = "btCancelar";
             this.btCancelar.Size = new System.Drawing.Size(100, 33);
             this.btCancelar.TabIndex = 8;
@@ -158,7 +148,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(33, 68);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 20);
+            this.label5.Size = new System.Drawing.Size(76, 16);
             this.label5.TabIndex = 7;
             this.label5.Text = "Cód. Postal";
             // 
@@ -167,7 +157,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(33, 106);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(72, 20);
+            this.label4.Size = new System.Drawing.Size(63, 16);
             this.label4.TabIndex = 6;
             this.label4.Text = "Provincia";
             // 
@@ -176,7 +166,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(33, 140);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 20);
+            this.label3.Size = new System.Drawing.Size(35, 16);
             this.label3.TabIndex = 5;
             this.label3.Text = "Tipo";
             // 
@@ -185,7 +175,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(33, 31);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 20);
+            this.label2.Size = new System.Drawing.Size(67, 16);
             this.label2.TabIndex = 4;
             this.label2.Text = "Localidad";
             // 
@@ -195,7 +185,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(299, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(535, 46);
+            this.label1.Size = new System.Drawing.Size(439, 38);
             this.label1.TabIndex = 8;
             this.label1.Text = "Buscador centros educativos";
             // 
@@ -213,7 +203,7 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(42, 383);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(335, 30);
+            this.label6.Size = new System.Drawing.Size(287, 26);
             this.label6.TabIndex = 12;
             this.label6.Text = "Resultados de la búsqueda :";
             // 
@@ -246,7 +236,7 @@
             this.Nombre.MinimumWidth = 8;
             this.Nombre.Name = "Nombre";
             this.Nombre.ReadOnly = true;
-            this.Nombre.Width = 101;
+            this.Nombre.Width = 85;
             // 
             // Tipo
             // 
@@ -256,7 +246,7 @@
             this.Tipo.MinimumWidth = 8;
             this.Tipo.Name = "Tipo";
             this.Tipo.ReadOnly = true;
-            this.Tipo.Width = 75;
+            this.Tipo.Width = 64;
             // 
             // Direccion
             // 
@@ -266,7 +256,7 @@
             this.Direccion.MinimumWidth = 8;
             this.Direccion.Name = "Direccion";
             this.Direccion.ReadOnly = true;
-            this.Direccion.Width = 111;
+            this.Direccion.Width = 93;
             // 
             // Localidad
             // 
@@ -276,7 +266,7 @@
             this.Localidad.MinimumWidth = 8;
             this.Localidad.Name = "Localidad";
             this.Localidad.ReadOnly = true;
-            this.Localidad.Width = 113;
+            this.Localidad.Width = 96;
             // 
             // cp
             // 
@@ -286,7 +276,7 @@
             this.cp.MinimumWidth = 2;
             this.cp.Name = "cp";
             this.cp.ReadOnly = true;
-            this.cp.Width = 125;
+            this.cp.Width = 104;
             // 
             // Provincia
             // 
@@ -296,7 +286,7 @@
             this.Provincia.MinimumWidth = 8;
             this.Provincia.Name = "Provincia";
             this.Provincia.ReadOnly = true;
-            this.Provincia.Width = 108;
+            this.Provincia.Width = 92;
             // 
             // descripcion
             // 
@@ -306,14 +296,34 @@
             this.descripcion.MinimumWidth = 8;
             this.descripcion.Name = "descripcion";
             this.descripcion.ReadOnly = true;
-            this.descripcion.Width = 128;
+            this.descripcion.Width = 108;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(890, 619);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(91, 16);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Total centros: ";
+            // 
+            // lbTotal
+            // 
+            this.lbTotal.AutoSize = true;
+            this.lbTotal.Location = new System.Drawing.Point(987, 619);
+            this.lbTotal.Name = "lbTotal";
+            this.lbTotal.Size = new System.Drawing.Size(14, 16);
+            this.lbTotal.TabIndex = 15;
+            this.lbTotal.Text = "0";
             // 
             // Búsqueda
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(1230, 628);
+            this.ClientSize = new System.Drawing.Size(1230, 658);
+            this.Controls.Add(this.lbTotal);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.wbMapa);
@@ -349,7 +359,6 @@
         private System.Windows.Forms.Button btAceptar;
         private System.Windows.Forms.Button btCancelar;
         private System.Windows.Forms.WebBrowser wbMapa;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.BindingSource bindingSource1;
@@ -360,5 +369,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cp;
         private System.Windows.Forms.DataGridViewTextBoxColumn Provincia;
         private System.Windows.Forms.DataGridViewTextBoxColumn descripcion;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbTotal;
     }
 }

@@ -23,11 +23,63 @@ namespace practiquesIEI
         {
             InitializeComponent();
             LoadMap();
+             mostrarTodosCentros();
         }
 
         #region BOTONES
-        private async void button1_Click(object sender, EventArgs e)
+        
+
+        private void btCancelar_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            new Principal().Show();
+
+        }
+
+        private async void btAceptar_Click(object sender, EventArgs e)
+        {
+            int total = 0;
+            //remueve todos los marcadores que haya en el mapa
+            wbMapa.Document.InvokeScript("eval", new object[] { "defaultMarker();" });
+            //obtiene los parametros de la búsqueda
+            string localidad = tbLocalidad.Text;
+            string tipo ="";
+            if (cbTipo.SelectedIndex != -1) { tipo = cbTipo.SelectedItem.ToString(); }
+            string provincia = tbProv.Text;
+            string cod_postal = tbCP.Text;
+
+            //obtiene los centros y los introduce en el dataGridView
+            centros = await buscarCentros(localidad, tipo, provincia, cod_postal);
+            BindingList<object> bindinglist = new BindingList<object>();
+            if (centros != null)
+            {
+                foreach (centro_educativo centro in centros)
+                {
+                    bindinglist.Add(new
+                    {
+                        nombre = centro.nombre,
+                        tipo = centro.tipo,
+                        direccion = centro.direccion,
+                        loc = centro.loc_nombre,
+                        prov = centro.prov_nombre,
+                        desc = centro.descripcion,
+                        cod_postal = centro.cod_postal
+                    });
+                    if (!string.IsNullOrEmpty(localidad) || !string.IsNullOrEmpty(tipo) || !string.IsNullOrEmpty(provincia) || !string.IsNullOrEmpty(cod_postal))
+                    {
+                        // Llama a la función changeColor aquí
+                        changeColor(centro.latitud, centro.longitud);
+                    }
+                    total++;
+                }
+            }
+            bindingSource1.DataSource = bindinglist;
+            lbTotal.Text = total.ToString();
+
+        }
+        async Task mostrarTodosCentros() {
+
+            int total = 0;  
             wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
             //limpia los campos de búsqueda
             tbLocalidad.Text = "";
@@ -53,55 +105,12 @@ namespace practiquesIEI
                         cod_postal = centro.cod_postal
                     });
                     AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
-
+                    total++;
                 }
             }
             bindingSource1.DataSource = bindinglist;
+            lbTotal.Text = total.ToString();    
         }
-
-        private void btCancelar_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            new Principal().Show();
-
-        }
-
-        private async void btAceptar_Click(object sender, EventArgs e)
-        {
-            //remueve todos los marcadores que haya en el mapa
-            wbMapa.Document.InvokeScript("eval", new object[] { "removeAllMarkers();" });
-            //obtiene los parametros de la búsqueda
-            string localidad = tbLocalidad.Text;
-            string tipo ="";
-            if (cbTipo.SelectedIndex != -1) { tipo = cbTipo.SelectedItem.ToString(); }
-            string provincia = tbProv.Text;
-            string cod_postal = tbCP.Text;
-
-            //obtiene los centros y los introduce en el dataGridView
-            centros = await buscarCentros(localidad, tipo, provincia, cod_postal);
-            BindingList<object> bindinglist = new BindingList<object>();
-            if (centros != null)
-            {
-                foreach (centro_educativo centro in centros)
-                {
-                    bindinglist.Add(new
-                    {
-                        nombre = centro.nombre,
-                        tipo = centro.tipo,
-                        direccion = centro.direccion,
-                        loc = centro.loc_nombre,
-                        prov = centro.prov_nombre,
-                        desc = centro.descripcion,
-                        cod_postal = centro.cod_postal
-                    });
-                    changeColor(centro.latitud, centro.longitud);
-
-                }
-            }
-            bindingSource1.DataSource = bindinglist;
-
-        }
-
         async Task<List<centro_educativo>> todosCentros()
         {
             List<centro_educativo> centros = new List<centro_educativo>();
@@ -215,6 +224,15 @@ namespace practiquesIEI
                                         shadowSize: [41, 41]
                                     });
 
+                                    var blueIcon = new L.Icon({
+                                        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                                        iconSize: [25, 41],
+                                        iconAnchor: [12, 41],
+                                        popupAnchor: [1, -34],
+                                        shadowSize: [41, 41]
+                                    });
+
                                     function addMarker(lat, lng, popupText) {
                                             try {
                                                 var marker = L.marker([lat, lng]).addTo(map);
@@ -238,8 +256,15 @@ namespace practiquesIEI
                                             var markerLatLng = marker.getLatLng();
 
                                             if (markerLatLng.lat === lat && markerLatLng.lng === lng) {
-                                                marker.setIcon(color === 'red' ? redIcon : L.Icon.Default());
+                                                marker.setIcon(redIcon);
                                             }
+                                        }
+                                    }
+
+                                    function defaultMarker() {
+                                        for (var i = 0; i < markers.length; i++) {
+                                            var marker = markers[i];
+                                            marker.setIcon(blueIcon);
                                         }
                                     }
 
