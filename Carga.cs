@@ -28,6 +28,7 @@ namespace practiquesIEI
             ExtractionResult extractionResultCV = new ExtractionResult();
             ExtractionResult extractionResultCat = new ExtractionResult();
             ExtractionResult extractionResultMur = new ExtractionResult();
+            MessageBox.Show($"Los datos se están insertando, espere hasta que se muestren los resultados de la carga.", "Información", MessageBoxButtons.OK,MessageBoxIcon.Information);
             foreach (object itemChecked in checkedListBox1.CheckedItems)
             {
                 // Verifica si el nombre del elemento coincide
