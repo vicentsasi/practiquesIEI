@@ -36,7 +36,7 @@ namespace practiquesIEI
             tbCP.Text = "";
 
             //obtiene todos los centros de la BD y los inserta en el dataGridView
-            //centros = await ConexionBD.getAllCentros();
+            centros = await todosCentros();
             BindingList<object> bindinglist = new BindingList<object>();
             if (centros != null)
             {
@@ -102,6 +102,43 @@ namespace practiquesIEI
 
         }
 
+        async Task<List<centro_educativo>> todosCentros()
+        {
+            List<centro_educativo> centros = new List<centro_educativo>();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Construye la URL con los parámetros de consulta
+                    var apiUrl = "https://localhost:7194/api/Extractor/getAllCentros";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Deserializa el contenido a un objeto ExtractionResult
+                        centros = JsonConvert.DeserializeObject<List<centro_educativo>>(responseContent);
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return centros;
+        }
+
         async Task<List<centro_educativo>> buscarCentros(string localidad, string tipo, string provincia, string cod_postal)
         {
             List<centro_educativo> centros = new List<centro_educativo> ();
@@ -113,7 +150,7 @@ namespace practiquesIEI
                     var apiUrl = $"https://localhost:7194/api/Extractor/findCentros?loc={localidad}&tipo={tipo}&prov={provincia}&cp={cod_postal}";
 
                     // Realiza la llamada a la API
-                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
                     // Verifica si la llamada fue exitosa (código de estado 200)
                     if (response.IsSuccessStatusCode)
@@ -152,7 +189,7 @@ namespace practiquesIEI
                                 <style>
                                     #map {
                                         width: 600px;
-                                        height: 520px;
+                                        height: 250px;
                                     }
                                 </style>
                             </head>
@@ -170,10 +207,14 @@ namespace practiquesIEI
 
                                     var markers = [];
                                     function addMarker(lat, lng, popupText) {
-                                    var marker = L.marker([lat, lng]).addTo(map);
-                                    marker.bindPopup(popupText);
-                                    markers.push(marker);
-                                    }
+                                            try {
+                                                var marker = L.marker([lat, lng]).addTo(map);
+                                                marker.bindPopup(popupText);
+                                                markers.push(marker);
+                                            } catch (error) {
+                                                // Puedes realizar acciones adicionales aquí, como mostrar un mensaje al usuario.
+                                            }
+                                        }
 
                                     function removeAllMarkers() {
                                         for (var i = 0; i < markers.length; i++) {
@@ -199,7 +240,7 @@ namespace practiquesIEI
         {
             try
             {
-                string script = $"addMarker({lat}, {lng}, '{popupText}');";
+                string script = $"addMarker({lat}, {lng}, (\"){popupText}(\"));";
                 wbMapa.Document.InvokeScript("eval", new object[] { script });
             }
             catch (Exception ex)
