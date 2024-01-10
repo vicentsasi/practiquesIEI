@@ -94,7 +94,7 @@ namespace practiquesIEI
                         desc = centro.descripcion,
                         cod_postal = centro.cod_postal
                     });
-                    AddMarker(centro.latitud, centro.longitud, $"{centro.nombre}");
+                    changeColor(centro.latitud, centro.longitud);
 
                 }
             }
@@ -206,6 +206,15 @@ namespace practiquesIEI
                                     L.control.scale().addTo(map);
 
                                     var markers = [];
+                                    var redIcon = new L.Icon({
+                                        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                                        iconSize: [25, 41],
+                                        iconAnchor: [12, 41],
+                                        popupAnchor: [1, -34],
+                                        shadowSize: [41, 41]
+                                    });
+
                                     function addMarker(lat, lng, popupText) {
                                             try {
                                                 var marker = L.marker([lat, lng]).addTo(map);
@@ -221,6 +230,17 @@ namespace practiquesIEI
                                             map.removeLayer(markers[i]); // Elimina el marcador del mapa
                                         }
                                         markers = []; // Vacía el array de marcadores
+                                    }
+
+                                    function changeMarkerColor(lat, lng, color) {
+                                        for (var i = 0; i < markers.length; i++) {
+                                            var marker = markers[i];
+                                            var markerLatLng = marker.getLatLng();
+
+                                            if (markerLatLng.lat === lat && markerLatLng.lng === lng) {
+                                                marker.setIcon(color === 'red' ? redIcon : L.Icon.Default());
+                                            }
+                                        }
                                     }
 
 
@@ -245,6 +265,23 @@ namespace practiquesIEI
                     wbMapa.Document.InvokeScript("eval", new object[] { script });
                 }
                 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al agregar marcador: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void changeColor(string lat, string lng)
+        {
+            try
+            {
+                if (lat != "" || lng != "")
+                {
+                    string script = $"changeMarkerColor({lat}, {lng}, 'red');";
+                    wbMapa.Document.InvokeScript("eval", new object[] { script });
+                }
+
             }
             catch (Exception ex)
             {
