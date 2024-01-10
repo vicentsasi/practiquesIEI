@@ -85,6 +85,7 @@
             // 
             this.cbTipo.FormattingEnabled = true;
             this.cbTipo.Items.AddRange(new object[] {
+            "",
             "Público",
             "Privado",
             "Concertado",
@@ -307,6 +308,7 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(890, 619);
             this.label7.Name = "label7";
@@ -316,6 +318,7 @@
             // 
             // lbTotal
             // 
+            this.lbTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbTotal.AutoSize = true;
             this.lbTotal.Location = new System.Drawing.Point(987, 619);
             this.lbTotal.Name = "lbTotal";
