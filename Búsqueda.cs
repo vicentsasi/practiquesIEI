@@ -119,7 +119,7 @@ namespace practiquesIEI
                 try
                 {
                     // Construye la URL con los parámetros de consulta
-                    var apiUrl = "https://localhost:7194/api/Extractor/getAllCentros";
+                    var apiUrl = "https://localhost:7012/api/BusquedaBBDD/getAllCentros";
 
                     // Realiza la llamada a la API
                     HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -156,7 +156,7 @@ namespace practiquesIEI
                 try
                 {
                     // Construye la URL con los parámetros de consulta
-                    var apiUrl = $"https://localhost:7194/api/Extractor/findCentros?loc={localidad}&tipo={tipo}&prov={provincia}&cp={cod_postal}";
+                    var apiUrl = $"https://localhost:7012/api/BusquedaBBDD/findCentros?loc={localidad}&tipo={tipo}&prov={provincia}&cp={cod_postal}";
 
                     // Realiza la llamada a la API
                     HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
