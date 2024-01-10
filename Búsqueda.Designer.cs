@@ -63,21 +63,21 @@
             // 
             this.tbLocalidad.Location = new System.Drawing.Point(129, 25);
             this.tbLocalidad.Name = "tbLocalidad";
-            this.tbLocalidad.Size = new System.Drawing.Size(259, 22);
+            this.tbLocalidad.Size = new System.Drawing.Size(281, 22);
             this.tbLocalidad.TabIndex = 0;
             // 
             // tbCP
             // 
             this.tbCP.Location = new System.Drawing.Point(129, 62);
             this.tbCP.Name = "tbCP";
-            this.tbCP.Size = new System.Drawing.Size(259, 22);
+            this.tbCP.Size = new System.Drawing.Size(281, 22);
             this.tbCP.TabIndex = 1;
             // 
             // tbProv
             // 
             this.tbProv.Location = new System.Drawing.Point(129, 100);
             this.tbProv.Name = "tbProv";
-            this.tbProv.Size = new System.Drawing.Size(259, 22);
+            this.tbProv.Size = new System.Drawing.Size(281, 22);
             this.tbProv.TabIndex = 2;
             // 
             // cbTipo
@@ -90,7 +90,7 @@
             "Otros"});
             this.cbTipo.Location = new System.Drawing.Point(129, 137);
             this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(259, 24);
+            this.cbTipo.Size = new System.Drawing.Size(281, 24);
             this.cbTipo.TabIndex = 3;
             // 
             // contextMenuStrip1
@@ -112,9 +112,9 @@
             this.groupBox1.Controls.Add(this.tbLocalidad);
             this.groupBox1.Controls.Add(this.tbCP);
             this.groupBox1.Controls.Add(this.cbTipo);
-            this.groupBox1.Location = new System.Drawing.Point(47, 105);
+            this.groupBox1.Location = new System.Drawing.Point(35, 105);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(447, 231);
+            this.groupBox1.Size = new System.Drawing.Size(662, 231);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Información";
@@ -122,7 +122,7 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(153, 189);
+            this.button1.Location = new System.Drawing.Point(152, 183);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(138, 33);
             this.button1.TabIndex = 10;
@@ -135,7 +135,7 @@
             this.btAceptar.BackColor = System.Drawing.Color.Gray;
             this.btAceptar.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btAceptar.ForeColor = System.Drawing.Color.White;
-            this.btAceptar.Location = new System.Drawing.Point(37, 189);
+            this.btAceptar.Location = new System.Drawing.Point(36, 183);
             this.btAceptar.Name = "btAceptar";
             this.btAceptar.Size = new System.Drawing.Size(100, 33);
             this.btAceptar.TabIndex = 9;
@@ -145,7 +145,7 @@
             // 
             // btCancelar
             // 
-            this.btCancelar.Location = new System.Drawing.Point(303, 189);
+            this.btCancelar.Location = new System.Drawing.Point(302, 183);
             this.btCancelar.Name = "btCancelar";
             this.btCancelar.Size = new System.Drawing.Size(100, 33);
             this.btCancelar.TabIndex = 8;
@@ -193,7 +193,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(352, 32);
+            this.label1.Location = new System.Drawing.Point(501, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(439, 38);
             this.label1.TabIndex = 8;
@@ -201,16 +201,16 @@
             // 
             // wbMapa
             // 
-            this.wbMapa.Location = new System.Drawing.Point(524, 105);
+            this.wbMapa.Location = new System.Drawing.Point(725, 105);
             this.wbMapa.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbMapa.Name = "wbMapa";
-            this.wbMapa.Size = new System.Drawing.Size(618, 280);
+            this.wbMapa.Size = new System.Drawing.Size(618, 492);
             this.wbMapa.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(173, 412);
+            this.label6.Location = new System.Drawing.Point(32, 352);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(179, 16);
             this.label6.TabIndex = 12;
@@ -229,12 +229,12 @@
             this.Provincia,
             this.descripcion});
             this.dataGridView1.DataSource = this.bindingSource1;
-            this.dataGridView1.Location = new System.Drawing.Point(176, 442);
+            this.dataGridView1.Location = new System.Drawing.Point(35, 380);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 30;
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(794, 175);
+            this.dataGridView1.Size = new System.Drawing.Size(645, 217);
             this.dataGridView1.TabIndex = 13;
             // 
             // Nombre
@@ -312,7 +312,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(1179, 687);
+            this.ClientSize = new System.Drawing.Size(1389, 638);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.wbMapa);

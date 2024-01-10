@@ -188,8 +188,8 @@ namespace practiquesIEI
                                 <script src=""https://unpkg.com/leaflet@1.7.1/dist/leaflet.js""></script>
                                 <style>
                                     #map {
-                                        width: 600px;
-                                        height: 250px;
+                                        width: 590px;
+                                        height: 445px;
                                     }
                                 </style>
                             </head>
@@ -240,8 +240,11 @@ namespace practiquesIEI
         {
             try
             {
-                string script = $"addMarker({lat}, {lng}, (\"){popupText}(\"));";
-                wbMapa.Document.InvokeScript("eval", new object[] { script });
+                if (lat != "" || lng != "") {
+                    string script = $"addMarker({lat}, {lng}, \"{popupText}\");";
+                    wbMapa.Document.InvokeScript("eval", new object[] { script });
+                }
+                
             }
             catch (Exception ex)
             {

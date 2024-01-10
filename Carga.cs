@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MySqlX.XDevAPI.Common;
+using Newtonsoft.Json;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,14 @@ namespace practiquesIEI
                 // Verifica si el nombre del elemento coincide
                 if (itemChecked.ToString() == "Seleccionar todas")
                 {
-                    
+
                     extractionResultMur = await cargarMur();
                     extractionResultCV = await cargarCV();
                     extractionResultCat = await cargarCat();
 
                 }
-                else if (itemChecked.ToString() == "Murcia") {
+                else if (itemChecked.ToString() == "Murcia")
+                {
                     extractionResultMur = await cargarMur();
                 }
                 else if (itemChecked.ToString() == "Comunitat Valenciana")
@@ -47,12 +49,12 @@ namespace practiquesIEI
                 }
                 else if (itemChecked.ToString() == "Catalunya")
                 {
-                   extractionResultCat = await cargarCat();
+                    extractionResultCat = await cargarCat();
                 }
             }
             ResCarga.Text = $"Número de registros cargados correctamente:{extractionResultCat.Inserts + extractionResultCV.Inserts + extractionResultMur.Inserts}\r\n\r\n" +
                 $"Registros con errores y reparados:\r\n{extractionResultCat.Reparados}{extractionResultMur.Reparados}{extractionResultCV.Reparados}\r\n\r\n" +
-                $"Registros con errores y rechazados:\r\n{extractionResultCat.Eliminados}{extractionResultMur.Eliminados}{extractionResultCV.Eliminados}\r\n"; 
+                $"Registros con errores y rechazados:\r\n{extractionResultCat.Eliminados}{extractionResultMur.Eliminados}{extractionResultCV.Eliminados}\r\n";
         }
 
         private void Cancelar_Click(object sender, EventArgs e)
@@ -63,10 +65,11 @@ namespace practiquesIEI
 
         private void CargarRes(object sender, EventArgs e)
         {
-            
+
         }
 
-        async Task<ExtractionResult> cargarMur() {
+        async Task<ExtractionResult> cargarMur()
+        {
             ExtractionResult extractionResultMur = new ExtractionResult();
             using (var httpClient = new HttpClient())
             {
@@ -105,7 +108,8 @@ namespace practiquesIEI
             return extractionResultMur;
         }
 
-        async Task<ExtractionResult> cargarCat() {
+        async Task<ExtractionResult> cargarCat()
+        {
             ExtractionResult extractionResultCat = new ExtractionResult();
             using (var httpClient = new HttpClient())
             {
@@ -144,7 +148,8 @@ namespace practiquesIEI
             return extractionResultCat;
         }
 
-        async Task<ExtractionResult> cargarCV() {
+        async Task<ExtractionResult> cargarCV()
+        {
             ExtractionResult extractionResultCV = new ExtractionResult();
             using (var httpClient = new HttpClient())
             {
@@ -182,6 +187,41 @@ namespace practiquesIEI
             }
             return extractionResultCV;
         }
+
+        async Task<string> borrarCentros()
+        {
+            string result = "";
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Reemplaza la URL con la dirección correcta de tu API
+                    string apiUrl = "https://localhost:7194/api/Extractor/borrar";
+
+                    // Realiza la llamada a la API
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+
+                    // Verifica si la llamada fue exitosa (código de estado 200)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lee el contenido de la respuesta
+                         result = await response.Content.ReadAsStringAsync();
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la llamada a la API. Código de estado: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return result;
+        }
+
+
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             CheckedListBox checkBoxList = (CheckedListBox)sender;
@@ -190,7 +230,7 @@ namespace practiquesIEI
             {
                 for (int i = 0; i < checkBoxList.Items.Count; i++)
                 {
-                    if (i != e.Index)  
+                    if (i != e.Index)
                     {
                         checkBoxList.SetItemCheckState(i, CheckState.Unchecked);
                     }
@@ -200,14 +240,21 @@ namespace practiquesIEI
             if (e.Index != 0)
             {
                 checkBoxList.SetItemCheckState(0, CheckState.Unchecked);
-                   
+
             }
 
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
+
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            string res = await borrarCentros();
+            ResCarga.Text = res;
+        }
+
     }
 }
