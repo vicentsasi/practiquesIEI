@@ -188,7 +188,7 @@ namespace practiquesIEI
         #endregion
         private void LoadMap()
         {
-            string html = @"<!DOCTYPE html>
+            string html = $@"<!DOCTYPE html>
                             <html>
                             <head>
                                 <meta charset=""utf-8"" />
@@ -196,10 +196,10 @@ namespace practiquesIEI
                                 <link rel=""stylesheet"" href=""https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"" />
                                 <script src=""https://unpkg.com/leaflet@1.7.1/dist/leaflet.js""></script>
                                 <style>
-                                    #map {
-                                        width: 600px;
-                                        height: 320px;
-                                    }
+                                    #map {{
+                                        width: {(810).ToString()}px;
+                                        height: {(410).ToString()}px;
+                                    }}
                                 </style>
                             </head>
                             <body>
@@ -207,66 +207,66 @@ namespace practiquesIEI
                                 <script>
                                     var map = L.map('map').setView([39, 0.8], 5);
 
-                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    L.tileLayer('https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png', {{
                                         attribution: 'Map data &copy; <a href=""http://openstreetmap.org"">OpenStreetMap</a> contributors, <a href=""http://creativecommons.org/licenses/by-sa/2.0/"">CC-BY-SA</a>, Imagery © <a href=""http://cloudmade.com"">CloudMade</a>',
                                         maxZoom: 25
-                                    }).addTo(map);
+                                    }}).addTo(map);
 
                                     L.control.scale().addTo(map);
 
                                     var markers = [];
-                                    var redIcon = new L.Icon({
+                                    var redIcon = new L.Icon({{
                                         iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
                                         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                                         iconSize: [25, 41],
                                         iconAnchor: [12, 41],
                                         popupAnchor: [1, -34],
                                         shadowSize: [41, 41]
-                                    });
+                                    }});
 
-                                    var blueIcon = new L.Icon({
+                                    var blueIcon = new L.Icon({{
                                         iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
                                         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                                         iconSize: [25, 41],
                                         iconAnchor: [12, 41],
                                         popupAnchor: [1, -34],
                                         shadowSize: [41, 41]
-                                    });
+                                    }});
 
-                                    function addMarker(lat, lng, popupText) {
-                                            try {
+                                    function addMarker(lat, lng, popupText) {{
+                                            try {{
                                                 var marker = L.marker([lat, lng]).addTo(map);
                                                 marker.bindPopup(popupText);
                                                 markers.push(marker);
-                                            } catch (error) {
+                                            }} catch (error) {{
                                                 // Puedes realizar acciones adicionales aquí, como mostrar un mensaje al usuario.
-                                            }
-                                        }
+                                            }}
+                                        }}
 
-                                    function removeAllMarkers() {
-                                        for (var i = 0; i < markers.length; i++) {
+                                    function removeAllMarkers() {{
+                                        for (var i = 0; i < markers.length; i++) {{
                                             map.removeLayer(markers[i]); // Elimina el marcador del mapa
-                                        }
+                                        }}
                                         markers = []; // Vacía el array de marcadores
-                                    }
+                                    }}
 
-                                    function changeMarkerColor(lat, lng, color) {
-                                        for (var i = 0; i < markers.length; i++) {
+                                    function changeMarkerColor(lat, lng, color) {{
+                                        for (var i = 0; i < markers.length; i++) {{
                                             var marker = markers[i];
                                             var markerLatLng = marker.getLatLng();
 
-                                            if (markerLatLng.lat === lat && markerLatLng.lng === lng) {
+                                            if (markerLatLng.lat === lat && markerLatLng.lng === lng) {{
                                                 marker.setIcon(redIcon);
-                                            }
-                                        }
-                                    }
+                                            }}
+                                        }}
+                                    }}
 
-                                    function defaultMarker() {
-                                        for (var i = 0; i < markers.length; i++) {
+                                    function defaultMarker() {{
+                                        for (var i = 0; i < markers.length; i++) {{
                                             var marker = markers[i];
                                             marker.setIcon(blueIcon);
-                                        }
-                                    }
+                                        }}
+                                    }}
 
 
                                     
