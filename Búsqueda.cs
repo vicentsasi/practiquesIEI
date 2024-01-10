@@ -188,15 +188,15 @@ namespace practiquesIEI
                                 <script src=""https://unpkg.com/leaflet@1.7.1/dist/leaflet.js""></script>
                                 <style>
                                     #map {
-                                        width: 590px;
-                                        height: 445px;
+                                        width: 600px;
+                                        height: 320px;
                                     }
                                 </style>
                             </head>
                             <body>
                                 <div id=""map""></div>
                                 <script>
-                                    var map = L.map('map').setView([35.4, 0], 5);
+                                    var map = L.map('map').setView([39, 0.8], 5);
 
                                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                         attribution: 'Map data &copy; <a href=""http://openstreetmap.org"">OpenStreetMap</a> contributors, <a href=""http://creativecommons.org/licenses/by-sa/2.0/"">CC-BY-SA</a>, Imagery © <a href=""http://cloudmade.com"">CloudMade</a>',
